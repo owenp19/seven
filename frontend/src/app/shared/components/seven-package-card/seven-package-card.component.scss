@@ -1,0 +1,173 @@
+// =============================================================================
+// ASSISTANT PACKAGE CARD — plan combinado presentado como itinerario
+// =============================================================================
+
+.apc {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--seven-border-soft);
+  border-radius: var(--seven-radius-xl);
+  background: var(--seven-surface);
+  box-shadow: var(--seven-shadow-card);
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: var(--seven-space-3);
+    padding: var(--seven-space-3) var(--seven-space-4);
+    background: linear-gradient(120deg, var(--seven-deep-sea) 0%, var(--seven-deep-sea-600) 100%);
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+    color: var(--seven-tropical-tide);
+    font-size: 1.1rem;
+  }
+
+  &__head-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--seven-font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--seven-text-inverse);
+  }
+
+  &__count {
+    font-size: 0.72rem;
+    color: var(--seven-deep-sea-100);
+  }
+
+  // ─── Timeline ──────────────────────────────────────────────────
+  &__steps {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: var(--seven-space-4) var(--seven-space-4) var(--seven-space-3);
+    list-style: none;
+  }
+
+  &__step {
+    position: relative;
+    display: flex;
+    gap: var(--seven-space-3);
+    padding-bottom: var(--seven-space-4);
+
+    &--last {
+      padding-bottom: 0;
+    }
+
+    // Conector vertical del itinerario.
+    &:not(&--last)::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 13px;
+      bottom: -4px;
+      width: 2px;
+      border-radius: var(--seven-radius-pill);
+      background: var(--seven-border);
+    }
+
+    &--link .apc__step-body {
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 160ms ease;
+
+      &:active {
+        background: var(--seven-surface-muted);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--seven-ocean-blue);
+        outline-offset: 2px;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
+    }
+  }
+
+  &__marker {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--seven-tropical-tide-50);
+    color: var(--seven-tropical-tide-700);
+    font-family: var(--seven-font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  &__step-body {
+    display: flex;
+    align-items: center;
+    gap: var(--seven-space-3);
+    flex: 1;
+    min-width: 0;
+    padding: var(--seven-space-1);
+    border-radius: var(--seven-radius-md);
+  }
+
+  &__thumb {
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--seven-radius-sm);
+    object-fit: cover;
+    background: var(--seven-surface-muted);
+  }
+
+  &__step-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__step-type {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--seven-ocean-blue);
+  }
+
+  &__step-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--seven-deep-sea);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__chevron {
+    flex: none;
+    font-size: 1rem;
+    color: var(--seven-text-faint);
+  }
+
+  &__foot {
+    padding: 0 var(--seven-space-4) var(--seven-space-4);
+  }
+}

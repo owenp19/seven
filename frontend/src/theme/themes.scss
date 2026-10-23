@@ -1,0 +1,97 @@
+// =============================================================================
+// SEVEN THEMES — selectable brand colour (azul / amarillo / rojo)
+// -----------------------------------------------------------------------------
+// Por qué un archivo aparte y no más variables en `variables.scss`:
+// la paleta de marca es fija (Ocean Blue es el color de la marca), pero el
+// usuario puede elegir el color de acento de SU app. Entonces `:root` define
+// el tema por defecto y estos tres bloques lo reescriben.
+//
+// El atributo vive en `<html data-seven-theme="...">`, lo mismo que
+// `data-reduce-motion`: se lee en CSS, no hace falta re-renderizar Angular.
+//
+// Selectividad: `html[data-...]` es (0,1,1) y `:root` es (0,1,0), así que
+// estos bloques ganan sin importar el orden de los `@include`.
+//
+// CONTRASTE — todos los valores se eligieron midiendo WCAG AA con texto
+// real de la app, no a ojo:
+//
+//   ocean  #0077B6  blanco 4.87:1  · sobre #F4F7FA 4.53:1  · navy/soft 12.4:1
+//   sun    #8A5E00  blanco 5.70:1  · sobre #F4F7FA 5.30:1  · navy/soft 12.8:1
+//   coral  #C0392B  blanco 5.44:1  · sobre #F4F7FA 5.06:1  · navy/soft 12.1:1
+//
+// El `--go-sun-gold` de marca (#FF9E45, 1.9:1 con blanco) NO se usa como
+// color de acción por eso mismo: se queda para estrellas y ratings, donde
+// el texto no compite con el fondo.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// AZUL — tema por defecto. Idéntico a los tokens de marca actuales.
+// -----------------------------------------------------------------------------
+html[data-seven-theme='ocean'] {
+  --seven-primary: #0077B6;
+  --seven-primary-rgb: 0, 119, 182;
+  --seven-primary-soft: #E6F2FA;
+  --seven-primary-dark: #00689F;
+
+  --go-ocean: #0077B6;
+  --go-ocean-rgb: 0, 119, 182;
+  --go-ocean-soft: #E6F2FA;
+  --go-ocean-dark: #00689F;
+  --go-blue-soft: #E6F2FA;
+
+  --ion-color-primary: #0077B6;
+  --ion-color-primary-rgb: 0, 119, 182;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #00689F;
+  --ion-color-primary-tint: #1F8ACE;
+}
+
+// -----------------------------------------------------------------------------
+// AMARILLO — ámbar profundo. El amarillo saturado de marca no se puede usar
+// como fondo de texto blanco (1.9:1), así que el tema va a un tono dorado
+// oscuro que conserva la sensación cálida y sí pasa AA.
+// -----------------------------------------------------------------------------
+html[data-seven-theme='sun'] {
+  --seven-primary: #8A5E00;
+  --seven-primary-rgb: 138, 94, 0;
+  --seven-primary-soft: #FFF3D1;
+  --seven-primary-dark: #6E4A00;
+
+  --go-ocean: #8A5E00;
+  --go-ocean-rgb: 138, 94, 0;
+  --go-ocean-soft: #FFF3D1;
+  --go-ocean-dark: #6E4A00;
+  --go-blue-soft: #FFF3D1;
+
+  --ion-color-primary: #8A5E00;
+  --ion-color-primary-rgb: 138, 94, 0;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #7A5200;
+  --ion-color-primary-tint: #A5741A;
+}
+
+// -----------------------------------------------------------------------------
+// ROJO — carmín. Para destructive/CTA en rojo sin caer en el `--seven-danger`
+// que se reserva para errores y estados negativos.
+// -----------------------------------------------------------------------------
+html[data-seven-theme='coral'] {
+  --seven-primary: #C0392B;
+  --seven-primary-rgb: 192, 57, 43;
+  --seven-primary-soft: #FCEAE7;
+  --seven-primary-dark: #98291D;
+
+  --go-ocean: #C0392B;
+  --go-ocean-rgb: 192, 57, 43;
+  --go-ocean-soft: #FCEAE7;
+  --go-ocean-dark: #98291D;
+  --go-blue-soft: #FCEAE7;
+
+  --ion-color-primary: #C0392B;
+  --ion-color-primary-rgb: 192, 57, 43;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #AA3125;
+  --ion-color-primary-tint: #CB4A3E;
+}

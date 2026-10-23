@@ -1,0 +1,275 @@
+// ─── Shared top navigation — mobile-first, logo left, actions right ───────
+.nav-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--seven-space-2);
+  width: 100%;
+  max-width: var(--seven-content-max-width);
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top, 0px) + var(--seven-space-2)) var(--seven-page-padding) var(--seven-space-2);
+  background: var(--seven-surface);
+  border-bottom: 1px solid var(--seven-border-soft);
+  box-shadow: 0 2px 12px rgba(11, 45, 74, 0.05);
+  animation: nav-header-in 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  position: relative;
+
+  @keyframes nav-header-in {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+
+  // ─── LOGO — pegado a la izquierda ───────────────────────────────
+  // Hamburger: primera pieza del header, siempre a la izquierda del logo.
+  &__menu {
+    order: -1;
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--seven-border-soft);
+    border-radius: var(--seven-radius-pill);
+    background: var(--seven-surface);
+    color: var(--seven-deep-sea);
+    box-shadow: var(--seven-shadow-soft);
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: transform 160ms ease, background 200ms ease, box-shadow 200ms ease;
+    position: relative;
+    z-index: 2;
+
+    ion-icon {
+      transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    &:hover {
+      background: var(--seven-ocean-blue-50);
+      box-shadow: var(--seven-shadow-raised);
+
+      ion-icon {
+        transform: scale(1.12);
+      }
+    }
+
+    &:active {
+      transform: scale(0.92);
+      background: var(--seven-ocean-blue-50);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--seven-ocean-blue);
+      outline-offset: 2px;
+    }
+  }
+
+  &__logo-link {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    line-height: 0;
+    flex-shrink: 1;
+    display: inline-flex;
+    align-items: center;
+    z-index: 1;
+    order: 0;
+  }
+
+  &__logo {
+    width: 132px;
+    max-width: 42vw;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(11, 45, 74, 0.12));
+    animation: nav-header-logo 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  // ─── INLINE LINKS — desktop only ────────────────────────────────
+  &__links {
+    order: 2;
+    display: none;
+  }
+
+  // ─── SEARCH — always visible, empuja las acciones a la derecha ──
+  &__search {
+    order: 3;
+    margin-left: auto;
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--seven-border-soft);
+    border-radius: var(--seven-radius-pill);
+    background: var(--seven-surface);
+    color: var(--seven-deep-sea);
+    box-shadow: var(--seven-shadow-soft);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 160ms ease, background 200ms ease, box-shadow 200ms ease;
+    position: relative;
+    z-index: 2;
+
+    ion-icon {
+      transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    &:hover {
+      background: var(--seven-ocean-blue-50);
+      box-shadow: var(--seven-shadow-raised);
+
+      ion-icon {
+        transform: scale(1.12);
+      }
+    }
+
+    &:active {
+      transform: scale(0.92);
+      background: var(--seven-ocean-blue-50);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--seven-ocean-blue);
+      outline-offset: 2px;
+    }
+  }
+
+  &__search-label {
+    display: none;
+  }
+
+  @keyframes nav-header-logo {
+    0% {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @media (min-width: 768px) {
+    padding-top: calc(env(safe-area-inset-top, 0px) + var(--seven-space-3));
+
+    &__logo {
+      width: 184px;
+    }
+  }
+
+  // ─── Desktop: burger + inline nav + labelled search ─────────────
+  @media (min-width: 1024px) {
+    // Mantiene el safe-area: el `padding` de aquí reemplazaba el de la
+    // regla base y lo descartaba, así que en pantallas con notch o en
+    // horizontal el header quedaba debajo de la status bar (cortado).
+    padding: calc(var(--ion-safe-area-top, env(safe-area-inset-top, 0px)) + var(--seven-space-3)) var(--seven-space-6) var(--seven-space-3);
+    border-bottom: 1px solid var(--seven-border-soft);
+    box-shadow: 0 2px 12px rgba(11, 45, 74, 0.05);
+
+    &__logo-link {
+      position: static;
+      left: auto;
+      top: auto;
+      transform: none;
+      order: 0;
+      margin: 0 0 0 8px;
+      width: 190px;
+    }
+
+    &__logo {
+      width: 190px;
+    }
+
+    &__links {
+      order: 1;
+      display: flex;
+      align-items: center;
+      gap: var(--seven-space-6);
+      margin-left: var(--seven-space-6);
+    }
+
+    &__link {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: var(--seven-space-2) 0;
+      color: var(--seven-text-muted);
+      font-family: var(--seven-font-body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 200ms ease;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        border-radius: var(--seven-radius-pill);
+        background: var(--seven-ocean-blue);
+        transform: scaleX(0);
+        transform-origin: center;
+        transition: transform 220ms ease;
+      }
+
+      &:hover {
+        color: var(--seven-deep-sea);
+      }
+
+      &.is-active {
+        color: var(--seven-deep-sea);
+        font-weight: 600;
+
+        &::after {
+          transform: scaleX(1);
+        }
+      }
+    }
+
+    // Search: pushed to the far right of the bar
+    &__search {
+      order: 3;
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--seven-space-2);
+      width: auto;
+      height: 44px;
+      padding: 0 var(--seven-space-4);
+      background: var(--seven-ocean-blue-50);
+      border-color: transparent;
+      color: var(--seven-ocean-blue);
+
+      &:hover {
+        background: var(--seven-ocean-blue);
+        color: var(--seven-surface);
+      }
+    }
+
+    &__search-label {
+      display: block;
+      font-family: var(--seven-font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+  }
+}

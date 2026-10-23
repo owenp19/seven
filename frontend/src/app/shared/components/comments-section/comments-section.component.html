@@ -1,0 +1,132 @@
+<section class="comments" [attr.aria-label]="'comments.title' | t">
+  <header class="comments__header">
+    <h2 class="comments__title">{{ 'comments.title' | t }}</h2>
+    @if (!loading && comments.length > 0) {
+      <span class="comments__count">{{ 'comments.count' | t: { count: comments.length } }}</span>
+    }
+  </header>
+
+  @if (loading) {
+    <div class="comments__skeleton" aria-hidden="true">
+      <ion-skeleton-text [animated]="true" style="width: 100%; height: 18px"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true" style="width: 80%; height: 18px"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true" style="width: 60%; height: 18px"></ion-skeleton-text>
+    </div>
+  } @else {
+    @if (comments.length > 0) {
+      <ul class="comments__list">
+        @for (comment of comments; track comment.id) {
+          <li class="comments__item">
+            <div class="comments__avatar" aria-hidden="true">{{ comment.initials }}</div>
+            <div class="comments__content">
+              <div class="comments__meta">
+                <span class="comments__author">{{ comment.authorName }}</span>
+                <span class="comments__date">{{ comment.relativeDate }}</span>
+              </div>
+
+              @if (comment.rating !== null) {
+                <div class="comments__stars" [attr.aria-label]="'comments.rating' | t">
+                  @for (value of ratingValues; track value) {
+                    <ion-icon
+                      [name]="value <= comment.rating ? 'star' : 'star-outline'"
+                      [class.comments__star--on]="value <= comment.rating"
+                      aria-hidden="true"
+                    ></ion-icon>
+                  }
+                </div>
+              }
+
+              <p class="comments__body">{{ comment.body }}</p>
+
+              @if (comment.pending) {
+                <p class="comments__pending">{{ 'comments.pending' | t }}</p>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    } @else if (loadFailed) {
+      <p class="comments__empty">{{ 'comments.loadError' | t }}</p>
+    } @else {
+      <p class="comments__empty">{{ 'comments.empty' | t }}</p>
+    }
+  }
+
+  @if (hasSubmitted) {
+    <p class="comments__notice" [class.comments__notice--pending]="phase === 'pending'">
+      {{ (phase === 'pending' ? 'comments.pending' : 'comments.success') | t }}
+    </p>
+  } @else {
+    <form class="comments__form" (ngSubmit)="submit()">
+      <h3 class="comments__form-title">{{ 'comments.formTitle' | t }}</h3>
+
+      <label class="comments__field">
+        <span class="comments__label">{{ 'comments.name' | t }}</span>
+        <input
+          class="comments__input"
+          type="text"
+          name="authorName"
+          autocomplete="name"
+          maxlength="80"
+          [placeholder]="'comments.namePlaceholder' | t"
+          [(ngModel)]="authorName"
+        />
+      </label>
+
+      <label class="comments__field">
+        <span class="comments__label">{{ 'comments.body' | t }}</span>
+        <textarea
+          class="comments__input comments__input--area"
+          name="body"
+          rows="4"
+          maxlength="1000"
+          [placeholder]="'comments.bodyPlaceholder' | t"
+          [(ngModel)]="body"
+          (input)="onBodyInput()"
+        ></textarea>
+        <span class="comments__counter">{{ remainingChars }}</span>
+      </label>
+
+      <!--
+        Campo trampa: oculto a la vista y nunca enfocado, así que solo lo
+        rellenan los robots que vacían formularios por automatización.
+      -->
+      <label class="comments__trap" aria-hidden="true">
+        <span>Website</span>
+        <input type="text" name="website" tabindex="-1" autocomplete="off" [(ngModel)]="honeypot" />
+      </label>
+
+      <div class="comments__rating">
+        <span class="comments__label">{{ 'comments.rating' | t }}</span>
+        <div class="comments__stars">
+          @for (value of ratingValues; track value) {
+            <button
+              type="button"
+              class="comments__star-btn"
+              [class.comments__star-btn--on]="rating !== null && value <= rating"
+              (click)="toggleRating(value)"
+              [attr.aria-label]="value + '★'"
+            >
+              <ion-icon [name]="rating !== null && value <= rating ? 'star' : 'star-outline'" aria-hidden="true"></ion-icon>
+            </button>
+          }
+          @if (rating !== null) {
+            <button type="button" class="comments__rating-clear" (click)="toggleRating(rating)">
+              {{ 'comments.ratingNone' | t }}
+            </button>
+          }
+        </div>
+      </div>
+
+      @if (phase === 'error') {
+        <p class="comments__error" role="alert">{{ errorMessageKey | t }}</p>
+      }
+
+      <button type="submit" class="comments__submit" [disabled]="!canSubmit">
+        {{ (phase === 'sending' ? 'comments.submitting' : 'comments.submit') | t }}
+      </button>
+
+      <p class="comments__hint">{{ 'comments.onePerDevice' | t }}</p>
+    </form>
+  }
+</section>

@@ -1,0 +1,536 @@
+// SEVEN — Welcome page
+// -----------------------------------------------------------------------------
+// Uses ONLY the SEVEN global design tokens (src/theme/variables.scss):
+//   • Containers start from mobile-first and scale for tablet/desktop.
+//   • Motion is transform/opacity only (GPU friendly) and respects
+//     `prefers-reduced-motion`.
+
+:host {
+  display: block;
+}
+
+/* ================================
+   ION CONTENT
+================================ */
+
+ion-content.welcome-page {
+  --background: var(--seven-deep-sea);
+}
+
+/* ================================
+   CONTAINER
+================================ */
+
+.welcome {
+  position: relative;
+
+  width: 100%;
+  min-height: 100dvh;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  padding:
+    calc(env(safe-area-inset-top) + 18px)
+    24px
+    calc(env(safe-area-inset-bottom) + 24px);
+
+  color: var(--seven-text-inverse);
+}
+
+/* ================================
+   BACKGROUND — full-bleed on every screen
+================================ */
+/* Fixed so the photo always covers the whole viewport, even when the
+   .welcome container is centered/max-width on tablet & desktop. No
+   visible background-color gaps. */
+
+.welcome__background {
+  position: fixed;
+  inset: 0;
+
+  z-index: 0;
+
+  background-image: url("/assets/img/backgounds/sai-bg.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  will-change: transform;
+
+  transform: scale(1.01);
+}
+
+/* ================================
+   OVERLAY — full-bleed too
+=============================== */
+
+.welcome__overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 1;
+
+  background: rgba(var(--seven-deep-sea-rgb), 0.58);
+}
+
+/* ================================
+   HEADER
+================================ */
+
+.welcome__header {
+  position: relative;
+  z-index: 3;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  min-height: 40px;
+
+  animation:
+    welcome-in 700ms cubic-bezier(0.22, 1, 0.36, 1) 150ms both;
+}
+
+.skip-button {
+  appearance: none;
+
+  background: transparent;
+  border: 0;
+
+  color: rgba(var(--seven-text-inverse), 0.96);
+
+  font-family: var(--seven-font-ui);
+  font-size: 0.9375rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  padding: 8px;
+
+  transition:
+    color 180ms ease,
+    transform 180ms ease,
+    opacity 180ms ease;
+
+  &:hover {
+    color: var(--seven-text-inverse);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.92);
+  }
+}
+
+/* ================================
+   BRAND
+================================ */
+
+.welcome__brand {
+  position: relative;
+  z-index: 3;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: clamp(26px, 6vh, 68px);
+
+  animation:
+    welcome-in 800ms cubic-bezier(0.22, 1, 0.36, 1) 250ms both;
+}
+
+.welcome__logo {
+  display: block;
+
+  width: min(82%, 360px);
+  height: auto;
+
+  object-fit: contain;
+
+  filter: drop-shadow(
+    0 5px 18px rgba(var(--seven-deep-sea-rgb), 0.16)
+  );
+
+  transition: transform 220ms ease;
+}
+
+/* ================================
+   MAIN CONTENT
+================================ */
+
+.welcome__content {
+  position: relative;
+  z-index: 3;
+
+  width: 100%;
+
+  margin-top: auto;
+
+  padding-bottom: 4px;
+
+  animation:
+    welcome-in 800ms cubic-bezier(0.22, 1, 0.36, 1) 400ms both;
+}
+
+.welcome__line {
+  width: 48px;
+  height: 2px;
+
+  margin-bottom: 16px;
+
+  border-radius: var(--seven-radius-pill);
+
+  background: rgba(var(--seven-text-inverse), 0.9);
+
+  animation:
+    welcome-grow 600ms cubic-bezier(0.22, 1, 0.36, 1) 500ms both;
+
+  &--small {
+    width: 38px;
+    margin-top: 18px;
+    margin-bottom: 16px;
+  }
+}
+
+/* ================================
+   TYPOGRAPHY
+================================ */
+
+.welcome__title {
+  margin: 0;
+
+  max-width: 330px;
+
+  color: var(--seven-text-inverse);
+
+  font-family: var(--seven-font-display);
+  font-size: clamp(40px, 11vw, 58px);
+  line-height: 0.98;
+
+  font-weight: 700;
+
+  letter-spacing: -1.8px;
+
+  text-wrap: balance;
+
+  text-shadow:
+    0 3px 14px rgba(var(--seven-deep-sea-rgb), 0.4);
+}
+
+.welcome__description {
+  max-width: 350px;
+
+  margin:
+    0
+    0
+    26px;
+
+  color: rgba(var(--seven-text-inverse), 0.97);
+
+  font-family: var(--seven-font-body);
+  font-size: clamp(17px, 4.8vw, 21px);
+  line-height: 1.36;
+
+  font-weight: 400;
+
+  text-shadow:
+    0 2px 8px rgba(var(--seven-deep-sea-rgb), 0.42);
+}
+
+/* ================================
+   CTA
+================================ */
+
+.welcome__cta {
+  --background: var(--seven-primary);
+  --background-hover: var(--seven-ocean-blue-600);
+  --background-activated: var(--seven-ocean-blue-700);
+
+  --color: var(--seven-text-inverse);
+
+  --border-radius: var(--seven-radius-pill);
+
+  --padding-start: 24px;
+  --padding-end: 22px;
+
+  --box-shadow:
+    0 10px 32px rgba(var(--seven-deep-sea-rgb), 0.32);
+
+  width: 100%;
+  min-height: 62px;
+
+  margin:
+    0
+    0
+    23px;
+
+  font-family: var(--seven-font-ui);
+  font-size: 1.0625rem;
+  font-weight: 650;
+
+  text-transform: none;
+
+  letter-spacing: 0;
+
+  animation:
+    welcome-in 700ms cubic-bezier(0.22, 1, 0.36, 1) 600ms both;
+
+  ion-icon {
+    font-size: 1.375rem;
+
+    margin-left: 10px;
+
+    transition: transform 200ms ease;
+  }
+
+  &:hover {
+    --box-shadow:
+      0 14px 40px rgba(var(--seven-ocean-blue-rgb), 0.45);
+
+    ion-icon {
+      transform: translateX(3px);
+    }
+  }
+}
+
+/* ================================
+   LANGUAGE SELECTOR
+   (el control vive en shared/components/language-selector;
+   aquí solo se ordena su entrada y animación)
+================================ */
+
+.welcome__languages {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  animation:
+    welcome-in 700ms cubic-bezier(0.22, 1, 0.36, 1) 720ms both;
+}
+
+/* ================================
+   EXIT ANIMATION
+================================ */
+
+.welcome--leaving {
+  .welcome__header,
+  .welcome__brand,
+  .welcome__content {
+    animation:
+      welcome-out 400ms cubic-bezier(0.6, 0, 0.8, 0.2) both;
+  }
+
+  /* La foto se queda sola en pantalla y hace un zoom suave (efecto Ken
+     Burns) mientras Home carga: es lo que el usuario ve en la transición. */
+  .welcome__background {
+    animation:
+      welcome-zoom 1100ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .welcome__logo {
+    transition: none;
+  }
+}
+
+/* ================================
+   KEYFRAMES (entrance)
+================================ */
+
+@keyframes welcome-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes welcome-grow {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+}
+
+@keyframes welcome-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+}
+
+@keyframes welcome-zoom {
+  from {
+    opacity: 1;
+    transform: scale(1.01);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.09);
+  }
+}
+
+/* ================================
+   SMALL PHONES
+================================ */
+
+@media (max-height: 700px) {
+  .welcome__brand {
+    margin-top: 12px;
+  }
+
+  .welcome__logo {
+    width: min(65%, 280px);
+  }
+
+  .welcome__title {
+    font-size: 2.375rem;
+  }
+
+  .welcome__description {
+    margin-bottom: 18px;
+
+    font-size: 1rem;
+  }
+
+  .welcome__cta {
+    min-height: 56px;
+
+    margin-bottom: 14px;
+  }
+}
+
+/* ================================
+   TABLETS
+================================ */
+
+@media (min-width: 768px) {
+  .welcome {
+    max-width: 620px;
+
+    margin-inline: auto;
+
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .welcome__title {
+    max-width: 460px;
+
+    font-size: clamp(46px, 7vw, 62px);
+  }
+
+  .welcome__description {
+    max-width: 420px;
+
+    font-size: clamp(18px, 2.6vw, 21px);
+  }
+
+  .welcome__cta {
+    min-height: 64px;
+  }
+}
+
+/* ================================
+   DESKTOP
+================================ */
+
+@media (min-width: 1024px) {
+  .welcome {
+    max-width: 1180px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'header header'
+      'brand content';
+
+    align-items: center;
+
+    gap: 56px;
+
+    padding:
+      calc(env(safe-area-inset-top) + 32px)
+      64px
+      calc(env(safe-area-inset-bottom) + 32px);
+  }
+
+  .welcome__header {
+    grid-area: header;
+  }
+
+  .welcome__brand {
+    grid-area: brand;
+
+    align-self: center;
+
+    margin-top: 0;
+  }
+
+  .welcome__logo {
+    width: min(78%, 480px);
+  }
+
+  .welcome__content {
+    grid-area: content;
+
+    align-self: center;
+
+    margin-top: 0;
+  }
+
+  .welcome__title {
+    max-width: 520px;
+
+    font-size: clamp(54px, 5.4vw, 76px);
+  }
+
+  .welcome__description {
+    max-width: 480px;
+
+    font-size: clamp(19px, 1.5vw, 23px);
+  }
+
+  .welcome__cta {
+    max-width: 440px;
+  }
+
+  .welcome__languages {
+    justify-content: flex-start;
+  }
+}
+
+/* ================================
+   REDUCED MOTION
+================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
+}

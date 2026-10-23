@@ -1,0 +1,697 @@
+// =============================================================================
+// SEVEN ASSISTANT PAGE — experiencia de concierge (mobile-first)
+// La cabecera vive en <app-seven-assistant-header>; aquí va el lienzo:
+// descubrimiento, hilo editorial, componentes visuales y composer.
+// =============================================================================
+
+.asst {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--seven-background);
+  // Reserva la barra inferior: el composer es fijo dentro del flujo y debe
+  // quedar por encima del bottom navigation (que es `position: fixed`).
+  padding-bottom: calc(var(--seven-bottom-nav-height) + env(safe-area-inset-bottom));
+
+  @media (min-width: 1024px) {
+    padding-bottom: calc(var(--seven-bottom-nav-height) + var(--seven-space-5) + env(safe-area-inset-bottom));
+  }
+
+  &__scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    --background: var(--seven-background);
+  }
+
+  &__stage {
+    display: block;
+    width: 100%;
+    max-width: var(--seven-content-max-width);
+    margin: 0 auto;
+  }
+
+  &__thread {
+    display: flex;
+    flex-direction: column;
+    gap: var(--seven-space-5);
+    padding: var(--seven-space-4) var(--seven-page-padding) var(--seven-space-5);
+  }
+
+  // ─── DESCUBRIMIENTO ────────────────────────────────────────────────────────
+  &__discovery {
+    display: flex;
+    flex-direction: column;
+    gap: var(--seven-space-3);
+    padding-top: var(--seven-space-2);
+  }
+
+  &__greeting {
+    margin: 0;
+    font-family: var(--seven-font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--seven-deep-sea);
+  }
+
+  &__greeting-sub {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--seven-text-muted);
+  }
+
+  &__label {
+    margin: var(--seven-space-3) 0 0;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--seven-text-muted);
+  }
+
+  &__intents {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--seven-card-gap);
+  }
+
+  &__inspirations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--seven-space-2);
+  }
+
+  &__inspiration {
+    min-height: 40px;
+    padding: var(--seven-space-2) var(--seven-space-4);
+    border: 1px solid var(--seven-ocean-blue-100);
+    border-radius: var(--seven-radius-pill);
+    background: var(--seven-surface);
+    color: var(--seven-ocean-blue);
+    font-family: var(--seven-font-body);
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: background 160ms ease, transform 160ms ease;
+    -webkit-tap-highlight-color: transparent;
+
+    &:active {
+      transform: scale(0.97);
+      background: var(--seven-ocean-blue-50);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--seven-ocean-blue);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  // ─── TURNOS ────────────────────────────────────────────────────────────────
+  &__turn {
+    display: flex;
+    flex-direction: column;
+    gap: var(--seven-space-3);
+
+    &--user {
+      align-items: flex-end;
+    }
+  }
+
+  &__user {
+    max-width: 82%;
+    margin: 0;
+    padding: var(--seven-space-3) var(--seven-space-4);
+    border-radius: var(--seven-radius-lg);
+    border-bottom-right-radius: var(--seven-radius-sm);
+    background: var(--seven-ocean-blue);
+    color: var(--seven-text-inverse);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    white-space: pre-line;
+    box-shadow: var(--seven-shadow-soft);
+  }
+
+  &__reply {
+    max-width: 62ch;
+    margin: 0;
+    font-family: var(--seven-font-body);
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: var(--seven-text-strong);
+    white-space: pre-line;
+
+    &--error {
+      color: var(--seven-text-muted);
+    }
+  }
+
+  // ─── ERROR ─────────────────────────────────────────────────────────────────
+  &__error {
+    display: flex;
+    flex-direction: column;
+    gap: var(--seven-space-3);
+    padding: var(--seven-space-4);
+    border: 1px solid var(--seven-warning);
+    border-radius: var(--seven-radius-lg);
+    background: var(--seven-warning-soft);
+  }
+
+  &__error-title {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--seven-warning-dark);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--seven-space-2);
+  }
+
+  &__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 44px;
+    padding: var(--seven-space-2) var(--seven-space-4);
+    border: 1px solid var(--seven-deep-sea-200);
+    border-radius: var(--seven-radius-pill);
+    background: var(--seven-surface);
+    color: var(--seven-deep-sea);
+    font-family: var(--seven-font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 160ms ease, transform 160ms ease;
+    -webkit-tap-highlight-color: transparent;
+
+    ion-icon {
+      font-size: 1rem;
+    }
+
+    &--primary {
+      border-color: transparent;
+      background: var(--seven-ocean-blue);
+      color: var(--seven-text-inverse);
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--seven-ocean-blue);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  // ─── CINTA DE RECOMENDACIONES ──────────────────────────────────────────────
+  &__rail {
+    display: flex;
+    gap: var(--seven-space-3);
+    overflow-x: auto;
+    padding-bottom: var(--seven-space-2);
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: var(--seven-radius-pill);
+      background: var(--seven-border);
+    }
+
+    app-seven-assistant-recommendation-card {
+      display: block;
+      flex: 0 0 74%;
+      max-width: 264px;
+      scroll-snap-align: start;
+    }
+  }
+
+  &__plan,
+  &__rail,
+  &__fallback,
+  &__error,
+  &__refine,
+  app-seven-comparison-card {
+    width: 100%;
+  }
+
+  // ─── FALLBACK DE CATÁLOGO ──────────────────────────────────────────────────
+  &__fallback {
+    display: flex;
+    flex-direction: column;
+    gap: var(--seven-space-3);
+    padding: var(--seven-space-4);
+    border: 1px dashed var(--seven-border-strong);
+    border-radius: var(--seven-radius-lg);
+    background: var(--seven-surface);
+  }
+
+  &__fallback-title {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--seven-text-muted);
+  }
+
+  &__fallback-tiles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--seven-card-gap);
+  }
+
+  &__tile {
+    display: flex;
+    align-items: center;
+    gap: var(--seven-space-2);
+    min-height: 48px;
+    padding: var(--seven-space-3);
+    border: 1px solid var(--seven-border-soft);
+    border-radius: var(--seven-radius-md);
+    background: var(--seven-surface);
+    color: var(--seven-deep-sea);
+    font-family: var(--seven-font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: background 160ms ease, transform 160ms ease;
+    -webkit-tap-highlight-color: transparent;
+
+    ion-icon {
+      flex: none;
+      font-size: 1.15rem;
+      color: var(--seven-ocean-blue);
+    }
+
+    &:active {
+      transform: scale(0.98);
+      background: var(--seven-ocean-blue-50);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--seven-ocean-blue);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  // ─── REFINAR ───────────────────────────────────────────────────────────────
+  &__refine {
+    display: flex;
+    flex-direction: column;
+    gap: var(--seven-space-2);
+  }
+
+  &__refine-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--seven-text-muted);
+  }
+
+  &__refine-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--seven-space-2);
+  }
+
+  &__refine-chip {
+    min-height: 40px;
+    padding: var(--seven-space-2) var(--seven-space-4);
+    border: 1px solid var(--seven-border);
+    border-radius: var(--seven-radius-pill);
+    background: var(--seven-surface);
+    color: var(--seven-deep-sea);
+    font-family: var(--seven-font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+    -webkit-tap-highlight-color: transparent;
+
+    &:active {
+      transform: scale(0.97);
+    }
+
+    &:hover {
+      border-color: var(--seven-ocean-blue-100);
+      background: var(--seven-ocean-blue-50);
+      color: var(--seven-ocean-blue);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--seven-ocean-blue);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  // ─── PANEL LATERAL (escritorio) ────────────────────────────────────────────
+  &__aside {
+    display: none;
+  }
+
+  // ─── COMPOSER ──────────────────────────────────────────────────────────────
+  &__composer {
+    flex: none;
+    padding: var(--seven-space-3) var(--seven-page-padding) var(--seven-space-3);
+    background: var(--seven-background);
+    border-top: 1px solid var(--seven-border-soft);
+  }
+
+  &__composer-box {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--seven-space-2);
+    max-width: var(--seven-content-max-width);
+    margin: 0 auto;
+    padding: 0.3rem 0.3rem 0.3rem var(--seven-space-4);
+    border: 1px solid var(--seven-border);
+    border-radius: var(--seven-radius-xl);
+    background: var(--seven-surface);
+    box-shadow: var(--seven-shadow-soft);
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+
+    &:focus-within {
+      border-color: var(--seven-ocean-blue);
+      box-shadow: 0 0 0 3px var(--seven-focus-ring);
+    }
+  }
+
+  &__input {
+    flex: 1;
+    min-width: 0;
+    min-height: 52px;
+    max-height: 120px;
+    padding: 0.95rem 0;
+    border: none;
+    background: transparent;
+    color: var(--seven-text-strong);
+    font-family: var(--seven-font-body);
+    // 16px mínimos: por debajo iOS hace zoom automático al enfocar.
+    font-size: 1rem;
+    line-height: 1.45;
+    resize: none;
+    overflow-y: auto;
+
+    &::placeholder {
+      color: var(--seven-text-faint);
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__send {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0.1rem;
+    border: none;
+    border-radius: 50%;
+    background: var(--seven-ocean-blue);
+    color: var(--seven-text-inverse);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 160ms ease, transform 160ms ease;
+
+    &:active {
+      transform: scale(0.92);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--seven-ocean-blue);
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      background: var(--seven-gray-200);
+      color: var(--seven-text-faint);
+      cursor: not-allowed;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  &__disclaimer {
+    max-width: var(--seven-content-max-width);
+    margin: var(--seven-space-2) auto 0;
+    padding: 0 var(--seven-space-2);
+    text-align: center;
+    font-size: 0.66rem;
+    line-height: 1.35;
+    color: var(--seven-text-faint);
+  }
+}
+
+// ─── Desktop: composición en dos columnas ────────────────────────────────────
+@media (min-width: 1024px) {
+  .asst__stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 366px;
+    gap: var(--seven-space-5);
+    align-items: start;
+    padding: var(--seven-space-5) var(--seven-page-padding) var(--seven-space-5);
+  }
+
+  .asst__thread {
+    max-width: none;
+    padding: 0;
+  }
+
+  // El plan vive en el panel lateral; en el hilo se evita duplicarlo.
+  .asst__plan {
+    display: none;
+  }
+
+  .asst__aside {
+    display: block;
+    position: sticky;
+    top: var(--seven-space-4);
+  }
+}
+
+@media (min-width: 600px) {
+  .asst__intents {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .asst__fallback-tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .asst__rail app-seven-assistant-recommendation-card {
+    flex-basis: 46%;
+  }
+}
+
+// ─── SELECTOR DE PRESUPUESTO ─────────────────────────────────────────────────
+// Reemplaza al monto fijo: el viajero escribe el valor que quiera (o elige un
+// sugerido) y recién ahí se arma el plan.
+.asst__budget {
+  margin-top: var(--seven-space-3);
+  padding: var(--seven-space-4);
+  border: 1px solid var(--seven-ocean-blue-100);
+  border-radius: var(--seven-radius-lg);
+  background: linear-gradient(180deg, var(--seven-ocean-blue-50), var(--seven-surface) 60%);
+  box-shadow: var(--seven-shadow-soft);
+  animation: asst-budget-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.asst__budget-head {
+  margin-bottom: var(--seven-space-3);
+}
+
+.asst__budget-title {
+  margin: 0;
+  font-family: var(--seven-font-display);
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--seven-deep-sea);
+}
+
+.asst__budget-hint {
+  margin: 4px 0 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--seven-text-muted);
+}
+
+.asst__budget-field {
+  display: flex;
+  align-items: center;
+  gap: var(--seven-space-2);
+  padding: var(--seven-space-2) var(--seven-space-4);
+  border: 1.5px solid var(--seven-ocean-blue-200);
+  border-radius: var(--seven-radius-lg);
+  background: var(--seven-surface);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+
+  &:focus-within {
+    border-color: var(--ion-color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.16);
+  }
+}
+
+.asst__budget-symbol {
+  font-family: var(--seven-font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ion-color-primary);
+}
+
+.asst__budget-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--seven-text-strong);
+  font-family: var(--seven-font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  outline: none;
+
+  &::placeholder {
+    color: var(--seven-text-faint);
+    font-weight: 600;
+  }
+}
+
+.asst__budget-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--seven-space-2);
+  margin-top: var(--seven-space-3);
+}
+
+.asst__budget-preset {
+  min-height: 38px;
+  padding: var(--seven-space-1) var(--seven-space-3);
+  border: 1px solid var(--seven-ocean-blue-100);
+  border-radius: var(--seven-radius-pill);
+  background: var(--seven-surface);
+  color: var(--seven-ocean-blue);
+  font-family: var(--seven-font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  &.is-picked {
+    background: var(--ion-color-primary);
+    border-color: var(--ion-color-primary);
+    color: var(--ion-color-primary-contrast);
+  }
+}
+
+.asst__budget-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--seven-space-2);
+  margin-top: var(--seven-space-4);
+}
+
+.asst__budget-cancel {
+  min-height: 44px;
+  padding: 0 var(--seven-space-4);
+  border: none;
+  border-radius: var(--seven-radius-pill);
+  background: transparent;
+  color: var(--seven-text-muted);
+  font-family: var(--seven-font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.asst__budget-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 var(--seven-space-5);
+  border: none;
+  border-radius: var(--seven-radius-pill);
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+  font-family: var(--seven-font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(var(--ion-color-primary-rgb), 0.28);
+  transition: transform 160ms ease, box-shadow 200ms ease, opacity 160ms ease;
+
+  ion-icon {
+    font-size: 1.05rem;
+  }
+
+  &:hover {
+    box-shadow: 0 10px 24px rgba(var(--ion-color-primary-rgb), 0.38);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+    box-shadow: none;
+  }
+}
+
+@keyframes asst-budget-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .asst__budget {
+    animation: none;
+  }
+}

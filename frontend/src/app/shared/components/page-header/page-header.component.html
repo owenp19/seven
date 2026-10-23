@@ -1,0 +1,16 @@
+<ion-header class="page-header">
+  <ion-toolbar class="page-header__toolbar">
+    <ion-buttons slot="start">
+      <span class="page-header__back">
+        <ion-back-button
+          [defaultHref]="defaultHref"
+          icon="chevron-back-outline"
+          text=""
+          [attr.aria-label]="'common.back' | t"
+        ></ion-back-button>
+      </span>
+    </ion-buttons>
+
+    <h1 class="page-header__title">{{ title }}</h1>
+  </ion-toolbar>
+</ion-header>

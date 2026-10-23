@@ -1,0 +1,59 @@
+<ion-content [fullscreen]="true">
+  <div class="saved">
+    <app-section-header [title]="'saved.title' | t" [subtitle]="'saved.subtitle' | t"></app-section-header>
+
+    @if (items$ | async; as state) {
+      @if (state.status === 'ready' && state.data.length) {
+        <div class="saved__list">
+          @for (item of state.data; track item.key) {
+            <article class="saved-card">
+              <a class="saved-card__link" [routerLink]="item.route">
+                <div class="saved-card__media">
+                  <img
+                    [src]="item.image"
+                    appSafeImg
+                    [alt]="item.name"
+                    loading="lazy"
+                    decoding="async"
+                    class="saved-card__img"
+                  />
+                </div>
+                <div class="saved-card__body">
+                  <span class="saved-card__category">{{ item.category }}</span>
+                  <h3 class="saved-card__name">{{ item.name }}</h3>
+                </div>
+              </a>
+
+              <button
+                class="saved-card__remove"
+                type="button"
+                (click)="remove($event, item)"
+                [attr.aria-label]="'saved.remove' | t"
+              >
+                <ion-icon name="bookmark" aria-hidden="true"></ion-icon>
+              </button>
+            </article>
+          }
+        </div>
+      } @else if (state.status === 'ready') {
+        <div class="saved__empty">
+          <ion-icon name="bookmark-outline" aria-hidden="true"></ion-icon>
+          <p>{{ 'saved.empty' | t }}</p>
+          <a class="saved__explore" routerLink="/explore">{{ 'saved.explore' | t }}</a>
+        </div>
+      } @else {
+        <div class="saved__list">
+          @for (ghost of ghosts; track ghost) {
+            <div class="saved__ghost">
+              <ion-skeleton-text animated style="width: 112px; height: 112px; border-radius: 12px"></ion-skeleton-text>
+              <div class="saved__ghost-body">
+                <ion-skeleton-text animated style="width: 40%; height: 12px"></ion-skeleton-text>
+                <ion-skeleton-text animated style="width: 80%; height: 16px; margin-top: 8px"></ion-skeleton-text>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>
+</ion-content>

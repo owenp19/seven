@@ -1,0 +1,200 @@
+// =============================================================================
+// SEVEN COMPARISON CARD — 2–3 opciones del mismo tipo, lado a lado
+// =============================================================================
+
+.cmp {
+  display: flex;
+  flex-direction: column;
+  gap: var(--seven-space-3);
+  width: 100%;
+}
+
+.cmp__title {
+  display: flex;
+  align-items: center;
+  gap: var(--seven-space-2);
+  margin: 0;
+  font-family: var(--seven-font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--seven-text-muted);
+
+  ion-icon {
+    font-size: 1rem;
+    color: var(--seven-ocean-blue);
+  }
+}
+
+.cmp__rail {
+  display: flex;
+  gap: var(--seven-space-3);
+  overflow-x: auto;
+  padding-bottom: var(--seven-space-2);
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: var(--seven-radius-pill);
+    background: var(--seven-border);
+  }
+}
+
+.cmp__option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 68%;
+  max-width: 240px;
+  padding: var(--seven-space-3);
+  border: 1px solid var(--seven-border-soft);
+  border-radius: var(--seven-radius-lg);
+  background: var(--seven-surface);
+  box-shadow: var(--seven-shadow-soft);
+  scroll-snap-align: start;
+
+  &--link {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 160ms ease, box-shadow 200ms ease;
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &:hover {
+      box-shadow: var(--seven-shadow-card);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--seven-ocean-blue);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  @media (min-width: 600px) {
+    flex-basis: 44%;
+  }
+}
+
+.cmp__rank {
+  position: absolute;
+  top: var(--seven-space-2);
+  left: var(--seven-space-2);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--seven-deep-sea);
+  color: var(--seven-text-inverse);
+  font-family: var(--seven-font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.cmp__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--seven-radius-md);
+  background: var(--seven-surface-muted);
+}
+
+.cmp__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cmp__name {
+  margin: var(--seven-space-2) 0 0;
+  font-family: var(--seven-font-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--seven-deep-sea);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cmp__rating,
+.cmp__loc {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-top: 0.3rem;
+  font-size: 0.72rem;
+  color: var(--seven-text-muted);
+
+  ion-icon {
+    font-size: 0.8rem;
+  }
+}
+
+.cmp__rating ion-icon {
+  color: var(--seven-sun-gold);
+}
+
+.cmp__loc ion-icon {
+  color: var(--seven-ocean-blue);
+}
+
+.cmp__price {
+  display: inline-flex;
+  flex-direction: column;
+  margin-top: var(--seven-space-2);
+  line-height: 1.15;
+
+  small {
+    font-size: 0.58rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--seven-text-muted);
+  }
+
+  strong {
+    font-family: var(--seven-font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--seven-palm-green);
+  }
+}
+
+.cmp__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: auto;
+  padding-top: var(--seven-space-2);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--seven-ocean-blue);
+
+  ion-icon {
+    font-size: 0.9rem;
+  }
+}
+
+.cmp__badge {
+  margin-top: auto;
+  padding-top: var(--seven-space-2);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--seven-warning-dark);
+}

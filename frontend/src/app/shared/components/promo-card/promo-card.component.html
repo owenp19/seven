@@ -1,0 +1,43 @@
+<article
+  class="promo-card"
+  role="link"
+  tabindex="0"
+  [attr.aria-label]="promo.title"
+  (click)="open.emit(promo)"
+  (keydown.enter)="open.emit(promo)"
+>
+  <div class="promo-card__media">
+    <img
+      class="promo-card__img"
+      [src]="image"
+      appSafeImg
+      [alt]="promo.title"
+      loading="lazy"
+      decoding="async"
+    />
+
+    @if (discount > 0) {
+      <span class="promo-card__badge">
+        <ion-icon name="pricetag-outline" aria-hidden="true"></ion-icon>
+        -{{ discount }}%
+      </span>
+    }
+  </div>
+
+  <div class="promo-card__body">
+    @if (providerName) {
+      <span class="promo-card__provider">{{ providerName }}</span>
+    }
+    <h3 class="promo-card__title">{{ promo.title }}</h3>
+
+    <div class="promo-card__foot">
+      @if (untilLabel) {
+        <span class="promo-card__until">{{ untilLabel }}</span>
+      }
+
+      @if (price > 0) {
+        <strong class="promo-card__price">{{ price | currencyCOP }}</strong>
+      }
+    </div>
+  </div>
+</article>

@@ -1,0 +1,94 @@
+<app-page-header [title]="'news.title' | t" defaultHref="/noticias"></app-page-header>
+
+<ion-content [fullscreen]="true">
+  @if (loading) {
+    <app-seven-context-loader type="news" hero="none" [stickyBar]="false"></app-seven-context-loader>
+  } @else if (news$ | async; as article) {
+    <article class="article">
+      <p class="article__kicker">
+        <ion-icon [name]="kindIcon(article.kind)" aria-hidden="true"></ion-icon>
+        {{ kindLabel(article.kind) | t }}
+      </p>
+
+      <h1 class="article__title">{{ article.title }}</h1>
+
+      @if (article.excerpt) {
+        <p class="article__standfirst">{{ article.excerpt }}</p>
+      }
+
+      <p class="article__meta">
+        <span>{{ article.publishedAt | newsDate: language() }}</span>
+        @if (article.providerName) {
+          <span class="article__dot" aria-hidden="true">·</span>
+          <span>{{ 'news.author' | t: { name: article.providerName } }}</span>
+        }
+      </p>
+
+      @if (article.image) {
+        <figure class="article__hero">
+          <img class="article__img" appSafeImg [src]="article.image" [alt]="article.title" />
+        </figure>
+      }
+
+      @if (article.body) {
+        <div class="article__body">{{ article.body }}</div>
+      } @else if (article.excerpt) {
+        <div class="article__body">{{ article.excerpt }}</div>
+      }
+
+      @if (article.providerName) {
+        <aside class="article__provider">
+          <p class="article__provider-kicker">{{ 'news.author' | t: { name: article.providerName } }}</p>
+          @if (article.providerPhone) {
+            <button type="button" class="article__provider-cta" (click)="contactProvider(article)">
+              <ion-icon name="logo-whatsapp" aria-hidden="true"></ion-icon>
+              WhatsApp
+            </button>
+          }
+        </aside>
+      }
+
+      @if (article.linkUrl) {
+        <a class="article__link" [href]="article.linkUrl" target="_blank" rel="noopener">
+          {{ 'common.explore' | t }}
+          <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+        </a>
+      }
+
+      @if (related$ | async; as related) {
+        @if (related.length) {
+          <section class="article__related">
+            <h2 class="article__related-title">{{ 'news.related' | t }}</h2>
+
+            @for (item of related; track item.id) {
+              <a class="related-story" [routerLink]="['/noticias', item.slug]">
+                <span class="related-story__media">
+                  @if (item.image) {
+                    <img class="related-story__img" appSafeImg [src]="item.image" [alt]="item.title" />
+                  } @else {
+                    <span class="related-story__fallback">
+                      <ion-icon [name]="kindIcon(item.kind)" aria-hidden="true"></ion-icon>
+                    </span>
+                  }
+                </span>
+                <span class="related-story__body">
+                  <span class="related-story__meta">{{ item.publishedAt | newsDate: language() }}</span>
+                  <span class="related-story__title">{{ item.title }}</span>
+                </span>
+              </a>
+            }
+          </section>
+        }
+      }
+    </article>
+  } @else {
+    <div class="article article--not-found">
+      <ion-icon name="newspaper-outline" aria-hidden="true"></ion-icon>
+      <p>{{ 'news.notFound' | t }}</p>
+      <a class="article__link" routerLink="/noticias">
+        {{ 'news.title' | t }}
+        <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+      </a>
+    </div>
+  }
+</ion-content>

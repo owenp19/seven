@@ -1,0 +1,21 @@
+<header class="ah">
+  <span class="ah__avatar" aria-hidden="true">
+    <ion-icon name="sparkles-outline"></ion-icon>
+  </span>
+
+  <div class="ah__id">
+    <span class="ah__name">Seven AI</span>
+    <span class="ah__role">{{ 'assistant.concierge' | t }}</span>
+  </div>
+
+  @if (canReset) {
+    <button
+      class="ah__reset"
+      type="button"
+      (click)="restart.emit()"
+      [attr.aria-label]="'assistant.newChat' | t"
+    >
+      <ion-icon name="create-outline" aria-hidden="true"></ion-icon>
+    </button>
+  }
+</header>

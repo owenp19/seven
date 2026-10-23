@@ -1,0 +1,676 @@
+.privacy {
+  padding: var(--go-space-4) var(--go-space-4) calc(env(safe-area-inset-bottom) + var(--go-space-8));
+  max-width: 46rem;
+  margin: 0 auto;
+
+  &__hero {
+    position: relative;
+    padding: var(--go-space-6) var(--go-space-5);
+    border-radius: var(--go-radius-xl);
+    background: var(--go-ocean);
+    color: var(--go-white);
+    box-shadow: var(--go-shadow-card);
+    overflow: hidden;
+
+    // Círculos translúcidos al fondo: dan textura sin añadir otra imagen ni
+    // competir con el texto. Se sale del recorte por el `overflow: hidden`.
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+    }
+
+    &::before {
+      top: -56px;
+      right: -40px;
+      width: 160px;
+      height: 160px;
+    }
+
+    &::after {
+      right: 56px;
+      bottom: -72px;
+      width: 120px;
+      height: 120px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  // El contenido del hero va por encima de los círculos decorativos.
+  &__badge,
+  &__title,
+  &__subtitle,
+  &__updated {
+    position: relative;
+  }
+
+  &__badge {
+    display: inline-block;
+    padding: 4px var(--go-space-3);
+    border: 1px solid currentColor;
+    border-radius: var(--go-radius-pill);
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    opacity: 0.85;
+  }
+
+  &__title {
+    margin: var(--go-space-3) 0 0;
+    font-family: var(--go-font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    // El color va explícito a propósito. El reset de `global.scss` pone
+    // `h1 { color: var(--go-secondary) }` —navy— y una declaración directa gana
+    // sobre la herencia, así que sin esta línea el título sale navy sobre el
+    // fondo azul del hero y a media luz.
+    color: var(--go-white);
+  }
+
+  &__subtitle {
+    margin: var(--go-space-2) 0 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    opacity: 0.88;
+  }
+
+  &__updated {
+    margin: var(--go-space-3) 0 0;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.65;
+  }
+
+  &__intro {
+    margin: var(--go-space-4) 0 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--go-navy);
+  }
+
+  &__heading {
+    display: flex;
+    align-items: center;
+    gap: var(--go-space-2);
+    margin: var(--go-space-6) 0 var(--go-space-2);
+    font-family: var(--go-font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--go-navy-muted);
+
+    &::before {
+      content: '';
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--go-ocean);
+    }
+  }
+
+  &__hint {
+    margin: 0 0 var(--go-space-3);
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--go-navy-muted);
+  }
+
+  &__highlights {
+    display: grid;
+    gap: var(--go-space-3);
+  }
+
+  &__highlight {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--go-space-3);
+    padding: var(--go-space-4);
+    background: var(--go-white);
+    border-radius: var(--go-radius-lg);
+    box-shadow: var(--go-shadow-card);
+
+    // Disco de color al 50%, igual que en Configuración: el documento y los
+    // ajustes comparten lenguaje visual aunque sean pantallas distintas.
+    ion-icon {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--go-ocean-soft);
+      color: var(--go-ocean);
+      font-size: 1.2rem;
+    }
+  }
+
+  &__highlight-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__highlight-title {
+    font-size: 0.87rem;
+    font-weight: 600;
+    color: var(--go-navy);
+  }
+
+  &__highlight-body {
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: var(--go-navy-muted);
+  }
+
+  /* Inventario real del dispositivo. */
+  &__inventory {
+    background: var(--go-white);
+    border-radius: var(--go-radius-xl);
+    box-shadow: var(--go-shadow-card);
+    overflow: hidden;
+
+    &--loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--go-space-5);
+      color: var(--go-ocean);
+    }
+  }
+
+  &__empty {
+    margin: 0;
+    padding: var(--go-space-4);
+    font-size: 0.85rem;
+    color: var(--go-navy-muted);
+  }
+
+  // Cada dato va en su propia línea, con la etiqueta encima y el valor debajo.
+  // Antes iban en una fila con `space-between`, que en 360px obligaba al
+  // identificador de instalación —36 caracteres— a partirse en tres renglones
+  // descosidos mientras la etiqueta se estrujaba contra ellos. Separar en dos
+  // niveles deja el UUID entero en su línea y la fila con altura estable.
+  &__inventory-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--go-space-1);
+    padding: var(--go-space-3) var(--go-space-4);
+
+    & + & {
+      border-top: 1px solid var(--go-line);
+    }
+  }
+
+  &__inventory-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--go-navy-muted);
+  }
+
+  &__inventory-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--go-navy);
+    overflow-wrap: anywhere;
+  }
+
+  &__code {
+    font-size: 0.8rem;
+    color: var(--go-navy);
+    overflow-wrap: anywhere;
+  }
+
+  /* Acciones de borrado. */
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--go-space-2);
+  }
+
+  &__action {
+    display: flex;
+    align-items: center;
+    gap: var(--go-space-3);
+    width: 100%;
+    padding: var(--go-space-4);
+    border: 1px solid var(--go-line);
+    border-radius: var(--go-radius-xl);
+    background: var(--go-white);
+    box-shadow: var(--go-shadow-card);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+
+    &:hover:not(:disabled) {
+      border-color: var(--go-ocean);
+      box-shadow: var(--go-shadow-raised);
+    }
+
+    &:active:not(:disabled) {
+      background: var(--go-background);
+    }
+
+    &:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    // Disco al 50%. La acción destructiva lo tiñe de rojo para que el
+    // borrado total se distinga de un vistazo, sin depender solo del texto.
+    > ion-icon[aria-hidden='true']:first-child {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--go-ocean-soft);
+      color: var(--go-ocean);
+      font-size: 1.25rem;
+    }
+
+    &--destructive {
+      border-color: rgba(var(--go-danger-rgb), 0.35);
+
+      > ion-icon[aria-hidden='true']:first-child {
+        background: var(--go-danger-soft);
+        color: var(--go-danger);
+      }
+
+      &:hover:not(:disabled) {
+        border-color: var(--go-danger);
+      }
+    }
+  }
+
+  &__action-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__action-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--go-navy);
+  }
+
+  &__action-hint {
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: var(--go-navy-muted);
+  }
+
+  &__action-chevron {
+    flex-shrink: 0;
+    font-size: 1rem;
+    color: var(--go-navy-muted);
+    opacity: 0.5;
+  }
+
+  &__action-spinner {
+    flex-shrink: 0;
+    width: 24px;
+    color: var(--go-ocean);
+  }
+
+  &__working {
+    margin: var(--go-space-3) 0 0;
+    font-size: 0.8rem;
+    color: var(--go-ocean);
+  }
+
+  &__feedback {
+    display: flex;
+    align-items: center;
+    gap: var(--go-space-3);
+    margin-top: var(--go-space-3);
+    padding: var(--go-space-4);
+    border-radius: var(--go-radius-lg);
+    background: var(--go-white);
+    border: 1px solid var(--go-line);
+    box-shadow: var(--go-shadow-card);
+
+    > ion-icon {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--go-green-soft);
+      color: var(--go-green);
+      font-size: 1.15rem;
+    }
+  }
+
+  &__feedback-text {
+    flex: 1;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: var(--go-navy);
+  }
+
+  &__feedback-close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--go-background);
+    font: inherit;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--go-navy-muted);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--go-ocean-soft);
+      color: var(--go-ocean);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--go-ocean);
+      outline-offset: 2px;
+    }
+  }
+
+  /* Índice. */
+  &__toc {
+    display: flex;
+    flex-direction: column;
+    background: var(--go-white);
+    border-radius: var(--go-radius-xl);
+    box-shadow: var(--go-shadow-card);
+    overflow: hidden;
+  }
+
+  &__toc-item {
+    display: flex;
+    align-items: center;
+    gap: var(--go-space-3);
+    width: 100%;
+    padding: var(--go-space-3) var(--go-space-4);
+    border: 0;
+    background: none;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 180ms ease;
+
+    &:hover {
+      background: var(--go-background);
+    }
+
+    &:active {
+      background: var(--go-ocean-soft);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--go-ocean);
+      outline-offset: -2px;
+    }
+
+    & + & {
+      border-top: 1px solid var(--go-line);
+    }
+  }
+
+  // Número en círculo: da un ancla visual al índice y confirma de un vistazo
+  // que sigue el orden del documento.
+  &__toc-number {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--go-ocean-soft);
+    font-family: var(--go-font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--go-ocean);
+  }
+
+  &__toc-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.84rem;
+    color: var(--go-navy);
+  }
+
+  &__toc-chevron {
+    flex-shrink: 0;
+    font-size: 0.9rem;
+    color: var(--go-navy-muted);
+    opacity: 0.5;
+  }
+
+  /* Documento. */
+  //
+  // Cada apartado va en su propia tarjeta en vez de ser una cinta continua de
+  // texto separada por un filete. La razón es móvil: dieciséis bloques de
+  // párrafos apilados con solo una línea entre ellos se leen como un solo muro
+  // de texto, sin dónde apoyar la vista ni cómo saber por dónde va. Con la
+  // tarjeta, el ojo descansa en el hueco y el índice de arriba pasa a servir
+  // para algo real.
+  &__section {
+    /* Compensa el header translúcido al saltar con el índice. */
+    scroll-margin-top: 4rem;
+    margin-top: var(--go-space-3);
+    padding: var(--go-space-4);
+    border: 1px solid var(--go-line);
+    border-radius: var(--go-radius-lg);
+    background: var(--go-white);
+  }
+
+  &__section-head {
+    display: flex;
+    align-items: center;
+    gap: var(--go-space-3);
+    margin-bottom: var(--go-space-3);
+
+    // Disco al 50% por sección, igual que las filas de Configuración.
+    ion-icon {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--go-ocean-soft);
+      color: var(--go-ocean);
+      font-size: 1.1rem;
+    }
+  }
+
+  &__section-title {
+    display: flex;
+    align-items: baseline;
+    gap: var(--go-space-2);
+    margin: 0;
+    font-family: var(--go-font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--go-navy);
+  }
+
+  &__section-number {
+    font-size: 0.7rem;
+    color: var(--go-ocean);
+    opacity: 0.7;
+  }
+
+  &__paragraph {
+    margin: 0 0 var(--go-space-3);
+
+    // El cuerpo del documento va a 0.9375rem y no más pequeño: en un teléfono
+    // el texto legal a 0.86rem obliga a acercar la pantalla y a ajustar el
+    // foco, y quien tiene que leerlo para saber qué se guarda en su propio
+    // móvil es justo quien más lo va a sufrir. El interlineado sube a 1.7 para
+    // que una columna larga no se convierta en un muro apretado.
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--go-navy-soft);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__bullets {
+    margin: 0 0 var(--go-space-3);
+    padding-left: 1.1rem;
+
+    li {
+      margin-bottom: var(--go-space-2);
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--go-navy-soft);
+    }
+
+    li:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  /* Tablas de datos: scroll horizontal en pantallas estrechas. */
+  &__table-wrap {
+    margin: 0 0 var(--go-space-3);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.76rem;
+
+    th,
+    td {
+      padding: var(--go-space-2);
+      border: 1px solid var(--go-line);
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+
+    th {
+      background: var(--go-background);
+      font-family: var(--go-font-display);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--go-navy);
+      white-space: nowrap;
+    }
+
+    td {
+      color: var(--go-navy-muted);
+    }
+
+    /* Primera columna: el dato en sí, no su descripción. */
+    td:first-child {
+      font-weight: 600;
+      color: var(--go-navy);
+    }
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--go-space-1);
+    margin-bottom: var(--go-space-3);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--go-ocean);
+    text-decoration: none;
+
+    ion-icon {
+      font-size: 0.9rem;
+    }
+  }
+
+  &__footer {
+    margin: var(--go-space-6) 0 0;
+    padding-top: var(--go-space-4);
+    border-top: 1px solid var(--go-line);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    text-align: center;
+    color: var(--go-navy-muted);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Tablet — los puntos destacados pasan a dos columnas y el inventario, el
+// índice y las acciones se reparten. En una sola columna, un documento legal en
+// una iPad deja una franja de texto estrecho y medio metro de pantalla vacía.
+// -----------------------------------------------------------------------------
+@media (min-width: 768px) {
+  .privacy {
+    max-width: 54rem;
+
+    &__highlights {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    // En dos columnas el texto alineado a la izquierda es más fácil de leer
+    // que centrado.
+    &__footer {
+      text-align: left;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Escritorio — tres columnas para lo que son fichas cortas, y el documento
+// legal se mantiene en una sola columna porque dos columnas de texto largo
+// rompen la lectura.
+// -----------------------------------------------------------------------------
+@media (min-width: 1100px) {
+  .privacy {
+    max-width: 64rem;
+
+    &__highlights {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    // Las tres acciones de borrado en fila: comparar "borrar este teléfono"
+//      con "borrar todo" tiene más sentido si se ven a la vez.
+    &__actions {
+      flex-direction: row;
+    }
+
+    &__action {
+      flex: 1;
+    }
+  }
+}

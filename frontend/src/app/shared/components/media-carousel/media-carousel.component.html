@@ -1,0 +1,37 @@
+<div class="media-carousel">
+  <swiper-container
+    #swiperEl
+    class="media-carousel__swiper"
+    init="false"
+    space-between="0"
+    slides-per-view="1"
+    watch-slides-progress="true"
+  >
+    @for (src of slides; track src; let i = $index) {
+      <swiper-slide>
+        <img
+          class="media-carousel__img"
+          [src]="src"
+          [alt]="alt"
+          [attr.loading]="i === 0 ? 'eager' : 'lazy'"
+          appSafeImg
+        />
+      </swiper-slide>
+    }
+  </swiper-container>
+
+  @if (showDots && hasMultiple) {
+    <div class="media-carousel__dots" [attr.aria-label]="'common.carousel' | t">
+      @for (src of slides; track src; let i = $index) {
+        <button
+          type="button"
+          class="media-carousel__dot"
+          [class.is-active]="activeIndex() === i"
+          [attr.aria-label]="'common.photos' | t: { count: i + 1 }"
+          [attr.aria-current]="activeIndex() === i"
+          (click)="goTo(i)"
+        ></button>
+      }
+    </div>
+  }
+</div>

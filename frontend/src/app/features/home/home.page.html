@@ -1,0 +1,139 @@
+<div class="home">
+  <ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+      <ion-refresher-content
+        pullingIcon="chevron-down-circle-outline"
+        refreshingSpinner="crescent"
+        [pullingText]="'common.pullToRefresh' | t"
+        [refreshingText]="'common.refreshing' | t"
+      ></ion-refresher-content>
+    </ion-refresher>
+
+    <!-- ─── Intro: saludo + ubicación ───────────────────────────── -->
+    <header class="home__intro">
+      <p class="home__greeting">{{ 'home.greeting' | t }}</p>
+      <h1 class="home__title">
+        <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+        {{ 'home.location' | t }}
+      </h1>
+    </header>
+
+    <!-- ─── Banner (carrusel desde la API) ──────────────────────── -->
+    <section class="home__banners" aria-label="Noticias de la isla">
+      @if (bannerSlides(); as slides) {
+        <app-tourist-news-carousel
+          [slides]="slides"
+          [autoplay]="true"
+          [autoplayDelay]="4500"
+          (action)="onBannerAction($event)"
+        ></app-tourist-news-carousel>
+      } @else {
+        @for (ghost of ghostCards; track ghost) {
+          <div class="home__banner-ghost">
+            <ion-skeleton-text animated style="height: 100%; width: 100%;"></ion-skeleton-text>
+          </div>
+        }
+      }
+    </section>
+
+    <!-- ─── Categorías (solo categorías reales de la API) ───────── -->
+    <section class="home__block">
+      <app-section-header
+        [title]="'home.categories' | t"
+        [subtitle]="'home.categoriesSub' | t"
+        [linkLabel]="'home.seeAll' | t"
+        [linkUrl]="'/explore'"
+      ></app-section-header>
+
+      <div class="home__rail">
+        @if (categoriesList(); as list) {
+          @for (category of categoryCards(list); track category.id) {
+            <button
+              class="home__category home__category--{{ category.color }}"
+              type="button"
+              (click)="openCategory(category)"
+            >
+              <span class="home__category-icon">
+                <ion-icon [name]="category.icon" aria-hidden="true"></ion-icon>
+              </span>
+              <span class="home__category-name">{{ category.name }}</span>
+            </button>
+          }
+        } @else {
+          @for (ghost of ghostCategories; track ghost) {
+            <div class="home__category home__category--ghost">
+              <ion-skeleton-text animated style="width: 26px; height: 26px;"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 72%; height: 12px;"></ion-skeleton-text>
+            </div>
+          }
+        }
+      </div>
+    </section>
+
+    <!-- ─── Recomendados (carrusel mezcla de verticales) ────────── -->
+    <section class="home__block">
+      <app-section-header
+        [title]="'home.recommended' | t"
+        [subtitle]="'home.recommendedSub' | t"
+        [linkLabel]="'home.seeAll' | t"
+        [linkUrl]="'/explore'"
+      ></app-section-header>
+
+      <div class="home__rail">
+        @if (featured(); as items) {
+          @for (item of items; track item.id) {
+            <app-discovery-card
+              class="home__rail-card"
+              [item]="item"
+              [saved]="isSaved(item)"
+              (open)="openFeatured($event)"
+              (toggleSave)="toggleSave($event)"
+            ></app-discovery-card>
+          }
+        } @else {
+          @for (ghost of ghostCards; track ghost) {
+            <div class="home__rail-card home__rail-card--ghost">
+              <div class="home__ghost-media">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </div>
+              <ion-skeleton-text animated style="width: 40%; height: 12px; margin: 12px 16px 0;"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 80%; height: 16px; margin: 8px 16px;"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 60%; height: 12px; margin: 0 16px 16px;"></ion-skeleton-text>
+            </div>
+          }
+        }
+      </div>
+    </section>
+
+    <!-- ─── Promociones (carrusel desde la API) ─────────────────── -->
+    <section class="home__block home__block--last">
+      <app-section-header
+        [title]="'home.promotions' | t"
+        [subtitle]="'home.promotionsSub' | t"
+        [linkLabel]="'home.seeAll' | t"
+        [linkUrl]="'/promotions'"
+      ></app-section-header>
+
+      <div class="home__rail">
+        @if (promotionList(); as items) {
+          @for (promo of items; track promo.id) {
+            <app-promo-card
+              class="home__rail-card"
+              [promo]="promo"
+              (open)="openPromotions()"
+            ></app-promo-card>
+          }
+        } @else {
+          @for (ghost of ghostCards; track ghost) {
+            <div class="home__rail-card home__rail-card--ghost">
+              <div class="home__ghost-media">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </div>
+              <ion-skeleton-text animated style="width: 70%; height: 16px; margin: 12px 16px 16px;"></ion-skeleton-text>
+            </div>
+          }
+        }
+      </div>
+    </section>
+  </ion-content>
+</div>

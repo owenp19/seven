@@ -1,0 +1,336 @@
+@if (loading) {
+  <app-seven-context-loader type="tour"></app-seven-context-loader>
+} @else {
+  @if (tour$ | async; as tour) {
+    @if (tour) {
+      <div class="td">
+        <ion-content [fullscreen]="true">
+          <div class="td__page">
+            <!-- ─── HERO INMERSIVO ────────────────────────────────────────── -->
+            <section class="td__hero">
+              <app-media-carousel
+                class="td__hero-media"
+                [images]="heroImages(tour)"
+                [alt]="tour.name"
+                [showDots]="false"
+              ></app-media-carousel>
+              <span class="td__hero-shade"></span>
+
+              <div class="td__hero-top">
+                <button class="td__pill-btn" type="button" (click)="goBack()" [attr.aria-label]="'common.back' | t">
+                  <ion-icon name="chevron-back" aria-hidden="true"></ion-icon>
+                </button>
+
+                @if (heroImages(tour).length > 1) {
+                  <span class="td__counter">{{ 'common.photos' | t: { count: heroImages(tour).length } }}</span>
+                }
+
+                <div class="td__pill-row">
+                  <button class="td__pill-btn" type="button" (click)="share(tour)" [attr.aria-label]="'common.share' | t">
+                    <ion-icon name="share-social-outline" aria-hidden="true"></ion-icon>
+                  </button>
+                  <button class="td__pill-btn" type="button" (click)="toggleFavorite(tour)" [attr.aria-label]="(favorite ? 'common.removeFavorite' : 'common.addFavorite') | t">
+                    <ion-icon [name]="favorite ? 'heart' : 'heart-outline'" aria-hidden="true"></ion-icon>
+                  </button>
+                </div>
+              </div>
+
+              <div class="td__hero-info">
+                <span class="td__chip">{{ tour.category ?? ('tourDetail.defaultCategory' | t) }}</span>
+                <h1 class="td__title">{{ tour.name }}</h1>
+                <p class="td__subtitle">{{ tour.subtitle }}</p>
+
+                <div class="td__hero-meta">
+                  <span class="td__rating">
+                    <ion-icon name="star" aria-hidden="true"></ion-icon>
+                    <strong>{{ tour.rating }}</strong>
+                    · {{ 'common.reviewsCount' | t: { count: tour.reviews } }}
+                  </span>
+                  @if (tour.place) {
+                    <span class="td__loc">
+                      <ion-icon name="location" aria-hidden="true"></ion-icon>
+                      {{ tour.place }}
+                    </span>
+                  }
+                </div>
+              </div>
+            </section>
+
+            <!-- ─── BODY · DETALLES MÍNIMOS ─────────────────────────────── -->
+            <div class="td__body">
+              <!-- Quick facts -->
+              <section class="td__facts">
+                @if (tour.duration) {
+                  <div class="td__fact">
+                    <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+                    <strong>{{ tour.duration }}</strong>
+                    <span>{{ 'tourDetail.duration' | t }}</span>
+                  </div>
+                }
+                <div class="td__fact">
+                  <ion-icon name="compass-outline" aria-hidden="true"></ion-icon>
+                  <strong>{{ tour.category ?? ('tourDetail.defaultType' | t) }}</strong>
+                  <span>{{ 'tourDetail.type' | t }}</span>
+                </div>
+                <div class="td__fact">
+                  <ion-icon name="people-outline" aria-hidden="true"></ion-icon>
+                  <strong>{{ tour.reviews }}</strong>
+                  <span>{{ 'common.reviewsLabel' | t }}</span>
+                </div>
+              </section>
+
+              <!-- Nivel de dificultad + sellos de confianza -->
+              <section class="td__meta-chips">
+                <span class="td__meta-chip">
+                  <ion-icon name="flag-outline" aria-hidden="true"></ion-icon>
+                  {{ 'tourDetail.difficulty' | t: { value: difficulty } }}
+                </span>
+                <span class="td__meta-chip">
+                  <ion-icon name="sunny-outline" aria-hidden="true"></ion-icon>
+                  {{ 'tourDetail.allYear' | t }}
+                </span>
+                <span class="td__meta-chip">
+                  <ion-icon name="shield-checkmark-outline" aria-hidden="true"></ion-icon>
+                  {{ 'tourDetail.certified' | t }}
+                </span>
+              </section>
+
+              <!-- Mini herramienta · planificador de grupo -->
+              <section class="td__block td__planner">
+                <div class="td__planner-head">
+                  <div>
+                    <h2 class="td__block-title">{{ 'tourDetail.plannerTitle' | t }}</h2>
+                    <p class="td__planner-sub">{{ 'tourDetail.plannerSub' | t }}</p>
+                  </div>
+                </div>
+
+                <div class="td__planner-row">
+                  <button class="td__stepper" type="button" (click)="removePerson()" [disabled]="persons === minPersons" [attr.aria-label]="'common.removePerson' | t">
+                    <ion-icon name="remove" aria-hidden="true"></ion-icon>
+                  </button>
+
+                  <span class="td__stepper-value" aria-live="polite">
+                    {{ persons }}
+                    <small>{{ (persons === 1 ? 'common.personOne' : 'common.personMany') | t }}</small>
+                  </span>
+
+                  <button class="td__stepper" type="button" (click)="addPerson()" [disabled]="persons === maxPersons" [attr.aria-label]="'common.addPerson' | t">
+                    <ion-icon name="add" aria-hidden="true"></ion-icon>
+                  </button>
+
+                  <div class="td__planner-total">
+                    <span>{{ 'tourDetail.totalApprox' | t }}</span>
+                    <strong>{{ total | currencyCOP }}</strong>
+                  </div>
+                </div>
+
+                <button class="td__planner-wa" type="button" (click)="askWhatsapp(tour)">
+                  <ion-icon name="logo-whatsapp" aria-hidden="true"></ion-icon>
+                  {{ 'common.whatsappOrder' | t }}
+                </button>
+              </section>
+
+              <!-- Lo que te espera -->
+              @if (tour.description) {
+                <section class="td__block">
+                  <h2 class="td__block-title">{{ 'tourDetail.whatAwaits' | t }}</h2>
+                  <p class="td__desc" [class.td__desc--expanded]="descriptionExpanded">
+                    {{ tour.description }}
+                  </p>
+                  <button class="td__more" type="button" (click)="toggleDescription()">
+                    {{ (descriptionExpanded ? 'common.hide' : 'common.seeMore') | t }}
+                    <ion-icon name="chevron-down" aria-hidden="true"></ion-icon>
+                  </button>
+                </section>
+              }
+
+              <!-- Galería -->
+              @if (tour.gallery.length > 0) {
+                <section class="td__block">
+                  <div class="td__block-head">
+                    <h2 class="td__block-title">{{ 'tourDetail.photos' | t }}</h2>
+                    <span class="td__block-more">{{ 'tourDetail.seeAll' | t: { count: tour.gallery.length } }}</span>
+                  </div>
+                  <div class="td__gallery">
+                    @for (img of tour.gallery; track img) {
+                      <img class="td__gallery-img" [src]="img" [alt]="tour.name" loading="lazy" />
+                    }
+                  </div>
+                </section>
+              }
+
+              <!-- Qué incluye -->
+              @if (tour.includes.length > 0) {
+                <section class="td__block">
+                  <h2 class="td__block-title">{{ 'tourDetail.includes' | t }}</h2>
+                  <ul class="td__list">
+                    @for (item of tour.includes; track item.name) {
+                      <li class="td__list-item">
+                        <ion-icon name="checkmark-circle-outline" aria-hidden="true"></ion-icon>
+                        <span>{{ item.name }}</span>
+                      </li>
+                    }
+                  </ul>
+                </section>
+              }
+
+              <!-- Recomendaciones -->
+              @if (tour.recommendations.length > 0) {
+                <section class="td__block">
+                  <h2 class="td__block-title">{{ 'tourDetail.bring' | t }}</h2>
+                  <ul class="td__list">
+                    @for (item of tour.recommendations; track item.name) {
+                      <li class="td__list-item">
+                        <ion-icon [name]="item.icon" aria-hidden="true"></ion-icon>
+                        <span>{{ item.name }}</span>
+                      </li>
+                    }
+                  </ul>
+                </section>
+              }
+
+              <!-- Opiniones de viajeros -->
+              @if (reviews.length > 0) {
+                <section class="td__block">
+                  <div class="td__block-head">
+                    <h2 class="td__block-title">{{ 'tourDetail.reviewsTitle' | t }}</h2>
+                    <span class="td__block-more">{{ 'common.reviewsCount' | t: { count: tour.reviews } }}</span>
+                  </div>
+
+                  <div class="td__review-summary">
+                    <strong class="td__review-big">{{ tour.rating }}</strong>
+                    <span class="td__review-stars-small" [attr.aria-label]="'tourDetail.ratingAria' | t: { value: tour.rating }">
+                      @for (s of stars(tour.rating); track s) {
+                        <ion-icon name="star" aria-hidden="true"></ion-icon>
+                      }
+                    </span>
+                    <span>{{ 'tourDetail.realTravelers' | t }}</span>
+                  </div>
+
+                  <ul class="td__reviews">
+                    @for (review of reviews; track $index) {
+                      <li class="td__review">
+                        <span class="td__review-avatar">{{ review.initials }}</span>
+                        <div class="td__review-main">
+                          <div class="td__review-top">
+                            <strong>{{ review.author }}</strong>
+                            <span>{{ review.date }}</span>
+                          </div>
+                          <span class="td__review-stars-small">
+                            @for (s of stars(review.rating); track s) {
+                              <ion-icon name="star" aria-hidden="true"></ion-icon>
+                            }
+                          </span>
+                          <p class="td__review-text">
+                            “{{ review.text }}”
+                          </p>
+                          <small class="td__review-helpful">{{ 'tourDetail.helpfulCount' | t: { count: review.helpful } }}</small>
+                        </div>
+                      </li>
+                    }
+                  </ul>
+                </section>
+              }
+
+              <!-- Ubicación -->
+              @if (tour.place) {
+                <section class="td__block">
+                  <h2 class="td__block-title">{{ 'tourDetail.location' | t }}</h2>
+                  <button class="td__map" type="button" (click)="openMap(tour)">
+                    <span class="td__map-pin">
+                      <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+                    </span>
+                    <span class="td__map-text">
+                      <strong>{{ tour.place }}</strong>
+                      <small>{{ 'common.directions' | t }}</small>
+                    </span>
+                    <ion-icon name="navigate-outline" aria-hidden="true"></ion-icon>
+                  </button>
+
+                  @if (spot) {
+                    <div class="td__nearby">
+                      <span class="td__nearby-text">
+                        @if (near) {
+                          <ion-icon name="navigate-outline" aria-hidden="true"></ion-icon>
+                          <span>{{ near.display }}</span>
+                        } @else if (locError) {
+                          <span>No pudimos obtener tu ubicación.</span>
+                        } @else {
+                          <span>¿A qué distancia estás ahora?</span>
+                        }
+                      </span>
+                      <button class="td__nearby-btn" type="button" (click)="locate()" [disabled]="locating">
+                        {{ locating ? 'Buscando…' : 'Cerca de mí' }}
+                      </button>
+                    </div>
+                  }
+                </section>
+              }
+
+              <!-- Opiniones de viajeros (comentarios reales, uno por dispositivo) -->
+              <section class="td__block td__block--comments">
+                <app-comments-section target="tour" [slug]="tour.slug"></app-comments-section>
+              </section>
+
+              <!-- Te puede interesar · recomendaciones variadas -->
+              <section class="td__block td__block--last">
+                <div class="td__block-head">
+                  <h2 class="td__block-title">{{ 'tourDetail.interest' | t }}</h2>
+                  <span class="td__block-more">{{ 'tourDetail.interestMore' | t }}</span>
+                </div>
+
+                <div class="td__suggestions">
+                  @if (suggestions$ | async; as items) {
+                    @for (item of items; track item.link) {
+                      <app-seven-result-card
+                        variant="grid"
+                        [image]="item.image"
+                        [name]="item.name"
+                        [category]="item.category"
+                        [description]="item.description"
+                        [rating]="item.rating"
+                        [ratingCount]="item.ratingCount"
+                        [price]="item.price"
+                        [priceLabel]="item.priceLabel"
+                        [link]="item.link"
+                        [alt]="item.name"
+                      ></app-seven-result-card>
+                    } @empty {
+                      <p class="td__suggestions-empty">Sigue explorando la isla desde Explorar.</p>
+                    }
+                  } @else {
+                    @for (ghost of [1, 2, 3]; track ghost) {
+                      <div class="td__suggestions-ghost">
+                        <ion-skeleton-text animated style="height: 11rem; border-radius: 16px"></ion-skeleton-text>
+                        <ion-skeleton-text animated style="width: 70%; height: 18px; margin-top: 12px"></ion-skeleton-text>
+                        <ion-skeleton-text animated style="width: 100%; height: 13px; margin-top: 8px"></ion-skeleton-text>
+                      </div>
+                    }
+                  }
+                </div>
+              </section>
+            </div>
+          </div>
+        </ion-content>
+
+        <!-- ─── BARRA FIJA · PRECIO + CTA ─────────────────────────────── -->
+        <footer class="td__bar">
+          <div class="td__price">
+            <span>{{ 'common.from' | t }}</span>
+            <strong>{{ tour.price | currencyCOP }}</strong>
+            <small>{{ 'common.perPerson' | t }}</small>
+          </div>
+          <button class="td__cta" type="button" (click)="reserve(tour)">
+            {{ 'common.reserve' | t }}
+            <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+          </button>
+        </footer>
+      </div>
+    } @else {
+      <div class="td__empty">
+        <h2>{{ 'tourDetail.notFoundTitle' | t }}</h2>
+        <p>{{ 'tourDetail.notFoundText' | t }}</p>
+      </div>
+    }
+  }
+}

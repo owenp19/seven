@@ -1,0 +1,135 @@
+// =============================================================================
+// SEVEN THINKING — estado de carga natural (sin "spinner" ni tres puntos)
+// =============================================================================
+
+.think {
+  display: flex;
+  flex-direction: column;
+  gap: var(--seven-space-3);
+  animation: think-in 320ms ease both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.think__head {
+  display: flex;
+  align-items: center;
+  gap: var(--seven-space-3);
+}
+
+.think__pulse {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--seven-tropical-tide-50);
+  color: var(--seven-tropical-tide-600);
+  font-size: 1.05rem;
+  animation: think-pulse 1.6s ease-in-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.think__label {
+  font-family: var(--seven-font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--seven-text-muted);
+}
+
+.think__skeletons {
+  display: flex;
+  gap: var(--seven-space-3);
+  overflow: hidden;
+}
+
+.think__card {
+  display: flex;
+  flex: 0 0 78%;
+  gap: var(--seven-space-3);
+  padding: var(--seven-space-2);
+  border: 1px solid var(--seven-border-soft);
+  border-radius: var(--seven-radius-lg);
+  background: var(--seven-surface);
+}
+
+.think__media {
+  flex: none;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--seven-radius-md);
+  background: var(--seven-surface-muted);
+}
+
+.think__lines {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--seven-space-2);
+  flex: 1;
+}
+
+.think__line {
+  height: 10px;
+  border-radius: var(--seven-radius-pill);
+  background: var(--seven-surface-muted);
+
+  &--short {
+    width: 45%;
+  }
+}
+
+.think__media,
+.think__line {
+  position: relative;
+  overflow: hidden;
+}
+
+.think__media::after,
+.think__line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+  transform: translateX(-100%);
+  animation: think-shimmer 1.4s infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes think-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes think-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.85;
+  }
+}
+
+@keyframes think-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

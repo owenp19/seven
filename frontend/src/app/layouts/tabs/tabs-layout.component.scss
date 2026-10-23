@@ -1,0 +1,66 @@
+// ─── Shared shell for all tabbed pages ─────────────────────────────────────
+.shell {
+  display: flex;
+  flex-direction: column;
+  // Contenedor de posicionamiento para el outlet: sin esto `inset: 0` se
+  // resolvería contra ion-app y el outlet arrancaría en y=0.
+  position: relative;
+  min-height: 100%;
+
+  &__outlet {
+    // Ionic define ion-router-outlet como `position: absolute; inset: 0`, lo
+    // que lo saca del flujo flex: el outlet cubría todo el shell desde y=0 y
+    // el header (sticky, z-index 1000, fondo opaco) tapaba los primeros
+    // ~80px del contenido — era lo que recortaba los banners de la home.
+    //
+    // Devolverlo al flujo deja que `flex: 1` haga su trabajo y sigue siendo
+    // un bloque de posicionamiento para las páginas, que Ionic posiciona con
+    // `.ion-page { position: absolute; inset: 0 }` y llenan el outlet entero.
+    position: relative;
+    inset: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+
+    // Reserve the space for the fixed bottom navigation ONCE, here in the
+    // shell, instead of every page padding itself with magic numbers like
+    // `5.5rem`. Ionic pages are `position: absolute; inset: 0`, so the room
+    // must live on the inner scroll area, which ion-content exposes through
+    // `--padding-bottom`. Pages that need a different bottom spacing (detail
+    // pages with a sticky CTA) set their own `--padding-bottom` and win by
+    // component-style specificity.
+    ::ng-deep ion-content {
+      --padding-bottom: calc(var(--seven-bottom-nav-height) + env(safe-area-inset-bottom));
+
+      // Desktop turns the nav into a floating dock lifted off the bottom edge,
+      // so the content needs the nav height PLUS that bottom offset.
+      @media (min-width: 1024px) {
+        --padding-bottom: calc(var(--seven-bottom-nav-height) + var(--seven-space-5) + env(safe-area-inset-bottom));
+      }
+    }
+  }
+}
+
+// Tabbed pages render their own ion-content; keep a clean background.
+:host {
+  display: block;
+  background: var(--go-background);
+}
+
+.shell__offline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #FFF3D6;
+  border-bottom: 1px solid rgba(201, 143, 26, 0.35);
+  color: #8A5A00;
+  font-family: var(--seven-font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+
+  ion-icon {
+    font-size: 1.05rem;
+    flex-shrink: 0;
+  }
+}

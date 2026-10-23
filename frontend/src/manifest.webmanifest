@@ -1,0 +1,26 @@
+{
+  "name": "SEVEN",
+  "short_name": "SEVEN",
+  "description": "SEVEN · Más que un destino",
+  "background_color": "#0B2D4A",
+  "theme_color": "#0B2D4A",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": "/",
+  "scope": "/",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "assets/img/brand/seven-isotipo.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/brand/seven-icono-app.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ]
+}

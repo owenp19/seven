@@ -1,0 +1,38 @@
+<header class="nav-header">
+  <button
+    class="nav-header__menu"
+    type="button"
+    (click)="openMenu()"
+    [attr.aria-label]="'nav.main' | t"
+  >
+    <ion-icon name="menu-outline" aria-hidden="true"></ion-icon>
+  </button>
+
+  <a class="nav-header__logo-link" routerLink="/home" aria-label="Ir al inicio">
+    <img
+      class="nav-header__logo"
+      src="assets/img/brand/seven-logo-principal.png"
+      alt="SEVEN"
+      width="160"
+      height="54"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </a>
+
+  <nav class="nav-header__links" aria-label="Navegación principal">
+    @for (link of links; track link.route) {
+      <a
+        class="nav-header__link"
+        routerLink="{{ link.route }}"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: link.route === '/home' }"
+      >{{ link.label }}</a>
+    }
+  </nav>
+
+  <button class="nav-header__search" type="button" (click)="openSearch()" aria-label="Buscar en la isla">
+    <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+    <span class="nav-header__search-label">Buscar</span>
+  </button>
+</header>

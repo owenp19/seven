@@ -1,0 +1,63 @@
+// =============================================================================
+// SEVEN BUTTONS
+// -----------------------------------------------------------------------------
+// SEVEN button variants. Built on <ion-button> with custom classes.
+// =============================================================================
+
+// Shared base for SEVEN buttons
+.go-btn-primary,
+.go-btn-secondary,
+.go-btn-experience,
+.go-btn-ghost {
+  --border-radius: var(--go-radius-lg);
+  min-height: 52px;                 // mobile-friendly touch target
+  height: 52px;
+  margin: 0;
+  font-family: var(--go-font-body);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+// Primary — SEVEN Ocean Blue
+.go-btn-primary {
+  --background: var(--go-ocean);
+  --background-hover: var(--go-ocean-dark);
+  --background-activated: var(--go-ocean-dark);
+  --color: var(--go-white);
+  --box-shadow: var(--go-shadow-soft);
+}
+
+// Secondary — blue surface w/ ocean text (soft)
+.go-btn-secondary {
+  --background: var(--go-blue-soft);
+  --background-hover: var(--go-ocean-soft);
+  --background-activated: var(--go-ocean-soft);
+  --color: var(--go-ocean);
+}
+
+// Experience — Sun Gold (premium tourism CTAs)
+.go-btn-experience {
+  --background: var(--go-gold);
+  --background-hover: var(--go-gold-dark);
+  --background-activated: var(--go-gold-dark);
+  --color: var(--go-white);
+  --box-shadow: var(--go-gold-glow);
+}
+
+// Ghost / outlined — subtle bordered action
+.go-btn-ghost {
+  --background: transparent;
+  --background-hover: var(--go-ocean-soft);
+  --background-activated: var(--go-ocean-soft);
+  --color: var(--go-ocean);
+  --border-color: var(--go-ocean);
+  --border-style: solid;
+  --border-width: 1.5px;
+}
+
+// Compact variant
+.go-btn-sm {
+  min-height: 40px;
+  height: 40px;
+  --border-radius: var(--go-radius-md);
+}

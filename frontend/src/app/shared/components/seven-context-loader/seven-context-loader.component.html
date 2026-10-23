@@ -1,0 +1,74 @@
+@if (variant === 'list') {
+  <div class="scl scl--list" role="status" [attr.aria-label]="labelKey | t">
+    <div class="scl__listhead">
+      <span class="scl__line scl__line--heading"></span>
+      <span class="scl__line scl__line--sub"></span>
+    </div>
+
+    <div class="scl__search"></div>
+
+    <p class="scl__status scl__status--list">
+      <span class="scl__pulse" aria-hidden="true"></span>
+      <span class="scl__label">{{ labelKey | t }}</span>
+    </p>
+
+    <div class="scl__cards">
+      @for (item of ghosts; track item) {
+        <div class="scl__card">
+          <span class="scl__card-media" aria-hidden="true"></span>
+          <span class="scl__card-body">
+            <span class="scl__line scl__line--tag"></span>
+            <span class="scl__line scl__line--name"></span>
+            <span class="scl__line scl__line--meta"></span>
+          </span>
+        </div>
+      }
+    </div>
+  </div>
+} @else {
+  <div class="scl" role="status" [attr.aria-label]="labelKey | t">
+    @if (hero !== 'none') {
+      <div class="scl__hero" [class.scl__hero--short]="hero === 'short'">
+        <span class="scl__mark" aria-hidden="true">
+          <ion-icon name="sparkles-outline"></ion-icon>
+        </span>
+      </div>
+    }
+    <div class="scl__body">
+      <p class="scl__status">
+        <span class="scl__pulse" aria-hidden="true"></span>
+        <span class="scl__label">{{ labelKey | t }}</span>
+      </p>
+
+      <span class="scl__line scl__line--chip"></span>
+      <span class="scl__line scl__line--title"></span>
+      <span class="scl__line scl__line--sub"></span>
+
+      <div class="scl__row" aria-hidden="true">
+        <span class="scl__pill"></span>
+        <span class="scl__pill"></span>
+        <span class="scl__pill"></span>
+      </div>
+
+      <div class="scl__block">
+        <span class="scl__line scl__line--heading"></span>
+        <span class="scl__line"></span>
+        <span class="scl__line"></span>
+        <span class="scl__line scl__line--short"></span>
+      </div>
+
+      <div class="scl__block">
+        <span class="scl__line scl__line--heading"></span>
+        <span class="scl__line"></span>
+        <span class="scl__line scl__line--short"></span>
+      </div>
+    </div>
+
+    @if (stickyBar) {
+      <div class="scl__bar" aria-hidden="true">
+        <span class="scl__bar-price"></span>
+        <span class="scl__bar-cta"></span>
+      </div>
+    }
+  </div>
+}

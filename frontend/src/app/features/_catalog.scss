@@ -1,0 +1,173 @@
+// =============================================================================
+// CATALOG — layout compartido de las páginas de listado (tours, restaurantes,
+// posadas, promociones). Importar con `@use '../catalog' as *;`.
+// -----------------------------------------------------------------------------
+// Resuelve los problemas detectados en la auditoría: título duplicado
+// (se mantiene el del toolbar nativo), sin buscador, grid sin límite de ancho
+// ni breakpoints, y estado vacío pobre.
+// =============================================================================
+
+.catalog {
+  display: block;
+  width: 100%;
+  max-width: var(--seven-content-max-width);
+  margin-inline: auto;
+  padding: var(--seven-space-4) var(--seven-page-padding) var(--seven-space-8);
+
+  // ── Intro: subtítulo contextual (el título vive en el toolbar) ────────────
+  &__intro {
+    margin-bottom: var(--seven-space-4);
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-family: var(--seven-font-body);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--seven-text-muted);
+  }
+
+  // ── Buscador (filtra en cliente sobre el feed ya cargado) ────────────────
+  &__search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 50px;
+    padding: 0 8px 0 16px;
+    margin-bottom: var(--seven-space-3);
+    border: 1px solid var(--seven-border-soft);
+    border-radius: var(--seven-radius-pill);
+    background: var(--seven-surface);
+    box-shadow: var(--seven-shadow-soft);
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+
+    &:focus-within {
+      border-color: var(--ion-color-primary);
+      box-shadow: 0 0 0 3px var(--seven-ocean-blue-100);
+    }
+
+    > ion-icon {
+      flex: 0 0 auto;
+      font-size: 1.15rem;
+      color: var(--seven-text-faint);
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      border: 0;
+      background: transparent;
+      font-family: var(--seven-font-body);
+      font-size: 0.95rem;
+      color: var(--seven-text-strong);
+      outline: none;
+
+      &::placeholder {
+        color: var(--seven-text-faint);
+      }
+
+      &::-webkit-search-cancel-button {
+        display: none;
+      }
+    }
+  }
+
+  &__search-clear {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: var(--seven-radius-pill);
+    background: transparent;
+    color: var(--seven-text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+
+    &:active {
+      background: var(--seven-surface-muted);
+    }
+  }
+
+  // ── Contador de resultados ────────────────────────────────────────────────
+  &__count {
+    margin: 0 0 var(--seven-space-3);
+    font-family: var(--seven-font-body);
+    font-size: 0.8rem;
+    letter-spacing: 0.01em;
+    color: var(--seven-text-muted);
+  }
+
+  // ── Grid responsive ───────────────────────────────────────────────────────
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--seven-card-gap);
+  }
+
+  @media (min-width: 480px) {
+    &__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 768px) {
+    padding-inline: var(--seven-space-6);
+
+    &__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--seven-space-4);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    &__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  // ── Estados / vacío ───────────────────────────────────────────────────────
+  &__state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--seven-space-3);
+    padding: var(--seven-space-8) var(--seven-space-4);
+    text-align: center;
+    color: var(--seven-text-muted);
+
+    ion-icon {
+      font-size: 3rem;
+      color: var(--seven-ocean-blue-200);
+    }
+
+    h2 {
+      margin: 0;
+      font-family: var(--seven-font-display);
+      font-size: 1.1rem;
+      color: var(--seven-text-strong);
+    }
+
+    p {
+      margin: 0;
+      max-width: 32ch;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+  }
+
+  &__state-action {
+    margin-top: var(--seven-space-1, 4px);
+    padding: 10px 20px;
+    border: 0;
+    border-radius: var(--seven-radius-pill);
+    background: var(--ion-color-primary);
+    color: #ffffff;
+    font-family: var(--seven-font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+}

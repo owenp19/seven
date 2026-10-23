@@ -1,0 +1,334 @@
+<app-page-header [title]="'settings.title' | t" defaultHref="/home"></app-page-header>
+
+<ion-content [fullscreen]="true">
+  <div class="settings">
+    <!--
+      PREFERENCIAS
+
+      Idioma, color y tamaño viven en tarjetas propias y no como filas sueltas
+      dentro de un bloque común: cada uno es una decisión de una sola vez con
+      su propio control, y metidos en la misma caja se leen como tres filas
+      más de una lista en vez de como tres ajustes. La separación real la hace
+      `__card-control`, una franja con fondo propio donde vive el control.
+    -->
+    <section class="settings__section">
+      <h2 class="settings__title">{{ 'settings.preferences' | t }}</h2>
+
+      <div class="settings__cards">
+        <!-- IDIOMA -->
+        <div class="settings__card">
+          <div class="settings__card-head">
+            <span class="settings__card-icon" aria-hidden="true">
+              <ion-icon name="globe-outline"></ion-icon>
+            </span>
+            <div class="settings__card-text">
+              <span class="settings__card-label">{{ 'settings.language' | t }}</span>
+              <span class="settings__card-hint">{{ 'settings.languageHint' | t }}</span>
+            </div>
+          </div>
+          <div class="settings__card-control">
+            <app-language-selector></app-language-selector>
+          </div>
+        </div>
+
+        <!-- COLOR DE LA APP -->
+        <div class="settings__card">
+          <div class="settings__card-head">
+            <span class="settings__card-icon" aria-hidden="true">
+              <ion-icon name="color-palette-outline"></ion-icon>
+            </span>
+            <div class="settings__card-text">
+              <span class="settings__card-label">{{ 'settings.theme' | t }}</span>
+              <span class="settings__card-hint">{{ 'settings.themeHint' | t }}</span>
+            </div>
+          </div>
+
+          <div class="settings__card-control">
+            <div class="settings__swatches" role="group" [attr.aria-label]="'settings.theme' | t">
+              @for (option of themes; track option.id) {
+                <button
+                  type="button"
+                  class="settings__swatch"
+                  [class.is-active]="themeService.isActive(option.id)"
+                  [style.--swatch]="option.swatch"
+                  [style.--on-swatch]="option.onSwatch"
+                  [attr.aria-pressed]="themeService.isActive(option.id)"
+                  (click)="onThemeSelect(option.id)"
+                >
+                  <span class="settings__swatch-dot" aria-hidden="true">
+                    @if (themeService.isActive(option.id)) {
+                      <ion-icon name="checkmark"></ion-icon>
+                    }
+                  </span>
+                  <span class="settings__swatch-label">{{ option.labelKey | t }}</span>
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- TAMAÑO DEL TEXTO -->
+        <div class="settings__card">
+          <div class="settings__card-head">
+            <span class="settings__card-icon" aria-hidden="true">
+              <ion-icon name="text-outline"></ion-icon>
+            </span>
+            <div class="settings__card-text">
+              <span class="settings__card-label">{{ 'settings.textSize' | t }}</span>
+              <span class="settings__card-hint">{{ 'settings.textSizeHint' | t }}</span>
+            </div>
+          </div>
+
+          <div class="settings__card-control">
+            <div class="settings__steps" role="group" [attr.aria-label]="'settings.textSize' | t">
+              @for (option of textSizes; track option.id) {
+                <button
+                  type="button"
+                  class="settings__step"
+                  [class.is-active]="textSizeService.isActive(option.id)"
+                  [attr.aria-pressed]="textSizeService.isActive(option.id)"
+                  (click)="onTextSizeSelect(option.id)"
+                >
+                  <span class="settings__step-sample" [style.font-size]="option.scale + 'rem'" aria-hidden="true">A</span>
+                  <span class="settings__step-label">{{ option.labelKey | t }}</span>
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- REDUCIR ANIMACIONES: control único, así que cabe en una fila -->
+        <div class="settings__card settings__card--flat">
+          <div class="settings__row">
+            <span class="settings__row-icon" aria-hidden="true">
+              <ion-icon name="eye-outline"></ion-icon>
+            </span>
+            <div class="settings__row-text">
+              <span class="settings__label">{{ 'settings.reduceMotion' | t }}</span>
+              <span class="settings__hint">{{ 'settings.reduceMotionHint' | t }}</span>
+            </div>
+            <ion-toggle
+              [checked]="reduceMotion()"
+              (ionChange)="onMotionChange($event)"
+              [attr.aria-label]="'settings.reduceMotion' | t"
+            ></ion-toggle>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONECTIVIDAD -->
+    <section class="settings__section">
+      <h2 class="settings__title">{{ 'settings.connectivity' | t }}</h2>
+
+      <div class="settings__cards">
+        <div class="settings__card settings__card--flat">
+          <div class="settings__row settings__row--static">
+            @if (isOnline()) {
+              <span class="settings__row-icon settings__row-icon--online" aria-hidden="true">
+                <ion-icon name="wifi-outline"></ion-icon>
+              </span>
+            } @else {
+              <span class="settings__row-icon settings__row-icon--offline" aria-hidden="true">
+                <ion-icon name="cloud-offline-outline"></ion-icon>
+              </span>
+            }
+            <div class="settings__row-text">
+              <span class="settings__label">{{ statusLabel() | t }}</span>
+              <span class="settings__hint">{{ 'settings.cachedItems' | t: { count: cacheSize() } }}</span>
+            </div>
+          </div>
+
+          <div class="settings__row">
+            <span class="settings__row-icon" aria-hidden="true">
+              <ion-icon name="airplane-outline"></ion-icon>
+            </span>
+            <div class="settings__row-text">
+              <span class="settings__label">{{ 'settings.offlineMode' | t }}</span>
+              <span class="settings__hint">{{ 'settings.offlineModeHint' | t }}</span>
+            </div>
+            <ion-toggle
+              [checked]="manualOffline()"
+              (ionChange)="onOfflineModeChange($event)"
+              [attr.aria-label]="'settings.offlineMode' | t"
+            ></ion-toggle>
+          </div>
+
+          <div class="settings__row">
+            <span class="settings__row-icon" aria-hidden="true">
+              <ion-icon name="cellular-outline"></ion-icon>
+            </span>
+            <div class="settings__row-text">
+              <span class="settings__label">{{ 'settings.offlineAuto' | t }}</span>
+              <span class="settings__hint">{{ 'settings.offlineAutoHint' | t }}</span>
+            </div>
+            <ion-toggle
+              [checked]="autoOffline()"
+              (ionChange)="onAutoOfflineChange($event)"
+              [attr.aria-label]="'settings.offlineAuto' | t"
+            ></ion-toggle>
+          </div>
+        </div>
+
+        <!-- DESCARGA PARA OFFLINE -->
+        <div class="settings__card settings__card--flat">
+          <div class="settings__row settings__row--static">
+            <span class="settings__row-icon" aria-hidden="true">
+              <ion-icon name="cloud-download-outline"></ion-icon>
+            </span>
+            <div class="settings__row-text">
+              <span class="settings__label">{{ 'settings.downloadOffline' | t }}</span>
+              <span class="settings__hint">
+                @if (download.downloadedAt()) {
+                  {{ 'settings.offlineReady' | t: { size: offlineSizeMb() } }}
+                } @else {
+                  {{ 'settings.downloadOfflineHint' | t }}
+                }
+              </span>
+            </div>
+          </div>
+
+          @if (download.isRunning) {
+            <div class="settings__progress">
+              <div
+                class="settings__progress-bar"
+                role="progressbar"
+                [attr.aria-valuenow]="download.progress()"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                [attr.aria-label]="'settings.downloadOffline' | t"
+              >
+                <div class="settings__progress-fill" [style.width.%]="download.progress()"></div>
+              </div>
+              <span class="settings__progress-label">
+                @if (download.currentLabel()) {
+                  {{ download.currentLabel()! | t }}
+                } @else {
+                  {{ 'settings.downloadProgress' | t: { percent: download.progress() } }}
+                }
+              </span>
+            </div>
+          }
+
+          @if (download.lastError(); as error) {
+            <p class="settings__error" role="alert">{{ error | t }}</p>
+          }
+
+          <div class="settings__actions">
+            @if (download.downloadedAt()) {
+              <button
+                type="button"
+                class="settings__button settings__button--ghost"
+                [disabled]="download.isRunning"
+                (click)="onRemoveOffline()"
+              >
+                {{ 'settings.removeOffline' | t }}
+              </button>
+              <button
+                type="button"
+                class="settings__button"
+                [disabled]="download.isRunning || !isReallyOnline()"
+                (click)="onDownloadOffline()"
+              >
+                {{ 'settings.updateOffline' | t }}
+              </button>
+            } @else {
+              <button
+                type="button"
+                class="settings__button"
+                [disabled]="download.isRunning || !isReallyOnline()"
+                (click)="onDownloadOffline()"
+              >
+                {{ 'settings.downloadOffline' | t }}
+              </button>
+            }
+          </div>
+
+          @if (!isReallyOnline()) {
+            <p class="settings__note">{{ 'settings.downloadNeedsNetwork' | t }}</p>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- DATOS -->
+    <section class="settings__section">
+      <h2 class="settings__title">{{ 'settings.data' | t }}</h2>
+
+      <div class="settings__cards">
+        <div class="settings__card settings__card--flat">
+          <button
+            type="button"
+            class="settings__row settings__row--action settings__row--inline"
+            routerLink="/privacidad"
+          >
+            <span class="settings__row-icon" aria-hidden="true">
+              <ion-icon name="shield-checkmark-outline"></ion-icon>
+            </span>
+            <div class="settings__row-text">
+              <span class="settings__label">{{ 'settings.privacy' | t }}</span>
+              <span class="settings__hint">{{ 'settings.privacyHint' | t }}</span>
+            </div>
+            <ion-icon name="chevron-forward-outline" aria-hidden="true" class="settings__chevron"></ion-icon>
+          </button>
+
+          <button
+            type="button"
+            class="settings__row settings__row--action settings__row--inline"
+            (click)="onClearCache()"
+          >
+            <span class="settings__row-icon" aria-hidden="true">
+              <ion-icon name="refresh-outline"></ion-icon>
+            </span>
+            <div class="settings__row-text">
+              <span class="settings__label">{{ 'settings.clearCache' | t }}</span>
+              <span class="settings__hint">{{ 'settings.clearCacheHint' | t }}</span>
+            </div>
+            <ion-icon name="chevron-forward-outline" aria-hidden="true" class="settings__chevron"></ion-icon>
+          </button>
+
+          <div class="settings__row settings__row--static settings__row--inline">
+            <span class="settings__row-icon" aria-hidden="true">
+              <ion-icon name="finger-print-outline"></ion-icon>
+            </span>
+            <div class="settings__row-text">
+              <span class="settings__label">{{ 'settings.deviceId' | t }}</span>
+              <span class="settings__hint settings__hint--mono" [title]="installId">{{
+                shortInstallId
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APLICACIÓN -->
+    <section class="settings__section">
+      <h2 class="settings__title">{{ 'settings.aboutApp' | t }}</h2>
+
+      <div class="settings__cards">
+        <div class="settings__card settings__card--flat">
+          <div class="settings__row settings__row--static settings__row--inline">
+            <span class="settings__row-icon" aria-hidden="true">
+              <ion-icon name="information-circle-outline"></ion-icon>
+            </span>
+            <div class="settings__row-text">
+              <span class="settings__label">{{ appName }}</span>
+              <span class="settings__hint">{{ 'settings.version' | t: { version: appVersion } }}</span>
+            </div>
+          </div>
+
+          <div class="settings__row settings__row--static settings__row--inline">
+            <span class="settings__row-icon" aria-hidden="true">
+              <ion-icon name="server-outline"></ion-icon>
+            </span>
+            <div class="settings__row-text">
+              <span class="settings__label">{{ 'settings.server' | t }}</span>
+              <span class="settings__hint settings__hint--mono">{{ apiEndpoint }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</ion-content>

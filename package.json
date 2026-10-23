@@ -1,0 +1,20 @@
+{
+  "name": "seven",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SEVEN monorepo · arranca backend (Laravel) y frontend (Ionic/Angular) juntos",
+  "scripts": {
+    "dev": "concurrently -k -n backend,frontend -c blue,green \"npm:dev:backend\" \"npm:dev:frontend\"",
+    "dev:backend": "cd backend && php artisan serve --port=8000",
+    "dev:frontend": "cd frontend && npm start",
+    "setup": "npm run setup:backend && npm run setup:frontend",
+    "setup:backend": "cd backend && composer install && php artisan key:generate && php artisan migrate:fresh --seed",
+    "setup:frontend": "cd frontend && npm install",
+    "test": "concurrently -k \"npm:test:backend\" \"npm:test:frontend\"",
+    "test:backend": "cd backend && vendor\\bin\\phpunit",
+    "test:frontend": "cd frontend && npm test"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}

@@ -1,0 +1,550 @@
+// =============================================================================
+// SEVEN SETTINGS
+// -----------------------------------------------------------------------------
+// Una columna (teléfono) -> 2 columnas (tablet) -> 3 columnas (escritorio).
+// El `max-width` interior evita que en pantallas grandes las tarjetas se
+// estiren hasta quedar ilegibles de lo anchas que son.
+//
+// Dos tipos de tarjeta, y la diferencia es deliberada:
+//
+//   __card          Preference: cabecera con icono + rótulo + explicación, y
+//                  debajo una franja de control con fondo propio. El control
+//                  queda separado del texto, así que "Color de la app" no se
+//                  confunde con una fila más de una lista.
+//
+//   __card--flat    Lista: filas separadas por un hairline, cada una con su
+//                  icono. Es lo que corresponde a acciones y conmutadores.
+//
+// Los objetivos táctiles no bajan de 44px ni en escritorio: un toggle grande
+// se sigue pulsando bien con dedo.
+// =============================================================================
+
+.settings {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--go-space-6);
+  padding: var(--go-space-5) var(--go-space-4) calc(env(safe-area-inset-bottom) + var(--go-space-8));
+  max-width: 34rem;
+  margin: 0 auto;
+
+  &__section {
+    // Permite que un valor largo (endpoint, id) encoja dentro de su columna
+    // del grid en vez de desbordar la tarjeta.
+    min-width: 0;
+  }
+
+  // Rótulo de sección: una línea con el punto de color y un filete que llega
+  // hasta el borde. El filete es lo que convierte cuatro títulos sueltos en
+  // cuatro secciones y no en cuatro etiquetas apiladas.
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: var(--go-space-3);
+    margin: 0 0 var(--go-space-3);
+    font-family: var(--go-font-display);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--go-navy-muted);
+
+    &::before {
+      content: '';
+      flex-shrink: 0;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--go-ocean);
+    }
+
+    &::after {
+      content: '';
+      flex: 1 1 auto;
+      height: 1px;
+      background: var(--go-line);
+    }
+  }
+
+  // Columna de tarjetas con separación real entre ellas. Este es el hueco que
+  // hace que Idioma, Color y Tamaño se lean como tres ajustes y no como un
+  // bloque amorphous partido por líneas.
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--go-space-3);
+  }
+
+  // -----------------------------------------------------------------------------
+  // Tarjeta de preferencia
+  // -----------------------------------------------------------------------------
+  &__card {
+    background: var(--go-white);
+    // Contorno fino en vez de una sombra pesada: el relieve se nota en el
+    // borde y no enturbia el contenido, que es texto pequeño.
+    border: 1px solid var(--go-line);
+    border-radius: var(--go-radius-lg);
+    box-shadow: var(--go-shadow-soft);
+    overflow: hidden;
+
+    &--flat {
+      box-shadow: none;
+    }
+  }
+
+  &__card-head {
+    display: flex;
+    align-items: center;
+    gap: var(--go-space-3);
+    padding: var(--go-space-4) var(--go-space-4) var(--go-space-3);
+  }
+
+  &__card-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__card-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--go-navy);
+  }
+
+  &__card-hint {
+    font-size: 0.78rem;
+    line-height: 1.35;
+    color: var(--go-navy-muted);
+  }
+
+  // Franja del control: fondo tenue y borde arriba. Es la frontera visual que
+  // dice "debajo se elige algo", y por eso la preferencia no se lee como una
+  // fila de información.
+  &__card-control {
+    padding: var(--go-space-3) var(--go-space-4);
+    border-top: 1px solid var(--go-line);
+    background: var(--go-background);
+  }
+
+  // -----------------------------------------------------------------------------
+  // Selector de color
+  //
+  // Círculos pequeños y etiqueta al lado, no debajo. Tres muestras de 36px en
+  // horizontal ocupan menos alto que tres de 56px apiladas, y en un teléfono la
+  // altura es el recurso escaso: lo que queda por debajo (datos, aplicación) es
+  // lo que el usuario sí necesita recorrer.
+  // -----------------------------------------------------------------------------
+  &__swatches {
+    display: flex;
+    align-items: center;
+    gap: var(--go-space-2);
+  }
+
+  &__swatch {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    justify-content: center;
+    gap: var(--go-space-2);
+    min-height: 44px;
+    padding: var(--go-space-1) var(--go-space-2);
+    border: 0;
+    border-radius: var(--go-radius-md);
+    background: transparent;
+    font-family: var(--go-font-body);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 180ms ease;
+
+    &:hover {
+      background: var(--go-ocean-soft);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--go-ocean);
+      outline-offset: -2px;
+    }
+  }
+
+  &__swatch-dot {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--swatch, var(--go-ocean));
+    color: var(--on-swatch, var(--go-white));
+    font-size: 0.9rem;
+    transition: box-shadow 200ms ease, transform 200ms ease;
+  }
+
+  // Doble anillo: blanco de separación y luego el color del tema. Así el
+  // activo se distingue sin depender solo del check, que no dice nada a quien
+  // no distingue rojo y verde.
+  &.is-active &__swatch-dot {
+    box-shadow:
+      0 0 0 2px var(--go-background),
+      0 0 0 4px var(--swatch);
+  }
+
+  &__swatch-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--go-navy-muted);
+  }
+
+  &.is-active &__swatch-label {
+    color: var(--go-navy);
+  }
+
+  // -----------------------------------------------------------------------------
+  // Selector de tamaño de texto
+  //
+  // Cuatro opciones en vez de tres: en un teléfono de 360px, cuatro columnas
+  // dejan 78px por opción, suficiente para la letra y su etiqueta. Con cinco
+  // ya no cabría sin dos filas.
+  // -----------------------------------------------------------------------------
+  &__steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--go-space-1);
+  }
+
+  &__step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--go-space-1);
+    min-height: 64px;
+    padding: var(--go-space-2) var(--go-space-1);
+    border: 0;
+    border-radius: var(--go-radius-md);
+    background: transparent;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 180ms ease;
+
+    &:hover {
+      background: var(--go-ocean-soft);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--go-ocean);
+      outline-offset: -2px;
+    }
+  }
+
+  // La burbuja es siempre del mismo tamaño en las cuatro opciones: lo que cambia
+  // es la letra dentro, que es exactamente lo que el usuario está eligiendo.
+  &__step-sample {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--go-white);
+    border: 1.5px solid var(--go-line);
+    font-family: var(--go-font-display);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--go-navy);
+    transition: border-color 200ms ease, background 200ms ease, color 200ms ease;
+  }
+
+  &.is-active &__step-sample {
+    border-color: var(--go-ocean);
+    background: var(--go-ocean);
+    color: var(--go-white);
+  }
+
+  &__step-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--go-navy-muted);
+  }
+
+  &.is-active &__step-label {
+    color: var(--go-navy);
+  }
+
+  // -----------------------------------------------------------------------------
+  // Filas de lista
+  // -----------------------------------------------------------------------------
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: var(--go-space-3);
+    width: 100%;
+    min-height: 60px;
+    padding: var(--go-space-3) var(--go-space-4);
+    border: 0;
+    background: transparent;
+    text-align: left;
+    font-family: var(--go-font-body);
+    color: inherit;
+
+    & + & {
+      border-top: 1px solid var(--go-line);
+    }
+
+    &--action {
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+
+      &:hover {
+        background: var(--go-background);
+      }
+
+      &:active {
+        background: var(--go-ocean-soft);
+      }
+
+      // Foco visible solo para teclado, no en el toque.
+      &:focus-visible {
+        outline: 2px solid var(--go-ocean);
+        outline-offset: -2px;
+      }
+    }
+
+    &--static {
+      cursor: default;
+    }
+
+    // -----------------------------------------------------------------------------
+    // Fila en línea (sección DATOS)
+    //
+    // Rótulo y valor en la misma línea en vez de apilados. Apilado, el id de
+    // dispositivo (36 caracteres) empujaba el rótulo hacia arriba y la fila
+    // crecía a tres líneas: la sección quedaba más alta que Preferencias y
+    // Conectividad juntas, que es justo lo que el usuario viene a mirar. En
+    // línea el par se lee como una sola línea de dato y, si no cabe, envuelve
+    // sin romper la alineación.
+    // -----------------------------------------------------------------------------
+    &--inline {
+      .settings__row-text {
+        flex-direction: row;
+        align-items: baseline;
+        flex-wrap: wrap;
+        column-gap: var(--go-space-2);
+        row-gap: 0;
+      }
+
+      // El rótulo conserva su ancho: si no cupiera, es el valor quien baja de
+      // línea, nunca el título el que se parte en vertical.
+      .settings__label {
+        flex: 0 0 auto;
+      }
+    }
+  }
+
+  // Disco de color al abrir cada fila. Redondeado al 50% para que la página
+  // tenga un lenguaje de formas coherente en vez de mezclar cuadrados y
+  // rectángulos.
+  &__row-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--go-ocean-soft);
+    color: var(--go-ocean);
+    font-size: 1.15rem;
+
+    // El estado de red usa color para distinguirse de un icono neutro.
+    &--online {
+      background: var(--go-green-soft);
+      color: var(--go-green);
+    }
+
+    &--offline {
+      background: var(--go-sunset-soft);
+      color: var(--go-sunset);
+    }
+  }
+
+  &__row-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__label {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--go-navy);
+  }
+
+  &__hint {
+    font-size: 0.75rem;
+    line-height: 1.35;
+    color: var(--go-navy-muted);
+    // Los valores largos (id de dispositivo, endpoint) no deben desbordar.
+    overflow-wrap: anywhere;
+
+    // Valores técnicos (identificadores). En monoespaciada porque no es
+    // texto para leer seguido sino un código que se compara y se copia, y las
+    // cifras siempre alineadas evitan confundir un `1` con un `l`.
+    &--mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      letter-spacing: -0.01em;
+    }
+  }
+
+  &__chevron {
+    // El chevron es navegación, no categoría: sin disco y sin peso visual.
+    //
+    // Tamaño explícito y `flex-shrink: 0`: sin él, `width/height: auto` deja
+    // que el SVG del ion-icon se estire a su tamaño intrínseco (300px), se
+    // come el ancho de la fila y comprime el texto hasta partirlo letra a
+    // letra (se ve vertical).
+    flex-shrink: 0;
+    width: 1.15rem;
+    height: 1.15rem;
+    background: transparent;
+    font-size: 1.15rem !important;
+    color: var(--go-navy-muted) !important;
+    opacity: 0.5;
+  }
+
+  // -----------------------------------------------------------------------------
+  // Descarga para offline
+  // -----------------------------------------------------------------------------
+  &__progress {
+    display: flex;
+    flex-direction: column;
+    gap: var(--go-space-2);
+    padding: var(--go-space-3) var(--go-space-4);
+  }
+
+  &__progress-bar {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--go-ocean-soft);
+    overflow: hidden;
+  }
+
+  &__progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--go-ocean);
+    // Sin transición: la barra debe reflejar el progreso real, no ir
+    // "persiguiendo" un valor que ya cambió.
+    transition: width 200ms ease-out;
+  }
+
+  &__progress-label {
+    font-size: 0.8125rem;
+    color: var(--go-navy-muted);
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--go-space-2);
+    padding: var(--go-space-3) var(--go-space-4) var(--go-space-4);
+  }
+
+  &__button {
+    flex: 1;
+    min-height: 48px;
+    padding: var(--go-space-2) var(--go-space-4);
+    border: none;
+    border-radius: var(--go-radius-pill);
+    background: var(--go-ocean);
+    color: var(--go-white);
+    font-family: var(--go-font-body);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 180ms ease, background 180ms ease;
+
+    &:hover:not(:disabled) {
+      opacity: 0.88;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--go-ocean);
+      outline-offset: 2px;
+    }
+
+    // Un botón deshabilitado sin explicación parece roto; el `note` de abajo
+    // dice por qué.
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    // Botón secundario. El borde usa `currentColor` a propósito: cambiar el
+    // color del texto cambia también el del borde, y no hay forma de que se
+    // queden desincronizados.
+    &--ghost {
+      background: transparent;
+      color: var(--go-danger);
+      border: 1.5px solid currentColor;
+
+      &:hover:not(:disabled) {
+        background: var(--go-danger-soft);
+        opacity: 1;
+      }
+    }
+  }
+
+  &__error {
+    margin: 0;
+    padding: 0 var(--go-space-4) var(--go-space-3);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--go-danger);
+  }
+
+  &__note {
+    margin: 0;
+    padding: 0 var(--go-space-4) var(--go-space-4);
+    font-size: 0.8125rem;
+    color: var(--go-navy-muted);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Tablet — 2 columnas. Aparece desde 768px, que es el corte habitual de iPad en
+// vertical y el primer ancho donde una columna se siente vacía.
+// -----------------------------------------------------------------------------
+@media (min-width: 768px) {
+  .settings {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--go-space-6) var(--go-space-4);
+    max-width: 52rem;
+
+    // Preferencias y Conectividad ocupan el ancho completo: sus tarjetas
+    // tienen controles que se estrechan en una columna de la mitad.
+    &__section:first-child,
+    &__section:nth-child(2) {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Escritorio — 3 columnas con algo de aire a los lados.
+// -----------------------------------------------------------------------------
+@media (min-width: 1100px) {
+  .settings {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 72rem;
+
+    // Con tres columnas ya no hace falta que las dos primeras ocupen todo.
+    &__section:first-child,
+    &__section:nth-child(2) {
+      grid-column: auto;
+    }
+  }
+}

@@ -1,0 +1,65 @@
+<section class="cmp" [attr.aria-label]="'assistant.compareTitle' | t">
+  <h3 class="cmp__title">
+    <ion-icon name="swap-vertical-outline" aria-hidden="true"></ion-icon>
+    {{ 'assistant.compareTitle' | t }}
+  </h3>
+
+  <div class="cmp__rail">
+    @for (rec of recommendations; track rec.key; let i = $index) {
+      <article
+        class="cmp__option"
+        [class.cmp__option--link]="!!rec.route"
+        [attr.role]="rec.route ? 'link' : null"
+        [attr.tabindex]="rec.route ? 0 : null"
+        [attr.aria-label]="rec.name"
+        (click)="onOpen(rec)"
+        (keydown.enter)="onOpen(rec)"
+      >
+        <span class="cmp__rank">{{ i + 1 }}</span>
+
+        <div class="cmp__media">
+          <img
+            class="cmp__img"
+            [src]="rec.image"
+            appSafeImg
+            [alt]="rec.name"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+
+        <h4 class="cmp__name">{{ rec.name }}</h4>
+
+        @if (rec.rating > 0) {
+          <span class="cmp__rating">
+            <ion-icon name="star" aria-hidden="true"></ion-icon>
+            {{ ratingLabel(rec) }}
+          </span>
+        }
+
+        @if (rec.location) {
+          <span class="cmp__loc">
+            <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+            {{ rec.location }}
+          </span>
+        }
+
+        @if (rec.hasPrice) {
+          <span class="cmp__price">
+            <small>{{ priceKey(rec) | t }}</small>
+            <strong>{{ rec.price | currencyCOP }}</strong>
+          </span>
+        }
+
+        @if (rec.route) {
+          <span class="cmp__cta">
+            {{ 'assistant.viewDetails' | t }}
+            <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+          </span>
+        } @else if (rec.isUnavailable) {
+          <span class="cmp__badge">{{ 'assistant.unavailable' | t }}</span>
+        }
+      </article>
+    }
+  </div>
+</section>

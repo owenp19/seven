@@ -1,0 +1,8 @@
+// Root component.
+//
+// La navegación principal vive en la barra inferior compartida
+// (`app-bottom-nav`), así que la raíz solo aloja el router outlet y el loader
+// global.
+:host {
+  display: block;
+}

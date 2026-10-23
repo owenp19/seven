@@ -1,0 +1,27 @@
+<ion-menu
+  class="side-menu"
+  [menuId]="menuId"
+  contentId="main-content"
+  side="start"
+  type="overlay"
+  [swipeGesture]="false"
+>
+  <ion-content class="side-menu__content">
+    <app-menu-header
+      logo="assets/img/brand/seven-logo-principal.png"
+      [tagline]="'menu.tagline' | t"
+    ></app-menu-header>
+
+    <nav class="side-menu__nav" [attr.aria-label]="'nav.main' | t">
+      @for (link of links; track link.route; let i = $index) {
+        <app-menu-item
+          [icon]="link.icon"
+          [label]="link.labelKey | t"
+          [active]="isActive(link)"
+          [style.--go-i]="i"
+          (tapped)="go(link)"
+        ></app-menu-item>
+      }
+    </nav>
+  </ion-content>
+</ion-menu>

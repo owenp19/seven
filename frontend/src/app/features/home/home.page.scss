@@ -1,0 +1,231 @@
+.home {
+  flex: 1 1 auto;
+  min-height: 0;
+
+  // ─── Local design tokens (mapped to the global SEVEN theme) ──────
+  --home-deep: var(--seven-deep-sea);
+  --home-background: var(--seven-background);
+  --home-surface: var(--seven-surface);
+  --home-muted: var(--seven-text-muted);
+  --home-line: var(--seven-border-soft);
+
+  // ─── Intro: saludo + ubicación ───────────────────────────────────
+  &__intro {
+    padding: var(--seven-space-5) var(--seven-page-padding) var(--seven-space-4);
+  }
+
+  &__greeting {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--home-muted);
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: var(--seven-space-2);
+    margin: var(--seven-space-1) 0 0;
+    font-family: var(--seven-font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--home-deep);
+
+    ion-icon {
+      flex: none;
+      font-size: 1.15rem;
+      color: var(--seven-ocean-blue);
+    }
+  }
+
+  // ─── Bloques de sección ───────────────────────────────────────────
+  &__block {
+    max-width: var(--seven-content-max-width);
+    margin: 0 auto;
+    padding-top: var(--seven-section-gap);
+
+    &--last {
+      padding-bottom: var(--seven-space-2);
+    }
+  }
+
+  // ─── Banners ─────────────────────────────────────────────────────
+  &__banners {
+    max-width: var(--seven-content-max-width);
+    margin: 0 auto;
+    padding-top: var(--seven-space-2);
+  }
+
+  &__banner-ghost {
+    height: 12.5rem; // 200px
+    border-radius: var(--seven-radius-xl);
+    overflow: hidden;
+  }
+
+  // ─── Rail: scroll horizontal con snap, sin barra visible ─────────
+  &__rail {
+    display: flex;
+    align-items: stretch;
+    gap: var(--seven-card-gap);
+    padding: var(--seven-space-2) var(--seven-page-padding) var(--seven-space-4);
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__rail-card {
+    flex: none;
+    width: min(76vw, 292px);
+    height: 20rem;
+    scroll-snap-align: start;
+
+    &--ghost {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      border-radius: var(--seven-radius-xl);
+      background: var(--home-surface);
+      box-shadow: var(--seven-shadow-card);
+
+      ion-skeleton-text {
+        border-radius: var(--seven-radius-sm);
+      }
+    }
+  }
+
+  &__ghost-media {
+    height: 8.75rem; // 140px
+  }
+
+  // ─── Categorías ──────────────────────────────────────────────────
+  &__category {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--seven-space-3);
+    width: 120px;
+    min-width: 120px;
+    height: 124px;
+    padding: var(--seven-space-4);
+    border: none;
+    border-radius: var(--seven-radius-lg);
+    text-align: left;
+    cursor: pointer;
+    scroll-snap-align: start;
+    transition: transform 160ms ease, box-shadow 200ms ease;
+
+    &:active {
+      transform: scale(0.97);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+
+    &--blue {
+      background: var(--seven-ocean-blue);
+      color: var(--seven-text-inverse);
+
+      .home__category-icon {
+        background: rgba(255, 255, 255, 0.22);
+        color: var(--seven-text-inverse);
+      }
+    }
+
+    &--aqua {
+      background: var(--seven-tropical-tide);
+      color: var(--seven-deep-sea);
+
+      .home__category-icon {
+        background: rgba(255, 255, 255, 0.28);
+        color: var(--seven-deep-sea);
+      }
+    }
+
+    &--sand {
+      background: var(--seven-arena);
+      color: var(--seven-deep-sea-700);
+
+      .home__category-icon {
+        background: var(--seven-deep-sea-700);
+        color: var(--seven-text-inverse);
+      }
+    }
+
+    &--green {
+      background: var(--seven-palm-green);
+      color: var(--seven-text-inverse);
+
+      .home__category-icon {
+        background: rgba(255, 255, 255, 0.22);
+        color: var(--seven-text-inverse);
+      }
+    }
+
+    &--ghost {
+      pointer-events: none;
+      background: var(--home-surface);
+      border: 1px solid var(--home-line);
+
+      ion-skeleton-text {
+        border-radius: var(--seven-radius-sm);
+      }
+    }
+  }
+
+  &__category-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--seven-radius-md);
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  &__category-name {
+    font-family: var(--seven-font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  // ─── Responsive: tablet ─────────────────────────────────────────
+  @media (min-width: 768px) {
+    &__intro {
+      padding-top: var(--seven-space-6);
+    }
+
+    &__title {
+      font-size: 1.7rem;
+    }
+
+    &__rail-card {
+      width: 280px;
+    }
+
+    &__category {
+      width: auto;
+      min-width: 0;
+
+      &-name {
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  // ─── Responsive: desktop ────────────────────────────────────────
+  @media (min-width: 1024px) {
+    &__intro {
+      max-width: var(--seven-content-max-width);
+      margin: 0 auto;
+    }
+  }
+}

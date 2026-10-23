@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#0B2D4A"/>
+  <circle cx="620" cy="150" r="70" fill="#00D1C5" opacity="0.9"/>
+  <path d="M0 470 Q200 400 400 460 T800 440 L800 600 L0 600 Z" fill="#f7f4ee" opacity="0.9"/>
+  <circle cx="400" cy="300" r="86" fill="#ffffff" opacity="0.96"/>
+  <path d="M400 216 a84 84 0 0 1 0 168 a60 60 0 0 0 0-168 Z" fill="#0077B6"/>
+  <path d="M400 216 a84 84 0 0 0 0 168 a60 60 0 0 1 0-168 Z" fill="#00D1C5"/>
+  <text x="400" y="150" text-anchor="middle" font-family="Georgia, serif" font-size="34" font-weight="700" fill="#ffffff">SEVEN</text>
+</svg>

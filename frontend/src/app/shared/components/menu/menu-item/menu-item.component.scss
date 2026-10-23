@@ -1,0 +1,139 @@
+// ─── Premium North-American style menu item ─────────────────────────
+// Solid primary surface, slide-in active accent bar, icon pop on
+// activation, smooth hover/press micro-interactions and full focus
+// visibility for keyboard users.
+.mi {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--go-space-3);
+  width: 100%;
+  height: 54px;
+  padding: 0 var(--go-space-3) 0 var(--go-space-4);
+  border: none;
+  border-radius: 14px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 200ms ease, transform 160ms ease, box-shadow 240ms ease;
+  -webkit-tap-highlight-color: transparent;
+
+  // Entrance: gentle fade + rise (staggered via --go-i delay)
+  opacity: 0;
+  animation: seven-menu-item-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--go-i, 0) * 45ms);
+
+  // ── Active accent bar slides in from the left edge ─────────────
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 4px;
+    height: 26px;
+    border-radius: 999px;
+    background: var(--go-primary);
+    transform: translateY(-50%) scaleY(0);
+    transform-origin: center;
+    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+
+    .mi__icon {
+      transform: translateX(2px);
+    }
+  }
+
+  &:active {
+    transform: scale(0.97);
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 2px;
+  }
+
+  &--active {
+    background: var(--go-surface);
+    box-shadow: 0 10px 26px rgba(0, 52, 91, 0.24);
+
+    &::before {
+      transform: translateY(-50%) scaleY(1);
+    }
+
+    .mi__icon {
+      color: var(--go-primary);
+      background: var(--go-ocean-soft);
+      animation: menu-item-icon-pop 340ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .mi__label {
+      color: var(--go-primary);
+      font-weight: 600;
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--go-white);
+    font-size: 1.15rem;
+    transition:
+      color 200ms ease,
+      background 200ms ease,
+      transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &__label {
+    font-family: var(--go-font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--go-white);
+    white-space: nowrap;
+    transition: color 200ms ease;
+  }
+}
+
+@keyframes menu-item-icon-pop {
+  0% {
+    transform: scale(0.7);
+  }
+  60% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes seven-menu-item-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mi {
+    animation: none;
+    opacity: 1;
+  }
+
+  .mi::before,
+  .mi__icon {
+    animation: none;
+    transition: none;
+  }
+}

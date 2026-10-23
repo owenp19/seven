@@ -1,0 +1,337 @@
+@if (loading) {
+  <app-seven-context-loader type="restaurant"></app-seven-context-loader>
+} @else {
+  @if (restaurant$ | async; as restaurant) {
+    @if (restaurant) {
+      <div class="rd">
+        <ion-content [fullscreen]="true">
+          <div class="rd__page">
+            <!-- ─── HERO INMERSIVO ─────────────────────────────────────── -->
+            <section class="rd__hero">
+              <app-media-carousel
+                class="rd__hero-media"
+                [images]="galleryImages()"
+                [alt]="restaurant.name"
+                [showDots]="false"
+              ></app-media-carousel>
+              <span class="rd__hero-shade"></span>
+
+              <div class="rd__hero-top">
+                <button class="rd__pill-btn" type="button" (click)="goBack()" [attr.aria-label]="'common.back' | t">
+                  <ion-icon name="chevron-back" aria-hidden="true"></ion-icon>
+                </button>
+
+                @if (galleryImages().length > 1) {
+                  <span class="rd__counter">{{ 'common.photos' | t: { count: galleryImages().length } }}</span>
+                }
+
+                <div class="rd__pill-row">
+                  <button class="rd__pill-btn" type="button" (click)="share(restaurant)" [attr.aria-label]="'common.share' | t">
+                    <ion-icon name="share-social-outline" aria-hidden="true"></ion-icon>
+                  </button>
+                </div>
+              </div>
+
+              <div class="rd__hero-info">
+                @if (restaurant.logo) {
+                  <img class="rd__logo" [src]="restaurant.logo" appSafeImg alt="" />
+                }
+                <span class="rd__chip">{{ restaurant.category ?? ('restaurantDetail.defaultCategory' | t) }}</span>
+                <h1 class="rd__title">{{ restaurant.name }}</h1>
+                @if (restaurant.description) {
+                  <p class="rd__subtitle">{{ restaurant.description }}</p>
+                }
+
+                <div class="rd__hero-meta">
+                  <span class="rd__rating">
+                    <ion-icon name="star" aria-hidden="true"></ion-icon>
+                    <strong>{{ restaurant.rating }}</strong>
+                    · {{ 'common.reviewsCount' | t: { count: restaurant.reviews } }}
+                  </span>
+                  @if (restaurant.address) {
+                    <span class="rd__loc">
+                      <ion-icon name="location" aria-hidden="true"></ion-icon>
+                      {{ restaurant.address }}
+                    </span>
+                  }
+                </div>
+              </div>
+            </section>
+
+            <!-- ─── BODY ───────────────────────────────────────────────── -->
+            <div class="rd__body">
+              <!-- Quick facts -->
+              <section class="rd__facts">
+                @if (restaurant.priceRange) {
+                  <div class="rd__fact">
+                    <ion-icon name="wallet-outline" aria-hidden="true"></ion-icon>
+                    <strong>{{ restaurant.priceRange }}</strong>
+                    <span>{{ 'restaurantDetail.price' | t }}</span>
+                  </div>
+                }
+                @if (restaurant.openingHours) {
+                  <div class="rd__fact">
+                    <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+                    <strong>{{ restaurant.openingHours }}</strong>
+                    <span>{{ 'restaurantDetail.hours' | t }}</span>
+                  </div>
+                }
+                <div class="rd__fact">
+                  <ion-icon name="restaurant-outline" aria-hidden="true"></ion-icon>
+                  <strong>{{ menuProducts().length }}</strong>
+                  <span>{{ 'restaurantDetail.dishes' | t }}</span>
+                </div>
+              </section>
+
+              <!-- Sellos de confianza -->
+              <section class="rd__meta-chips">
+                @if (restaurant.category) {
+                  <span class="rd__meta-chip">
+                    <ion-icon name="restaurant-outline" aria-hidden="true"></ion-icon>
+                    {{ restaurant.category }}
+                  </span>
+                }
+                @if (restaurant.openingHours) {
+                  <span class="rd__meta-chip">
+                    <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+                    {{ restaurant.openingHours }}
+                  </span>
+                }
+                @if (restaurant.providerName) {
+                  <span class="rd__meta-chip">
+                    <ion-icon name="shield-checkmark-outline" aria-hidden="true"></ion-icon>
+                    {{ restaurant.providerName }}
+                  </span>
+                }
+              </section>
+
+              <!-- ─── HERRAMIENTA · EXPLORADOR DE CARTA ──────────────── -->
+              @if (menuProducts().length > 0) {
+                <section class="rd__block rd__menu">
+                  <div class="rd__menu-head">
+                    <div>
+                      <h2 class="rd__block-title">{{ 'restaurantDetail.exploreMenu' | t }}</h2>
+                      <p class="rd__menu-sub">
+                        {{ 'restaurantDetail.menuSub' | t: { dishes: menuProducts().length, categories: categories().length } }}
+                      </p>
+                    </div>
+                    <button class="rd__sort" type="button" (click)="cycleSort()" [attr.aria-label]="'restaurantDetail.sortAria' | t">
+                      <ion-icon [name]="sortIcon()" aria-hidden="true"></ion-icon>
+                      {{ sortLabel() }}
+                    </button>
+                  </div>
+
+                  <!-- Búsqueda en vivo -->
+                  <div class="rd__search">
+                    <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+                    <input
+                      type="search"
+                      inputmode="search"
+                      [placeholder]="'restaurantDetail.searchPlaceholder' | t"
+                      [value]="menuQuery()"
+                      (input)="onSearch($event)"
+                      [attr.aria-label]="'restaurantDetail.searchLabel' | t"
+                    />
+                    @if (menuQuery()) {
+                      <button class="rd__search-clear" type="button" (click)="clearSearch()" [attr.aria-label]="'restaurantDetail.clearSearch' | t">
+                        <ion-icon name="close-circle" aria-hidden="true"></ion-icon>
+                      </button>
+                    }
+                  </div>
+
+                  <!-- Filtro por categoría -->
+                  @if (categories().length > 0) {
+                    <div class="rd__cats" role="tablist" [attr.aria-label]="'restaurantDetail.categoriesAria' | t">
+                      <button
+                        class="rd__cat"
+                        type="button"
+                        role="tab"
+                        [class.rd__cat--active]="activeCategory() === 'all'"
+                        [attr.aria-selected]="activeCategory() === 'all'"
+                        (click)="selectCategory('all')"
+                      >
+                        {{ 'restaurantDetail.all' | t }}
+                      </button>
+                      @for (category of categories(); track category) {
+                        <button
+                          class="rd__cat"
+                          type="button"
+                          role="tab"
+                          [class.rd__cat--active]="activeCategory() === category"
+                          [attr.aria-selected]="activeCategory() === category"
+                          (click)="selectCategory(category)"
+                        >
+                          {{ category }}
+                        </button>
+                      }
+                    </div>
+                  }
+
+                  <!-- Resultados -->
+                  @if (filteredDishes().length > 0) {
+                    <div class="rd__dishes">
+                      @for (dish of filteredDishes(); track dish.id) {
+                        <button class="rd__dish" type="button" (click)="openDish(dish)">
+                          <span class="rd__dish-media">
+                            @if (dish.image) {
+                              <img [src]="dish.image" appSafeImg [alt]="dish.name" loading="lazy" decoding="async" />
+                            } @else {
+                              <ion-icon name="restaurant-outline" aria-hidden="true"></ion-icon>
+                            }
+                            @if (dish.category) {
+                              <span class="rd__dish-tag">{{ dish.category }}</span>
+                            }
+                          </span>
+                          <span class="rd__dish-body">
+                            <strong class="rd__dish-name">{{ dish.name }}</strong>
+                            @if (dish.description) {
+                              <span class="rd__dish-desc">{{ dish.description }}</span>
+                            }
+                            <span class="rd__dish-foot">
+                              <span class="rd__dish-price">{{ dish.price | currencyCOP }}</span>
+                              <span class="rd__dish-add" aria-hidden="true">
+                                <ion-icon name="add"></ion-icon>
+                              </span>
+                            </span>
+                          </span>
+                        </button>
+                      }
+                    </div>
+                  } @else {
+                    <div class="rd__empty">
+                      <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+                      <p>{{ 'restaurantDetail.emptyTitle' | t }}</p>
+                      <button class="rd__empty-btn" type="button" (click)="clearFilters()">{{ 'restaurantDetail.wholeMenu' | t }}</button>
+                    </div>
+                  }
+                </section>
+              }
+
+              <!-- Sobre el lugar -->
+              @if (restaurant.description) {
+                <section class="rd__block">
+                  <h2 class="rd__block-title">{{ 'restaurantDetail.about' | t }}</h2>
+                  <p class="rd__desc" [class.rd__desc--expanded]="descriptionExpanded">
+                    {{ restaurant.description }}
+                  </p>
+                  <button class="rd__more" type="button" (click)="toggleDescription()">
+                    {{ (descriptionExpanded ? 'common.hide' : 'common.seeMore') | t }}
+                    <ion-icon name="chevron-down" aria-hidden="true"></ion-icon>
+                  </button>
+                </section>
+              }
+
+              <!-- Ubicación y contacto -->
+              @if (restaurant.address || restaurant.phone) {
+                <section class="rd__block">
+                  <h2 class="rd__block-title">{{ 'restaurantDetail.location' | t }}</h2>
+
+                  @if (restaurant.address) {
+                    <button class="rd__map" type="button" (click)="openMap(restaurant)">
+                      <span class="rd__map-pin">
+                        <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+                      </span>
+                      <span class="rd__map-text">
+                        <strong>{{ restaurant.address }}</strong>
+                        <small>{{ 'common.directions' | t }}</small>
+                      </span>
+                      <ion-icon name="navigate-outline" aria-hidden="true"></ion-icon>
+                    </button>
+                  }
+
+                  @if (restaurant.phone) {
+                    <button class="rd__map" type="button" (click)="call(restaurant)">
+                      <span class="rd__map-pin">
+                        <ion-icon name="call-outline" aria-hidden="true"></ion-icon>
+                      </span>
+                      <span class="rd__map-text">
+                        <strong>{{ restaurant.phone }}</strong>
+                        <small>{{ 'restaurantDetail.call' | t }}</small>
+                      </span>
+                      <ion-icon name="call-outline" aria-hidden="true"></ion-icon>
+                    </button>
+                  }
+                </section>
+              }
+
+              <!-- Opiniones reales, uno por dispositivo -->
+              <section class="rd__block rd__block--comments">
+                <app-comments-section target="restaurant" [slug]="restaurant.slug" [flush]="true"></app-comments-section>
+              </section>
+            </div>
+          </div>
+        </ion-content>
+
+        <!-- ─── BARRA FIJA · CTAs ─────────────────────────────────────── -->
+        <footer class="rd__bar">
+          <div class="rd__bar-price">
+            <span>{{ 'restaurantDetail.price' | t }}</span>
+            <strong>{{ restaurant.priceRange || ('restaurantDetail.defaultMenu' | t) }}</strong>
+            <small>{{ 'common.dishesCount' | t: { count: menuProducts().length } }}</small>
+          </div>
+
+          @if (restaurant.phone) {
+            <button class="rd__bar-wa" type="button" (click)="askWhatsapp(restaurant)" [attr.aria-label]="'common.whatsappWrite' | t">
+              <ion-icon name="logo-whatsapp" aria-hidden="true"></ion-icon>
+            </button>
+          }
+
+          <button class="rd__cta" type="button" (click)="reserve(restaurant)">
+            {{ 'common.reserveTable' | t }}
+            <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+          </button>
+        </footer>
+
+        <!-- ─── FICHA DEL PLATO ───────────────────────────────────────── -->
+        @if (selectedDish(); as dish) {
+          <div class="rd__sheet" (click)="closeDish()">
+            <div
+              class="rd__sheet-panel"
+              role="dialog"
+              aria-modal="true"
+              [attr.aria-label]="dish.name"
+              (click)="$event.stopPropagation()"
+            >
+              <button class="rd__sheet-close" type="button" (click)="closeDish()" [attr.aria-label]="'common.close' | t">
+                <ion-icon name="close" aria-hidden="true"></ion-icon>
+              </button>
+
+              @if (dish.image) {
+                <img class="rd__sheet-img" [src]="dish.image" appSafeImg [alt]="dish.name" />
+              }
+
+              <div class="rd__sheet-body">
+                @if (dish.category) {
+                  <span class="rd__chip rd__chip--solid">{{ dish.category }}</span>
+                }
+                <h2 class="rd__sheet-name">{{ dish.name }}</h2>
+                @if (dish.description) {
+                  <p class="rd__sheet-desc">{{ dish.description }}</p>
+                }
+                <span class="rd__sheet-price">{{ dish.price | currencyCOP }}</span>
+
+                <div class="rd__sheet-actions">
+                  @if (restaurant.phone) {
+                    <button class="rd__wa" type="button" (click)="orderDish(restaurant, dish)">
+                      <ion-icon name="logo-whatsapp" aria-hidden="true"></ion-icon>
+                      {{ 'common.whatsappOrder' | t }}
+                    </button>
+                  }
+                  <button class="rd__sheet-reserve" type="button" (click)="reserve(restaurant)">
+                    <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+                    {{ 'common.reserveTable' | t }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="rd__empty-page">
+        <h2>{{ 'restaurantDetail.notFoundTitle' | t }}</h2>
+        <p>{{ 'restaurantDetail.notFoundText' | t }}</p>
+      </div>
+    }
+  }
+}

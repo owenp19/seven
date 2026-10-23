@@ -1,0 +1,101 @@
+/*
+ * SEVEN App Global Styles
+ * ----------------------------------------------------------------------------
+ * App-wide rules: base typography, background and a few global helpers.
+ * The design tokens live in `theme/variables.scss`.
+ * The type scale lives in `theme/typography.scss`.
+ * Base component styles live in `theme/components/*.scss`.
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/* Ionic Dark Mode (kept disabled; the SEVEN brand is light-first) */
+@import "@ionic/angular/css/palettes/dark.system.css";
+
+/* SEVEN base component system */
+/* (resolved via the Angular stylePreprocessorOptions includes, see angular.json) */
+
+/* ---------------------------------------------------------------------------
+ * Base
+ * ------------------------------------------------------------------------- */
+
+:root {
+  font-family: var(--go-font-body);
+  background: var(--go-background);
+  color: var(--go-secondary);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--go-background);
+}
+
+/* Headings default to Oswald across the app for visual consistency */
+h1,
+h2,
+h3,
+h4,
+.ion-text-h1,
+.ion-text-h2,
+.ion-text-h3 {
+  font-family: var(--go-font-display);
+  color: var(--go-secondary);
+}
+
+ion-content {
+  --background: var(--go-background);
+}
+
+/* ---Global scrollbars hide (cleaner mobile feel)--------------------------- */
+ion-content::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* ---Default uppercase-free buttons (SEVEN tone is friendly)----------------- */
+ion-button {
+  text-transform: none;
+}
+
+/* ---Reduce motion (preferencia de Configuración)---------------------------- */
+/* Espejo de los `@media (prefers-reduced-motion: reduce)` de los componentes,
+   para que el interruptor de la app tambien los desactive. */
+html[data-reduce-motion='true'] *,
+html[data-reduce-motion='true'] *::before,
+html[data-reduce-motion='true'] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ---Confirmación destructiva (borrado de datos)----------------------------- */
+/* El diálogo de "¿borrar?" de la Política de Privacidad lleva esta clase para
+   que el botón que confirma sea rojo: el borrado no se parece a ningún otro
+   botón de la app y no debe heredarse el azul de las acciones normales. */
+.seven-destructive-alert {
+  --background: var(--go-white);
+  --ion-color-step-50: var(--go-danger-soft);
+  --ion-color-step-100: var(--go-danger-soft);
+
+  .alert-button.alert-button-strong {
+    color: var(--go-danger);
+    font-weight: 600;
+  }
+}

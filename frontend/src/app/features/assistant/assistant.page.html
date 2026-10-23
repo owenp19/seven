@@ -1,0 +1,213 @@
+<div class="asst">
+  <app-seven-assistant-header
+    [canReset]="canReset()"
+    (restart)="newConversation()"
+  ></app-seven-assistant-header>
+
+  <ion-content class="asst__scroll" style="--padding-bottom: 0px">
+    <div class="asst__stage">
+      <div class="asst__thread" role="log" aria-live="polite">
+        @if (showDiscovery()) {
+          <section class="asst__discovery">
+            <h1 class="asst__greeting">{{ 'assistant.greeting' | t }}</h1>
+            <p class="asst__greeting-sub">{{ 'assistant.greetingSub' | t }}</p>
+
+            <p class="asst__label">{{ 'assistant.quickTitle' | t }}</p>
+            <div class="asst__intents">
+              @for (intent of intents; track intent.labelKey) {
+                <app-seven-quick-intent
+                  [intent]="intent"
+                  (picked)="sendFromKey($event)"
+                ></app-seven-quick-intent>
+              }
+            </div>
+
+            @if (budgetOpen()) {
+              <div class="asst__budget" role="group" [attr.aria-label]="'assistant.budgetSheetTitle' | t">
+                <div class="asst__budget-head">
+                  <p class="asst__budget-title">{{ 'assistant.budgetSheetTitle' | t }}</p>
+                  <p class="asst__budget-hint">{{ 'assistant.budgetSheetHint' | t }}</p>
+                </div>
+
+                <label class="asst__budget-field">
+                  <span class="asst__budget-symbol" aria-hidden="true">$</span>
+                  <input
+                    #budgetInput
+                    class="asst__budget-input"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    [value]="budgetDisplay()"
+                    (input)="onBudgetInput($event)"
+                    (keydown.enter)="submitBudget()"
+                    [attr.placeholder]="'assistant.budgetPlaceholder' | t"
+                    [attr.aria-label]="'assistant.budgetSheetTitle' | t"
+                  />
+                </label>
+
+                <div class="asst__budget-presets">
+                  @for (preset of budgetPresets; track preset) {
+                    <button
+                      class="asst__budget-preset"
+                      type="button"
+                      [class.is-picked]="isPreset(preset)"
+                      (click)="choosePreset(preset)"
+                    >
+                      {{ preset | currencyCOP }}
+                    </button>
+                  }
+                </div>
+
+                <div class="asst__budget-actions">
+                  <button class="asst__budget-cancel" type="button" (click)="closeBudgetSheet()">
+                    {{ 'assistant.budgetCancel' | t }}
+                  </button>
+                  <button
+                    class="asst__budget-submit"
+                    type="button"
+                    [disabled]="budgetDisplay() === '' || sending()"
+                    (click)="submitBudget()"
+                  >
+                    <ion-icon name="sparkles-outline" aria-hidden="true"></ion-icon>
+                    {{ 'assistant.budgetCta' | t }}
+                  </button>
+                </div>
+              </div>
+            }
+
+            <p class="asst__label">{{ 'assistant.inspirationTitle' | t }}</p>
+            <div class="asst__inspirations">
+              @for (key of examples; track key) {
+                <button class="asst__inspiration" type="button" (click)="sendExample(key)">
+                  {{ key | t }}
+                </button>
+              }
+            </div>
+          </section>
+        }
+
+        @for (message of messages(); track message.id) {
+          <div class="asst__turn" [class.asst__turn--user]="message.role === 'user'">
+            @if (message.role === 'user') {
+              <p class="asst__user">{{ message.text }}</p>
+            } @else {
+              <p class="asst__reply" [class.asst__reply--error]="message.error">{{ message.text }}</p>
+
+              @if (message.error) {
+                <div class="asst__error">
+                  <p class="asst__error-title">{{ 'assistant.errorTitle' | t }}</p>
+                  <div class="asst__actions">
+                    <button class="asst__action asst__action--primary" type="button" (click)="retry()">
+                      <ion-icon name="refresh-outline" aria-hidden="true"></ion-icon>
+                      {{ 'assistant.retry' | t }}
+                    </button>
+                    <button class="asst__action" type="button" (click)="explore()">
+                      {{ 'assistant.exploreCta' | t }}
+                    </button>
+                  </div>
+                </div>
+              }
+
+              @if (message.packages.length > 0) {
+                <div class="asst__plan">
+                  @for (pack of message.packages; track $index) {
+                    <app-seven-package-card
+                      [package]="pack"
+                      (openItem)="openRecommendation($event)"
+                    ></app-seven-package-card>
+                  }
+                </div>
+              }
+
+              @if (message.recommendations.length > 0) {
+                @if (isComparison(message)) {
+                  <app-seven-comparison-card
+                    [recommendations]="message.recommendations"
+                    (open)="openRecommendation($event)"
+                  ></app-seven-comparison-card>
+                } @else {
+                  <div class="asst__rail">
+                    @for (rec of message.recommendations; track rec.key) {
+                      <app-seven-assistant-recommendation-card
+                        [recommendation]="rec"
+                        (open)="openRecommendation($event)"
+                      ></app-seven-assistant-recommendation-card>
+                    }
+                  </div>
+                }
+              }
+
+              @if (!message.error && message.recommendations.length === 0 && message.packages.length === 0) {
+                <div class="asst__fallback">
+                  <p class="asst__fallback-title">{{ 'assistant.fallbackTitle' | t }}</p>
+                  <div class="asst__fallback-tiles">
+                    @for (tile of fallbackTiles; track tile.route) {
+                      <button class="asst__tile" type="button" (click)="go(tile.route)">
+                        <ion-icon [name]="tile.icon" aria-hidden="true"></ion-icon>
+                        {{ tile.labelKey | t }}
+                      </button>
+                    }
+                  </div>
+                </div>
+              }
+
+              @if (message.packages.length > 0 && message.id === lastAssistantId()) {
+                <div class="asst__refine">
+                  <span class="asst__refine-title">{{ 'assistant.refineTitle' | t }}</span>
+                  <div class="asst__refine-chips">
+                    @for (key of refineKeys; track key) {
+                      <button class="asst__refine-chip" type="button" (click)="sendRefine(key)">
+                        {{ key | t }}
+                      </button>
+                    }
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        }
+
+        @if (sending()) {
+          <app-seven-thinking></app-seven-thinking>
+        }
+      </div>
+
+      @if (latestPackage(); as pack) {
+        <aside class="asst__aside">
+          <app-seven-package-card
+            [package]="pack"
+            (openItem)="openRecommendation($event)"
+          ></app-seven-package-card>
+        </aside>
+      }
+    </div>
+  </ion-content>
+
+  <div class="asst__composer">
+    <div class="asst__composer-box">
+      <textarea
+        #composerInput
+        class="asst__input"
+        rows="1"
+        [value]="draft()"
+        (input)="onInput($event)"
+        (keydown.enter)="onEnter($event)"
+        [attr.maxlength]="maxChars"
+        autocomplete="off"
+        enterkeyhint="send"
+        [attr.placeholder]="'assistant.placeholder' | t"
+        [attr.aria-label]="'assistant.placeholder' | t"
+      ></textarea>
+      <button
+        class="asst__send"
+        type="button"
+        (click)="send()"
+        [disabled]="draft().trim() === '' || sending()"
+        [attr.aria-label]="'assistant.send' | t"
+      >
+        <ion-icon name="send" aria-hidden="true"></ion-icon>
+      </button>
+    </div>
+    <p class="asst__disclaimer">{{ 'assistant.disclaimer' | t }}</p>
+  </div>
+</div>

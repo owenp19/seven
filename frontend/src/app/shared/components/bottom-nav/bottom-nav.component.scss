@@ -1,0 +1,209 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// SEVEN — BOTTOM NAV (dock premium)
+//
+// La navegación principal del app. Glassmorphism suave, filete superior con el
+// acento de marca, indicador de sección que crece y realce tipográfico: se lee
+// como una pieza de producto caro y no como una tab bar de sistema.
+// -----------------------------------------------------------------------------
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: var(--seven-space-1);
+  margin: 0 auto;
+  box-sizing: border-box;
+  // Deterministic height so the shell reserves exactly the right amount
+  // of space via `--seven-bottom-nav-height` (safe area added on top).
+  height: calc(var(--seven-bottom-nav-height) + env(safe-area-inset-bottom));
+  padding: var(--seven-space-1) var(--seven-space-2) calc(env(safe-area-inset-bottom) + var(--seven-space-1));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.99));
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border-top: 1px solid var(--seven-border-soft);
+  box-shadow: 0 -10px 30px rgba(11, 45, 74, 0.1);
+
+  // Filete superior con el acento de marca (se desvanece en los extremos).
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--ion-color-primary), transparent);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &__item {
+    position: relative;
+    flex: 1;
+    max-width: 120px;
+    // Touch target: never shorter than the 44px accessibility minimum.
+    min-height: 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 3px var(--seven-space-1);
+    border: none;
+    border-radius: var(--seven-radius-lg);
+    background: transparent;
+    color: var(--seven-text-faint);
+    font-family: var(--seven-font-ui);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 240ms ease, transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    -webkit-tap-highlight-color: transparent;
+
+    &:focus-visible {
+      outline: 2px solid var(--ion-color-primary);
+      outline-offset: -2px;
+    }
+
+    // Indicador de sección activa: crece desde el centro.
+    &::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      width: 0;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--ion-color-primary);
+      opacity: 0;
+      transition: width 280ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms ease;
+    }
+
+    &:hover {
+      color: var(--seven-text-muted);
+
+      .bottom-nav__glyph {
+        background: rgba(var(--ion-color-primary-rgb), 0.08);
+      }
+    }
+
+    &.is-active {
+      color: var(--ion-color-primary);
+
+      .bottom-nav__glyph {
+        background: var(--seven-ocean-blue-50);
+        transform: translateY(-1px);
+      }
+
+      .bottom-nav__label {
+        font-weight: 700;
+      }
+
+      &::after {
+        width: 20px;
+        opacity: 1;
+      }
+    }
+
+    // ─── Ítem central SEVEN AI: contenedor circular con degradado de marca ──
+  &--center {
+    .bottom-nav__glyph {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, var(--ion-color-primary-tint), var(--ion-color-primary));
+      color: var(--ion-color-primary-contrast);
+      box-shadow: 0 8px 20px rgba(var(--ion-color-primary-rgb), 0.38);
+      padding: 0;
+    }
+
+      .bottom-nav__label {
+        color: var(--seven-deep-sea);
+        font-weight: 700;
+      }
+
+      &:hover .bottom-nav__glyph {
+        background: linear-gradient(145deg, var(--ion-color-primary-tint), var(--ion-color-primary));
+      }
+
+      &.is-active {
+        color: var(--ion-color-primary);
+
+        .bottom-nav__glyph {
+          box-shadow: 0 10px 26px rgba(var(--ion-color-primary-rgb), 0.52);
+        }
+      }
+    }
+
+    @media (min-width: 768px) {
+      font-size: 0.72rem;
+    }
+
+    @media (min-width: 1024px) {
+      max-width: none;
+      min-width: 110px;
+    }
+  }
+
+  &__glyph {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--seven-radius-md);
+    transition:
+      background 240ms ease,
+      transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 240ms ease;
+
+    ion-icon {
+      font-size: 1.42rem;
+      transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  }
+
+  &__item:active &__glyph ion-icon {
+    transform: scale(0.84);
+  }
+
+  &__label {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // ─── Desktop: dock flotante centrado ────────────────────────────
+  @media (min-width: 1024px) {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    bottom: var(--seven-space-5);
+    width: auto;
+    max-width: 92vw;
+    height: auto;
+    padding: var(--seven-space-2);
+    border: 1px solid var(--seven-border-soft);
+    border-radius: var(--seven-radius-pill);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    box-shadow: var(--seven-shadow-raised);
+    gap: var(--seven-space-2);
+
+    &::before {
+      display: none;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bottom-nav__glyph,
+  .bottom-nav__item {
+    transition: none;
+  }
+}

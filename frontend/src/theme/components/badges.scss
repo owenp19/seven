@@ -1,0 +1,53 @@
+// =============================================================================
+// SEVEN BADGES & PILLS
+// -----------------------------------------------------------------------------
+// Standard status / category badges used across the app.
+// =============================================================================
+
+.go-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--go-space-1);
+  padding: var(--go-space-1) var(--go-space-3);
+  border-radius: var(--go-radius-pill);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+// Category / informational badge — Lagoon Blue on soft blue
+.go-badge--blue {
+  background: var(--go-blue-soft);
+  color: var(--go-ocean);
+}
+
+// Verified / positive — Palm Green
+.go-badge--green {
+  background: var(--go-green-soft);
+  color: var(--go-green-dark);
+}
+
+// Promo / attention — Soft Coral
+.go-badge--sunset {
+  background: var(--go-sunset-soft);
+  color: var(--go-sunset);
+}
+
+// Rating / highlight — Sun Gold
+.go-badge--gold {
+  background: var(--go-gold-soft);
+  color: var(--go-gold-dark);
+}
+
+// Neutral — soft ink on sand
+.go-badge--neutral {
+  background: var(--go-sand-muted);
+  color: var(--go-navy-soft);
+}
+
+// Featured / premium — solid gold pill w/ white text
+.go-badge--featured {
+  background: var(--go-gold);
+  color: var(--go-white);
+}

@@ -1,0 +1,19 @@
+<div class="language-selector" role="group" [attr.aria-label]="'welcome.languageLabel' | t">
+  @for (option of languages; track option.code) {
+    <button
+      type="button"
+      class="language-selector__option"
+      [class.is-active]="current() === option.code"
+      [attr.aria-pressed]="current() === option.code"
+      [attr.aria-label]="option.name"
+      [title]="option.name"
+      (click)="select(option.code)"
+    >
+      {{ option.short }}
+    </button>
+
+    @if (!$last) {
+      <span class="language-selector__separator" aria-hidden="true"></span>
+    }
+  }
+</div>

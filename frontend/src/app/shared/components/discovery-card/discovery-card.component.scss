@@ -1,0 +1,196 @@
+// =============================================================================
+// DISCOVERY CARD — tarjeta compacta de los carruseles de la Home
+// =============================================================================
+
+.dc-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--seven-radius-xl);
+  background: var(--seven-surface);
+  box-shadow: var(--seven-shadow-card);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 180ms ease, box-shadow 200ms ease;
+
+  &:active {
+    transform: scale(0.985);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--seven-ocean-blue);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
+  &__media {
+    position: relative;
+    flex: none;
+    height: 10.5rem; // 168px
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  &__rating {
+    position: absolute;
+    top: var(--seven-space-3);
+    left: var(--seven-space-3);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--seven-radius-pill);
+    background: rgba(11, 45, 74, 0.88);
+    color: var(--seven-text-inverse);
+    font-family: var(--seven-font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    backdrop-filter: blur(2px);
+
+    ion-icon {
+      color: var(--seven-sun-gold);
+      font-size: 0.8rem;
+    }
+  }
+
+  &__save {
+    position: absolute;
+    top: var(--seven-space-2);
+    right: var(--seven-space-2);
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--seven-deep-sea);
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: var(--seven-shadow-soft);
+    transition: transform 160ms ease, color 200ms ease;
+
+    &:active {
+      transform: scale(0.88);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--seven-ocean-blue);
+      outline-offset: 2px;
+    }
+
+    ion-icon[name='heart'] {
+      color: var(--seven-warning);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: var(--seven-space-3) var(--seven-space-4) var(--seven-space-4);
+  }
+
+  &__category {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--seven-ocean-blue);
+  }
+
+  &__name {
+    margin: 0.25rem 0 0;
+    font-family: var(--seven-font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--seven-deep-sea);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__provider {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.3rem;
+    font-size: 0.72rem;
+    color: var(--seven-text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    ion-icon {
+      flex: none;
+      font-size: 0.85rem;
+      color: var(--seven-ocean-blue);
+    }
+  }
+
+  &__foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--seven-space-3);
+    margin-top: auto;
+    padding-top: var(--seven-space-3);
+  }
+
+  &__location {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    min-width: 0;
+    font-size: 0.72rem;
+    color: var(--seven-text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    ion-icon {
+      flex: none;
+      font-size: 0.85rem;
+      color: var(--seven-ocean-blue);
+    }
+  }
+
+  &__price {
+    display: inline-flex;
+    flex: none;
+    flex-direction: column;
+    align-items: flex-end;
+    line-height: 1.15;
+
+    small {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--seven-text-muted);
+    }
+
+    strong {
+      font-family: var(--seven-font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--seven-palm-green);
+    }
+  }
+}

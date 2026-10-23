@@ -1,0 +1,284 @@
+// =============================================================================
+// COMMENTS SECTION — opiniones de viajeros
+// =============================================================================
+
+.comments {
+  display: block;
+  padding: 22px 0;
+
+  // Cuando cierra la página, el espacio inferior lo aporta el `--padding-bottom`
+  // del detalle (barra fija + safe-area + 16px) para no duplicarlo.
+  :host(.comments--flush) & {
+    padding-bottom: 0;
+  }
+
+  // ── cabecera ────────────────────────────────────────────────────────────────
+  &__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--go-space-3);
+    margin-bottom: var(--go-space-4);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  &__count {
+    font-size: 0.8rem;
+    color: var(--go-navy-muted);
+    white-space: nowrap;
+  }
+
+  // ── lista ───────────────────────────────────────────────────────────────────
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--go-space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--go-space-3);
+  }
+
+  // Burbuja de iniciales: da un ancla visual sin pedir foto ni avatar, que
+  // sería una cuenta de más para un desconocido.
+  &__avatar {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--go-ocean-soft);
+    color: var(--go-navy);
+    font-family: var(--go-font-display);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  &__content {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: baseline;
+    gap: var(--go-space-2);
+  }
+
+  &__author {
+    font-family: var(--go-font-display);
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--go-navy);
+    // Un nombre muy largo no debe empujar la fecha fuera de la pantalla.
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__date {
+    flex: 0 0 auto;
+    font-size: 0.72rem;
+    color: var(--go-navy-muted);
+  }
+
+  &__stars {
+    display: flex;
+    gap: 1px;
+    margin-top: 2px;
+    font-size: 0.85rem;
+    color: var(--go-sand-muted);
+  }
+
+  &__star--on {
+    color: var(--go-gold);
+  }
+
+  &__body {
+    margin: 4px 0 0;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--go-navy-soft);
+    // Un pegamento sin espacios no debe romper el ancho de la tarjeta.
+    overflow-wrap: anywhere;
+  }
+
+  &__pending,
+  &__notice {
+    margin: var(--go-space-3) 0 0;
+    padding: var(--go-space-3);
+    border-radius: var(--go-radius-md);
+    background: var(--go-ocean-soft);
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--go-navy);
+  }
+
+  &__empty {
+    margin: 0 0 var(--go-space-4);
+    font-size: 0.88rem;
+    color: var(--go-navy-muted);
+  }
+
+  &__skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: var(--go-space-2);
+  }
+
+  // ── formulario ──────────────────────────────────────────────────────────────
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--go-space-3);
+    margin-top: var(--go-space-5);
+    padding: var(--go-space-4);
+    border: 1px solid var(--go-line);
+    border-radius: var(--go-radius-lg);
+    background: var(--go-white);
+  }
+
+  &__form-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  &__field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--go-space-1);
+  }
+
+  &__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--go-navy-muted);
+  }
+
+  &__input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--go-line);
+    border-radius: var(--go-radius-md);
+    background: var(--go-white);
+    color: var(--go-navy);
+    font-family: var(--go-font-body);
+    font-size: 0.9rem;
+    line-height: 1.4;
+
+    &--area {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--go-ocean);
+      outline-offset: 1px;
+      border-color: transparent;
+    }
+  }
+
+  &__counter {
+    position: absolute;
+    right: 2px;
+    bottom: -16px;
+    font-size: 0.7rem;
+    color: var(--go-navy-muted);
+  }
+
+  // Fuera de pantalla pero presente en el DOM: es la trampa de los robots.
+  &__trap {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  &__rating {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--go-space-3);
+    flex-wrap: wrap;
+  }
+
+  &__star-btn {
+    display: grid;
+    place-items: center;
+    padding: 2px;
+    border: 0;
+    background: none;
+    color: var(--go-sand-muted);
+    font-size: 1.35rem;
+    line-height: 1;
+    cursor: pointer;
+
+    &--on {
+      color: var(--go-gold);
+    }
+  }
+
+  &__rating-clear {
+    border: 0;
+    background: none;
+    padding: 2px 4px;
+    font-size: 0.72rem;
+    color: var(--go-navy-muted);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  &__error {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--go-danger);
+  }
+
+  &__submit {
+    padding: 12px 16px;
+    border: 0;
+    border-radius: var(--go-radius-pill);
+    background: var(--go-ocean);
+    color: var(--go-white);
+    font-family: var(--go-font-display);
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+  }
+
+  &__hint {
+    margin: 0;
+    font-size: 0.72rem;
+    color: var(--go-navy-muted);
+    text-align: center;
+  }
+
+  &__notice--pending {
+    background: var(--go-gold-soft);
+  }
+}

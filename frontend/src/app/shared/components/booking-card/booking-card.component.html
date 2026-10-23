@@ -1,0 +1,73 @@
+<article class="bk-card" [class.bk-card--hero]="hero" [class.bk-card--live]="live">
+  <header class="bk-card__head">
+    <span class="bk-card__thumb" aria-hidden="true">
+      <ion-icon [name]="typeIcon"></ion-icon>
+    </span>
+    <div class="bk-card__titles">
+      <span class="bk-card__type">{{ typeLabel | t }}</span>
+      <h3 class="bk-card__title">{{ booking.entity }}</h3>
+    </div>
+    <span class="bk-card__status bk-card__status--{{ booking.status }}">
+      <ion-icon [name]="status.icon" aria-hidden="true"></ion-icon>
+      {{ status.labelKey | t }}
+    </span>
+  </header>
+
+  <div class="bk-card__meta">
+    <span class="bk-card__meta-item">
+      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+      {{ whenLabel }}
+    </span>
+    <span class="bk-card__meta-item">
+      <ion-icon name="people-outline" aria-hidden="true"></ion-icon>
+      {{ guestsLabel }}
+    </span>
+    @if (hasAmount) {
+      <span class="bk-card__meta-item">
+        <ion-icon name="ticket-outline" aria-hidden="true"></ion-icon>
+        {{ booking.totalAmount | currencyCOP: booking.currency }}
+      </span>
+    }
+  </div>
+
+  <div class="bk-card__code">
+    <span class="bk-card__code-label">{{ 'bookings.code' | t }}</span>
+    <span class="bk-card__code-value">{{ booking.code }}</span>
+    <button
+      class="bk-card__copy"
+      type="button"
+      (click)="copyCode()"
+      [attr.aria-label]="(copied() ? 'bookings.copied' : 'bookings.copyCode') | t"
+    >
+      <ion-icon [name]="copied() ? 'checkmark' : 'copy-outline'" aria-hidden="true"></ion-icon>
+    </button>
+  </div>
+
+  @if (live) {
+    <p class="bk-card__live">
+      <span class="bk-card__dot" aria-hidden="true"></span>
+      {{ 'bookings.live' | t }}
+    </p>
+    @if (refreshFailed) {
+      <p class="bk-card__error" role="status">
+        <ion-icon name="alert-circle-outline" aria-hidden="true"></ion-icon>
+        {{ 'bookings.refreshError' | t }}
+      </p>
+    }
+    <div class="bk-card__actions">
+      <button
+        class="bk-card__btn bk-card__btn--primary"
+        type="button"
+        (click)="onRefresh()"
+        [disabled]="refreshing"
+      >
+        <ion-icon name="refresh-outline" [class.bk-spin]="refreshing" aria-hidden="true"></ion-icon>
+        {{ (refreshing ? 'bookings.refreshing' : 'bookings.refresh') | t }}
+      </button>
+      <button class="bk-card__btn bk-card__btn--ghost" type="button" (click)="onContact()">
+        <ion-icon name="logo-whatsapp" aria-hidden="true"></ion-icon>
+        {{ 'bookings.contact' | t }}
+      </button>
+    </div>
+  }
+</article>

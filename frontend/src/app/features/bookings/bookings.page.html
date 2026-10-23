@@ -1,0 +1,117 @@
+<ion-content class="bk" [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="refreshAll($event)">
+    <ion-refresher-content pullingIcon="refresh-outline" refreshingIcon="refresh-outline"></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="bk__header">
+    <div>
+      <h1 class="bk__title">{{ 'bookings.title' | t }}</h1>
+      <p class="bk__subtitle">{{ 'bookings.subtitle' | t }}</p>
+    </div>
+    <span class="bk__badge">
+      <ion-icon name="phone-portrait-outline" aria-hidden="true"></ion-icon>
+      {{ 'bookings.deviceOnly' | t }}
+    </span>
+  </div>
+
+  <div class="bk__page">
+    @if (!ready()) {
+      <div class="bk__list" aria-busy="true">
+        @for (ghost of ghosts; track ghost) {
+          <div class="bk-skel">
+            <ion-skeleton-text animated style="width: 64px; height: 64px; border-radius: 12px"></ion-skeleton-text>
+            <div class="bk-skel__body">
+              <ion-skeleton-text animated style="width: 36%; height: 10px"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 74%; height: 16px; margin-top: 8px"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 55%; height: 12px; margin-top: 12px"></ion-skeleton-text>
+            </div>
+          </div>
+        }
+      </div>
+    } @else if (loadFailed()) {
+      <div class="bk__state">
+        <span class="bk__state-icon">
+          <ion-icon name="cloud-offline-outline" aria-hidden="true"></ion-icon>
+        </span>
+        <h2 class="bk__state-title">{{ 'bookings.errorTitle' | t }}</h2>
+        <button class="bk__cta" type="button" (click)="retryLoad()">
+          <ion-icon name="refresh-outline" aria-hidden="true"></ion-icon>
+          {{ 'bookings.retry' | t }}
+        </button>
+      </div>
+    } @else if (isEmpty()) {
+      <div class="bk__state">
+        <span class="bk__state-icon">
+          <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+        </span>
+        <h2 class="bk__state-title">{{ 'bookings.emptyTitle' | t }}</h2>
+        <p class="bk__state-text">{{ 'bookings.emptyText' | t }}</p>
+        <button class="bk__cta" type="button" (click)="goToExplore()">
+          {{ 'bookings.emptyCta' | t }}
+          <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+        </button>
+      </div>
+    } @else {
+      @if (view().showSegment) {
+        <div class="bk__segments" role="group" [attr.aria-label]="'bookings.title' | t">
+          <button
+            class="bk__segment"
+            type="button"
+            [class.is-active]="segment() === 'active'"
+            [attr.aria-pressed]="segment() === 'active'"
+            (click)="selectSegment('active')"
+          >
+            {{ 'bookings.segmentActive' | t }}
+          </button>
+          <button
+            class="bk__segment"
+            type="button"
+            [class.is-active]="segment() === 'history'"
+            [attr.aria-pressed]="segment() === 'history'"
+            (click)="selectSegment('history')"
+          >
+            {{ 'bookings.segmentHistory' | t }}
+          </button>
+        </div>
+      }
+
+      @if (visibleGroup() === 'active') {
+        <p class="bk__summary">{{ summaryLabel }}</p>
+        <div class="bk__list">
+          @if (view().hero; as hero) {
+            <div class="bk__hero">
+              <h2 class="bk__section-title bk__section-title--accent">{{ 'bookings.nextPlan' | t }}</h2>
+              <app-booking-card
+                [booking]="hero"
+                [hero]="true"
+                [refreshing]="isRefreshing(hero.code)"
+                [refreshFailed]="hasRefreshFailed(hero.code)"
+                (action)="onCardAction($event, hero)"
+              ></app-booking-card>
+            </div>
+          }
+
+          @if (view().rest.length > 0) {
+            @if (view().hero) {
+              <h2 class="bk__section-title">{{ 'bookings.all' | t }}</h2>
+            }
+            @for (booking of view().rest; track booking.code) {
+              <app-booking-card
+                [booking]="booking"
+                [refreshing]="isRefreshing(booking.code)"
+                [refreshFailed]="hasRefreshFailed(booking.code)"
+                (action)="onCardAction($event, booking)"
+              ></app-booking-card>
+            }
+          }
+        </div>
+      } @else {
+        <div class="bk__list">
+          @for (booking of view().history; track booking.code) {
+            <app-booking-card [booking]="booking" (action)="onCardAction($event, booking)"></app-booking-card>
+          }
+        </div>
+      }
+    }
+  </div>
+</ion-content>

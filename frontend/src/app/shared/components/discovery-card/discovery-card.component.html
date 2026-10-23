@@ -1,0 +1,65 @@
+<article
+  class="dc-card"
+  role="link"
+  tabindex="0"
+  [attr.aria-label]="item.name + ', ' + item.category"
+  (click)="open.emit(item)"
+  (keydown.enter)="open.emit(item)"
+>
+  <div class="dc-card__media">
+    <img
+      class="dc-card__img"
+      [src]="item.image"
+      appSafeImg
+      [alt]="item.name"
+      loading="lazy"
+      decoding="async"
+    />
+
+    @if (item.rating > 0) {
+      <span class="dc-card__rating">
+        <ion-icon name="star" aria-hidden="true"></ion-icon>
+        {{ ratingLabel }}
+      </span>
+    }
+
+    <button
+      class="dc-card__save"
+      type="button"
+      [attr.aria-label]="(saved ? 'saved.remove' : 'common.save') | t"
+      (click)="onToggleSave($event)"
+    >
+      <ion-icon [name]="saved ? 'heart' : 'heart-outline'" aria-hidden="true"></ion-icon>
+    </button>
+  </div>
+
+  <div class="dc-card__body">
+    <span class="dc-card__category">{{ item.category }}</span>
+    <h3 class="dc-card__name">{{ item.name }}</h3>
+
+    @if (item.providerName) {
+      <span class="dc-card__provider">
+        <ion-icon name="business-outline" aria-hidden="true"></ion-icon>
+        {{ item.providerName }}
+      </span>
+    }
+
+    <div class="dc-card__foot">
+      @if (item.location) {
+        <span class="dc-card__location">
+          <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+          {{ item.location }}
+        </span>
+      }
+
+      @if (item.price > 0) {
+        <span class="dc-card__price">
+          @if (item.priceLabel) {
+            <small>{{ item.priceLabel }}</small>
+          }
+          <strong>{{ item.price | currencyCOP }}</strong>
+        </span>
+      }
+    </div>
+  </div>
+</article>

@@ -1,0 +1,16 @@
+<div class="shell">
+  @if (showHeader()) {
+    <app-nav-header></app-nav-header>
+  }
+
+  @if ((online$ | async) === false) {
+    <div class="shell__offline" role="status">
+      <ion-icon name="cloud-offline-outline" aria-hidden="true"></ion-icon>
+      <span>Sin conexión — mostrando lo guardado</span>
+    </div>
+  }
+
+  <ion-router-outlet class="shell__outlet"></ion-router-outlet>
+
+  <app-bottom-nav></app-bottom-nav>
+</div>

@@ -1,0 +1,212 @@
+// ─── Mis reservas — seguimiento anónimo, ligado al dispositivo ─────────────
+:host {
+  display: block;
+}
+
+.bk__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  // El shell ya coloca esta página debajo del nav-header: no hace falta
+  // compensar la safe-area aquí.
+  padding: var(--seven-space-4) 20px var(--seven-space-2);
+}
+
+.bk__title {
+  margin: 0;
+  font-family: var(--seven-font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--seven-deep-sea);
+}
+
+.bk__subtitle {
+  margin: 4px 0 0;
+  font-family: var(--seven-font-body);
+  font-size: 0.84rem;
+  font-weight: 300;
+  color: var(--seven-text-muted);
+}
+
+.bk__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  margin-top: 4px;
+  padding: 6px 10px;
+  border-radius: var(--seven-radius-pill);
+  background: var(--seven-ocean-blue-50);
+  color: var(--seven-ocean-blue);
+  font-family: var(--seven-font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+
+  ion-icon {
+    font-size: 0.95rem;
+  }
+}
+
+.bk__page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 8px 20px 40px;
+}
+
+.bk__summary {
+  margin: 0 0 12px;
+  font-family: var(--seven-font-body);
+  font-size: 0.82rem;
+  color: var(--seven-text-muted);
+}
+
+// ─── Filtro Activas / Historial ────────────────────────────────────────────
+.bk__segments {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  margin-bottom: 16px;
+  border-radius: var(--seven-radius-pill);
+  background: var(--seven-surface-muted);
+}
+
+.bk__segment {
+  flex: 1 1 auto;
+  min-height: 40px;
+  border: 0;
+  border-radius: var(--seven-radius-pill);
+  background: transparent;
+  color: var(--seven-text-muted);
+  font-family: var(--seven-font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 160ms ease;
+
+  &.is-active {
+    background: var(--seven-surface);
+    color: var(--seven-deep-sea);
+    box-shadow: var(--seven-shadow-soft);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--seven-ocean-blue);
+    outline-offset: 2px;
+  }
+}
+
+.bk__list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.bk__hero {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bk__section-title {
+  margin: 0;
+  font-family: var(--seven-font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--seven-text-muted);
+}
+
+.bk__section-title--accent {
+  color: var(--seven-ocean-blue);
+}
+
+// ─── Estados: vacío y error ────────────────────────────────────────────────
+.bk__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 28px 12px 40px;
+  text-align: center;
+}
+
+.bk__state-icon {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border-radius: var(--seven-radius-pill);
+  background: var(--seven-ocean-blue-50);
+  color: var(--seven-ocean-blue);
+  font-size: 2rem;
+}
+
+.bk__state-title {
+  margin: 8px 0 0;
+  font-family: var(--seven-font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--seven-deep-sea);
+}
+
+.bk__state-text {
+  max-width: 320px;
+  margin: 0;
+  font-family: var(--seven-font-body);
+  font-size: 0.86rem;
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--seven-text-muted);
+}
+
+.bk__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  min-height: 44px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: var(--seven-radius-pill);
+  background: var(--seven-ocean-blue);
+  color: var(--seven-text-on-accent);
+  font-family: var(--seven-font-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0, 119, 182, 0.3);
+  cursor: pointer;
+  transition: transform 160ms ease;
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--seven-ocean-blue);
+    outline-offset: 2px;
+  }
+}
+
+// ─── Skeleton de carga ─────────────────────────────────────────────────────
+.bk-skel {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--seven-border-soft);
+  border-radius: var(--seven-radius-lg);
+  background: var(--seven-surface);
+}
+
+.bk-skel__body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bk__segment,
+  .bk__cta {
+    transition: none;
+  }
+}

@@ -1,0 +1,76 @@
+// =============================================================================
+// MEDIA CAROUSEL — portada de detalle con avance automático
+// =============================================================================
+
+.media-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  &__swiper {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__dots {
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    /* Las páginas que|superponen texto en el hero (título, precio, CTA)
+       suben los dots con `--mc-dots-offset` para que no queden debajo. */
+    bottom: var(--mc-dots-offset, var(--go-space-3));
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: var(--go-radius-pill);
+    background: rgba(11, 45, 74, 0.32);
+    transform: translateX(-50%);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+
+  &__dot {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--go-radius-pill);
+    background: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    transition: width 220ms ease, background 220ms ease;
+    -webkit-tap-highlight-color: transparent;
+
+    &.is-active {
+      width: 18px;
+      background: var(--go-white);
+    }
+  }
+}
+
+// Los dots son elementos del template de Swiper, que vive fuera del
+// encapsulamiento de Angular: hay que atravesarlo con ::ng-deep.
+:host ::ng-deep .swiper-slide {
+  height: 100%;
+  transition: opacity 320ms ease;
+  opacity: 0.85;
+}
+
+:host ::ng-deep .swiper-slide-active {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host ::ng-deep .swiper-slide,
+  .media-carousel__dot {
+    transition: none;
+  }
+}

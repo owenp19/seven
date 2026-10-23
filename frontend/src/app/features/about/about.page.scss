@@ -1,0 +1,489 @@
+// =============================================================================
+// SEVEN · ACERCA DE
+// -----------------------------------------------------------------------------
+// Una sola columna en el teléfono. Los tres puntos que resumen qué hace la app
+// sí pasan a rejilla de tres desde 480px: son cortos y caben, y en vertical
+// uno al lado del otro se convertía en tres líneas de texto suelto que no
+// invite a nada.
+// =============================================================================
+
+.about {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: var(--go-space-4) var(--go-space-4) calc(env(safe-area-inset-bottom) + var(--go-space-8));
+
+  // -----------------------------------------------------------------------------
+  // Portada
+  // -----------------------------------------------------------------------------
+  &__hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--go-space-2);
+    padding: var(--go-space-6) var(--go-space-5) var(--go-space-6);
+    margin-bottom: var(--go-space-5);
+    border-radius: var(--go-radius-xl);
+    background: linear-gradient(160deg, var(--go-ocean) 0%, var(--go-navy) 100%);
+    color: var(--go-white);
+    overflow: hidden;
+    text-align: center;
+  }
+
+  // Halo suave detrás de la marca: da profundidad al degradado sin necesidad de
+  // una imagen, y se queda quieto para no competir con el texto.
+  &__glow {
+    position: absolute;
+    top: -40%;
+    left: 50%;
+    width: 22rem;
+    height: 22rem;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 70%);
+    pointer-events: none;
+  }
+
+  &__mark {
+    position: relative;
+    font-family: var(--go-font-display);
+    font-size: clamp(2.4rem, 12vw, 3.25rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.22em;
+    // El tracking empuja la última letra hacia la derecha y descentra el bloque
+    // dentro de un contenedor centrado; el margen negativo lo devuelve al eje.
+    margin-right: -0.22em;
+    text-indent: 0.22em;
+  }
+
+  &__tagline {
+    position: relative;
+    max-width: 22rem;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  &__version {
+    position: relative;
+    margin-top: var(--go-space-2);
+    padding: 4px 12px;
+    border-radius: var(--go-radius-pill);
+    background: rgba(255, 255, 255, 0.16);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--go-white);
+  }
+
+  &__lead {
+    margin: 0 0 var(--go-space-6);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--go-navy-soft);
+  }
+
+  // -----------------------------------------------------------------------------
+  // Secciones
+  // -----------------------------------------------------------------------------
+  &__section {
+    margin-bottom: var(--go-space-6);
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: var(--go-space-3);
+    margin: 0 0 var(--go-space-3);
+    font-family: var(--go-font-display);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--go-navy-muted);
+
+    // Punto de color y filete: el mismo recurso que en Configuración, para
+    // que las dos páginas se lean como la misma aplicación.
+    &-dot {
+      flex-shrink: 0;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--go-ocean);
+    }
+
+    &::after {
+      content: '';
+      flex: 1 1 auto;
+      height: 1px;
+      background: var(--go-line);
+    }
+  }
+
+  // -----------------------------------------------------------------------------
+  // Qué hace
+  // -----------------------------------------------------------------------------
+  &__points {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--go-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__point {
+    display: flex;
+    align-items: center;
+    gap: var(--go-space-3);
+    padding: var(--go-space-3) var(--go-space-4);
+    border: 1px solid var(--go-line);
+    border-radius: var(--go-radius-lg);
+    background: var(--go-white);
+  }
+
+  &__point-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--go-ocean-soft);
+    color: var(--go-ocean);
+    font-size: 1.15rem;
+  }
+
+  &__point-text {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--go-navy);
+  }
+
+  // -----------------------------------------------------------------------------
+  // SEVEN en cifras
+  // -----------------------------------------------------------------------------
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--go-space-2);
+    padding: var(--go-space-5) var(--go-space-4);
+    border-radius: var(--go-radius-xl);
+    background: var(--go-ocean);
+    color: var(--go-white);
+  }
+
+  &__stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--go-space-1);
+  }
+
+  &__stat-value {
+    font-family: var(--go-font-display);
+    font-size: 1.7rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--go-white);
+  }
+
+  &__stat-label {
+    font-size: 0.76rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  // -----------------------------------------------------------------------------
+  // Por qué SEVEN
+  // -----------------------------------------------------------------------------
+  &__values {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--go-space-2);
+  }
+
+  &__value {
+    display: flex;
+    flex-direction: column;
+    gap: var(--go-space-1);
+    padding: var(--go-space-4);
+    border: 1px solid var(--go-line);
+    border-radius: var(--go-radius-lg);
+    background: var(--go-white);
+  }
+
+  &__value-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: var(--go-space-2);
+    border-radius: var(--go-radius-md);
+    background: var(--go-ocean-soft);
+    color: var(--go-ocean);
+    font-size: 1.3rem;
+  }
+
+  &__value-title {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--go-navy);
+  }
+
+  &__value-text {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--go-navy-muted);
+  }
+
+  // -----------------------------------------------------------------------------
+  // Llamado a negocios
+  // -----------------------------------------------------------------------------
+  &__business {
+    display: flex;
+    flex-direction: column;
+    gap: var(--go-space-4);
+    padding: var(--go-space-6) var(--go-space-5);
+    border-radius: var(--go-radius-xl);
+    background: var(--go-navy);
+    color: var(--go-white);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 180ms ease;
+
+    &:hover {
+      opacity: 0.92;
+    }
+
+    &:active {
+      opacity: 0.85;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--go-ocean);
+      outline-offset: 2px;
+    }
+  }
+
+  &__business-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--go-space-2);
+  }
+
+  &__business-title {
+    font-family: var(--go-font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--go-white);
+  }
+
+  &__business-text {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  &__business-cta {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: var(--go-space-2);
+    padding: var(--go-space-2) var(--go-space-4);
+    border-radius: var(--go-radius-pill);
+    background: var(--go-surface);
+    color: var(--go-ocean);
+    font-size: 0.85rem;
+    font-weight: 700;
+
+    ion-icon {
+      font-size: 0.95rem;
+    }
+  }
+
+  // -----------------------------------------------------------------------------
+  // Contacto
+  // -----------------------------------------------------------------------------
+  &__links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--go-space-2);
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: var(--go-space-3);
+    padding: var(--go-space-3) var(--go-space-4);
+    border: 1px solid var(--go-line);
+    border-radius: var(--go-radius-lg);
+    background: var(--go-white);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 180ms ease, border-color 180ms ease;
+
+    &:hover {
+      border-color: var(--go-ocean);
+      background: var(--go-ocean-soft);
+    }
+
+    &:active {
+      background: var(--go-ocean-soft);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--go-ocean);
+      outline-offset: 2px;
+    }
+  }
+
+  &__link-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--go-white);
+    border: 1px solid var(--go-line);
+    color: var(--go-ocean);
+    font-size: 1.2rem;
+  }
+
+  &__link-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__link-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--go-navy-muted);
+  }
+
+  &__link-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--go-navy);
+    overflow-wrap: anywhere;
+  }
+
+  &__link-chevron {
+    flex-shrink: 0;
+    font-size: 1rem;
+    color: var(--go-ocean);
+  }
+
+  // -----------------------------------------------------------------------------
+  // Privacidad
+  // -----------------------------------------------------------------------------
+  &__privacy {
+    display: flex;
+    align-items: center;
+    gap: var(--go-space-3);
+    padding: var(--go-space-4);
+    margin-bottom: var(--go-space-5);
+    border-radius: var(--go-radius-lg);
+    background: var(--go-navy);
+    color: var(--go-white);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 180ms ease;
+
+    &:hover {
+      opacity: 0.92;
+    }
+
+    &:active {
+      opacity: 0.85;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--go-ocean);
+      outline-offset: 2px;
+    }
+  }
+
+  &__privacy-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+    color: var(--go-white);
+    font-size: 1.2rem;
+  }
+
+  &__privacy-text {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--go-white);
+  }
+
+  &__privacy-chevron {
+    flex-shrink: 0;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  &__legal {
+    margin: 0;
+    padding: 0 var(--go-space-1);
+    font-size: 0.75rem;
+    line-height: 1.55;
+    text-align: center;
+    color: var(--go-navy-muted);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Los tres puntos caben en fila desde 480px, que es la mitad de los teléfonos
+// grandes. Antes de ese ancho, apilados, se leen mejor.
+// -----------------------------------------------------------------------------
+@media (min-width: 480px) {
+  .about__points {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .about__point {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--go-space-2);
+    padding: var(--go-space-4);
+  }
+
+  .about__values {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .about {
+    max-width: 48rem;
+    padding: var(--go-space-6) var(--go-space-5) calc(env(safe-area-inset-bottom) + var(--go-space-8));
+  }
+
+  .about__hero {
+    padding: var(--go-space-8) var(--go-space-6);
+  }
+}

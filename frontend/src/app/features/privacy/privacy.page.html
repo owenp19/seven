@@ -1,0 +1,228 @@
+<app-page-header [title]="'privacy.title' | t" defaultHref="/home"></app-page-header>
+
+<ion-content [fullscreen]="true">
+  <div class="privacy">
+    <header class="privacy__hero">
+      <span class="privacy__badge">{{ content().badge }}</span>
+      <h2 class="privacy__title">{{ content().title }}</h2>
+      <p class="privacy__subtitle">{{ content().subtitle }}</p>
+      <p class="privacy__updated">
+        {{ content().updatedLabel }} · {{ content().updatedOn }}
+      </p>
+    </header>
+
+    <p class="privacy__intro">{{ content().intro }}</p>
+
+    <h2 class="privacy__heading">{{ content().highlightsTitle }}</h2>
+    <div class="privacy__highlights">
+      @for (item of content().highlights; track item.title) {
+        <div class="privacy__highlight">
+          <ion-icon [name]="item.icon" aria-hidden="true"></ion-icon>
+          <div class="privacy__highlight-text">
+            <span class="privacy__highlight-title">{{ item.title }}</span>
+            <span class="privacy__highlight-body">{{ item.text }}</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Inventario real: lo que hay guardado en este teléfono ahora mismo. -->
+    <h2 class="privacy__heading">{{ content().inventoryTitle }}</h2>
+    <p class="privacy__hint">{{ content().inventoryHint }}</p>
+
+    @if (inventory(); as data) {
+      <div class="privacy__inventory">
+        @if (isEmpty()) {
+          <p class="privacy__empty">{{ content().inventoryEmpty }}</p>
+        } @else {
+          <div class="privacy__inventory-row">
+            <span class="privacy__inventory-label">{{ content().inventoryInstallId }}</span>
+            <code class="privacy__code">{{ data.installId }}</code>
+          </div>
+
+          <div class="privacy__inventory-row">
+            <span class="privacy__inventory-label">{{ content().inventoryFavorites }}</span>
+            <span class="privacy__inventory-value">{{ data.favoriteCount }}</span>
+          </div>
+
+          <div class="privacy__inventory-row">
+            <span class="privacy__inventory-label">{{ content().inventoryRecent }}</span>
+            <span class="privacy__inventory-value">{{ data.recentCount }}</span>
+          </div>
+
+          <div class="privacy__inventory-row">
+            <span class="privacy__inventory-label">{{ content().inventoryBookings }}</span>
+            <span class="privacy__inventory-value">{{ data.bookingCount }}</span>
+          </div>
+
+          @if (data.guestName || data.guestPhone) {
+            <div class="privacy__inventory-row">
+              <span class="privacy__inventory-label">{{ content().inventoryGuest }}</span>
+              <span class="privacy__inventory-value">
+                {{ data.guestName }} {{ data.guestPhone }}
+              </span>
+            </div>
+          }
+
+          <div class="privacy__inventory-row">
+            <span class="privacy__inventory-label">{{ content().inventoryLanguage }}</span>
+            <span class="privacy__inventory-value">{{ data.language }}</span>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="privacy__inventory privacy__inventory--loading">
+        <ion-spinner name="crescent"></ion-spinner>
+      </div>
+    }
+
+    <!-- Controles de borrado. -->
+    <h2 class="privacy__heading">{{ content().controlsTitle }}</h2>
+    <p class="privacy__hint">{{ content().controlsHint }}</p>
+
+    <div class="privacy__actions">
+      <button
+        type="button"
+        class="privacy__action"
+        [disabled]="busy() !== null"
+        (click)="onEraseDevice()"
+      >
+        <ion-icon name="phone-portrait-outline" aria-hidden="true"></ion-icon>
+        <div class="privacy__action-text">
+          <span class="privacy__action-label">{{ content().actionDevice }}</span>
+          <span class="privacy__action-hint">{{ content().actionDeviceHint }}</span>
+        </div>
+        @if (busy() === 'device') {
+          <ion-spinner name="dots" class="privacy__action-spinner"></ion-spinner>
+        } @else {
+          <ion-icon name="chevron-forward-outline" aria-hidden="true" class="privacy__action-chevron"></ion-icon>
+        }
+      </button>
+
+      <button
+        type="button"
+        class="privacy__action privacy__action--destructive"
+        [disabled]="busy() !== null"
+        (click)="onEraseEverything()"
+      >
+        <ion-icon name="trash-outline" aria-hidden="true"></ion-icon>
+        <div class="privacy__action-text">
+          <span class="privacy__action-label">{{ content().actionEverything }}</span>
+          <span class="privacy__action-hint">{{ content().actionEverythingHint }}</span>
+        </div>
+        @if (busy() === 'everything') {
+          <ion-spinner name="dots" class="privacy__action-spinner"></ion-spinner>
+        } @else {
+          <ion-icon name="chevron-forward-outline" aria-hidden="true" class="privacy__action-chevron"></ion-icon>
+        }
+      </button>
+
+      <button
+        type="button"
+        class="privacy__action"
+        [disabled]="busy() !== null"
+        (click)="onRequestByEmail()"
+      >
+        <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
+        <div class="privacy__action-text">
+          <span class="privacy__action-label">{{ content().actionEmail }}</span>
+          <span class="privacy__action-hint">{{ content().actionEmailHint }}</span>
+        </div>
+        <ion-icon name="chevron-forward-outline" aria-hidden="true" class="privacy__action-chevron"></ion-icon>
+      </button>
+    </div>
+
+    @if (busy() !== null) {
+      <p class="privacy__working" role="status">{{ content().working }}</p>
+    }
+
+    @if (feedback(); as message) {
+      <div class="privacy__feedback" role="status">
+        <ion-icon name="checkmark-circle-outline" aria-hidden="true"></ion-icon>
+        <span class="privacy__feedback-text">{{ message }}</span>
+        <button
+          type="button"
+          class="privacy__feedback-close"
+          [attr.aria-label]="content().close"
+          (click)="onDismissFeedback()"
+        >
+          <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+        </button>
+      </div>
+    }
+
+    <!-- Índice del documento. -->
+    <h2 class="privacy__heading">{{ content().onThisPage }}</h2>
+    <nav class="privacy__toc">
+      @for (section of content().sections; track section.id) {
+        <button type="button" class="privacy__toc-item" (click)="scrollToSection(section.id)">
+          <span class="privacy__toc-number">{{ section.number }}</span>
+          <span class="privacy__toc-title">{{ section.title }}</span>
+          <ion-icon name="chevron-forward-outline" aria-hidden="true" class="privacy__toc-chevron"></ion-icon>
+        </button>
+      }
+    </nav>
+
+    <!-- Documento legal. -->
+    @for (section of content().sections; track section.id) {
+      <section class="privacy__section" [id]="section.id">
+        <div class="privacy__section-head">
+          <ion-icon [name]="section.icon" aria-hidden="true"></ion-icon>
+          <h3 class="privacy__section-title">
+            <span class="privacy__section-number">{{ section.number }}</span>
+            {{ section.title }}
+          </h3>
+        </div>
+
+        @for (paragraph of section.paragraphs; track $index) {
+          <p class="privacy__paragraph">{{ paragraph }}</p>
+        }
+
+        @if (section.bullets) {
+          <ul class="privacy__bullets">
+            @for (bullet of section.bullets; track $index) {
+              <li>{{ bullet }}</li>
+            }
+          </ul>
+        }
+
+        @if (section.table; as table) {
+          <div class="privacy__table-wrap">
+            <table class="privacy__table">
+              <thead>
+                <tr>
+                  @for (column of table.columns; track $index) {
+                    <th scope="col">{{ column }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of table.rows; track $index) {
+                  <tr>
+                    @for (cell of row; track $index) {
+                      <td>{{ cell }}</td>
+                    }
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+
+        @if (section.link; as link) {
+          <a
+            class="privacy__link"
+            [href]="link.href"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ link.label }}
+            <ion-icon name="open-outline" aria-hidden="true"></ion-icon>
+          </a>
+        }
+      </section>
+    }
+
+    <p class="privacy__footer">{{ content().footer }}</p>
+  </div>
+</ion-content>

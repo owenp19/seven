@@ -1,0 +1,72 @@
+// =============================================================================
+// SEVEN QUICK INTENT — tarjeta de descubrimiento (mobile-first)
+// =============================================================================
+
+:host {
+  display: block;
+}
+
+.qi {
+  display: flex;
+  align-items: center;
+  gap: var(--seven-space-3);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--seven-space-3);
+  border: 1px solid var(--seven-border-soft);
+  border-radius: var(--seven-radius-lg);
+  background: var(--seven-surface);
+  box-shadow: var(--seven-shadow-soft);
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 160ms ease, box-shadow 200ms ease, border-color 200ms ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:hover {
+    border-color: var(--seven-ocean-blue-100);
+    box-shadow: var(--seven-shadow-card);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--seven-ocean-blue);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.qi__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--seven-radius-md);
+  background: var(--seven-ocean-blue-50);
+  color: var(--seven-ocean-blue);
+  font-size: 1.15rem;
+
+  ion-icon {
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+.qi:hover .qi__icon ion-icon {
+  transform: scale(1.1);
+}
+
+.qi__label {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--seven-font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--seven-deep-sea);
+}

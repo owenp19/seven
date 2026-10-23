@@ -1,0 +1,75 @@
+// =============================================================================
+// SEVEN TOUR CARDS
+// -----------------------------------------------------------------------------
+// .go-tour-card — the standard tourism card used for restaurants, inns and
+// experiences. Image on top, rounded corners, soft shadow, organized info.
+// =============================================================================
+
+.go-tour-card {
+  margin: 0;
+  border-radius: var(--go-card-radius);
+  box-shadow: var(--go-card-shadow);
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--go-surface);
+
+  &__cover {
+    position: relative;
+    height: var(--go-card-image-height);
+    background: var(--go-blue-soft);
+  }
+
+  &__img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__flags {
+    position: absolute;
+    top: var(--go-space-3);
+    left: var(--go-space-3);
+    right: var(--go-space-3);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--go-space-2);
+  }
+
+  &__body {
+    padding: var(--go-space-4);
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--go-font-display);
+    font-size: 1.15rem;         // 18px
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--go-navy);
+  }
+
+  &__subtitle {
+    margin: var(--go-space-1) 0 0;
+    font-size: 0.8rem;
+    color: var(--go-navy-muted);
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--go-space-2);
+    margin-top: var(--go-space-3);
+  }
+
+  &__price {
+    font-size: 0.8rem;
+    color: var(--go-navy-muted);
+
+    strong {
+      color: var(--go-navy);
+      font-size: 1rem;
+      font-weight: 700;
+    }
+  }
+}

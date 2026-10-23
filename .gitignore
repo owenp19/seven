@@ -1,0 +1,75 @@
+# ============================================================
+# SEVEN — .gitignore raíz
+# Activo desde el commit baseline (Fase 1.0).
+# ============================================================
+
+# --- Sistema operativo ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# --- Editores / IDE ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.history/
+
+# --- Secretos y entorno ---
+.env
+.env.*
+!.env.example
+!.env.production.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+!backend/.env.production.example
+backend/auth.json
+*.key
+*.pem
+*.p12
+*.jks
+*.keystore
+*.keystore.*
+google-services.json
+GoogleService-Info.plist
+
+# --- Dependencias ---
+node_modules/
+backend/vendor/
+backend/public/storage
+
+# --- Build / artefactos generados ---
+www/
+dist/
+build/
+out-tsc/
+.angular/
+coverage/
+.sass-cache/
+*.tsbuildinfo
+backend/public/build
+backend/public/hot
+backend/bootstrap/cache/*.php
+backend/.phpunit.result.cache
+.phpunit.result.cache
+
+# --- Logs ---
+*.log
+chrome_err.log
+
+# --- Android / iOS generados ---
+frontend/android/.gradle/
+frontend/android/build/
+frontend/android/app/build/
+frontend/android/local.properties
+frontend/android/**/*.apk
+frontend/android/**/*.aab
+frontend/android/**/*.ap_
+frontend/android/captures/
+frontend/ios/App/Pods/
+frontend/ios/App/build/
+frontend/ios/DerivedData/
+xcuserdata/

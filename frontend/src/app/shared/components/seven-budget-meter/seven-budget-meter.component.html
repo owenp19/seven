@@ -1,0 +1,24 @@
+<div class="bm">
+  <div class="bm__head">
+    <span class="bm__label">
+      <ion-icon name="wallet-outline" aria-hidden="true"></ion-icon>
+      {{ 'assistant.budgetTitle' | t }}
+    </span>
+    <span class="bm__amount">
+      {{ 'assistant.budgetSpentOf' | t: { spent: spentLabel, total: budgetLabel } }}
+    </span>
+  </div>
+
+  <div
+    class="bm__track"
+    role="progressbar"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    [attr.aria-valuenow]="percent"
+    [attr.aria-label]="'assistant.budgetTitle' | t"
+  >
+    <span class="bm__fill" [style.width.%]="percent"></span>
+  </div>
+
+  <p class="bm__left">{{ 'assistant.budgetLeft' | t: { amount: remainingLabel } }}</p>
+</div>

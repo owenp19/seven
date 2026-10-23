@@ -1,0 +1,6 @@
+<button class="qi" type="button" (click)="onPick()">
+  <span class="qi__icon" aria-hidden="true">
+    <ion-icon [name]="intent.icon"></ion-icon>
+  </span>
+  <span class="qi__label">{{ intent.labelKey | t }}</span>
+</button>

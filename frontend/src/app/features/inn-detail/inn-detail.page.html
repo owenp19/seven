@@ -1,0 +1,323 @@
+@if (loading) {
+  <app-seven-context-loader type="inn" hero="short"></app-seven-context-loader>
+} @else {
+  @if (inn$ | async; as inn) {
+    @if (inn) {
+      <div class="pd">
+        <ion-content [fullscreen]="true">
+          <!-- ─── GALERÍA / HERO ──────────────────────────────────────── -->
+          <section class="pd__hero">
+            @if (isWide() && galleryImages().length >= 3) {
+              <!-- Composición editorial (escritorio): una foto grande + dos
+                   apiladas. Propia de SEVEN, no copiada de los marketplaces. -->
+              <div class="pd__gallery">
+                <img class="pd__gallery-main" [src]="galleryImages()[0]" appSafeImg [alt]="inn.name" />
+                <div class="pd__gallery-side">
+                  <img [src]="galleryImages()[1]" appSafeImg [alt]="inn.name" loading="lazy" decoding="async" />
+                  <img [src]="galleryImages()[2]" appSafeImg [alt]="inn.name" loading="lazy" decoding="async" />
+                </div>
+              </div>
+            } @else {
+              <app-media-carousel
+                class="pd__hero-media"
+                [images]="galleryImages()"
+                [alt]="inn.name"
+                [showDots]="false"
+              ></app-media-carousel>
+              <span class="pd__hero-shade"></span>
+            }
+
+            <div class="pd__hero-top">
+              <button class="pd__pill-btn" type="button" (click)="goBack()" [attr.aria-label]="'common.back' | t">
+                <ion-icon name="chevron-back" aria-hidden="true"></ion-icon>
+              </button>
+
+              @if (galleryImages().length > 1) {
+                <span class="pd__counter">{{ 'common.photos' | t: { count: galleryImages().length } }}</span>
+              }
+
+              <div class="pd__pill-row">
+                <button
+                  class="pd__pill-btn"
+                  type="button"
+                  (click)="share(inn)"
+                  [attr.aria-label]="'common.share' | t"
+                >
+                  <ion-icon name="share-social-outline" aria-hidden="true"></ion-icon>
+                </button>
+                <button
+                  class="pd__pill-btn"
+                  type="button"
+                  (click)="toggleFavorite(inn)"
+                  [attr.aria-label]="(favorite ? 'saved.remove' : 'common.save') | t"
+                >
+                  <ion-icon [name]="favorite ? 'heart' : 'heart-outline'" aria-hidden="true"></ion-icon>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <div class="pd__body">
+            <!-- ─── INFO PRINCIPAL (en el cuerpo, no sobre la foto) ─────── -->
+            <p class="pd__eyebrow">Posada nativa</p>
+            <h1 class="pd__name">{{ inn.name }}</h1>
+
+            <div class="pd__meta">
+              @if (inn.location) {
+                <span class="pd__meta-item">
+                  <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+                  {{ inn.location }}
+                </span>
+              }
+              @if (inn.rating > 0) {
+                <span class="pd__meta-item pd__meta-item--rating">
+                  <ion-icon name="star" aria-hidden="true"></ion-icon>
+                  {{ inn.rating }}
+                </span>
+              }
+            </div>
+
+            @if (inn.providerVerified) {
+              <span class="pd__badge">
+                <ion-icon name="shield-checkmark" aria-hidden="true"></ion-icon>
+                {{ 'common.verifiedBySeven' | t }}
+              </span>
+            }
+
+            @if (inn.price > 0) {
+              <p class="pd__from">
+                {{ 'common.from' | t }} <strong>{{ inn.price | currencyCOP }}</strong> {{ 'common.perNight' | t }}
+              </p>
+            }
+
+            <!-- ─── LO ESENCIAL ─────────────────────────────────────────── -->
+            @if (essentials(inn).length > 0) {
+              <section class="pd__essentials">
+                @for (fact of essentials(inn); track fact.label) {
+                  <div class="pd__fact" [class.pd__fact--warn]="fact.icon === 'close-circle-outline'">
+                    <ion-icon [name]="fact.icon" aria-hidden="true"></ion-icon>
+                    <strong>{{ fact.value }}</strong>
+                    <span>{{ fact.label }}</span>
+                  </div>
+                }
+              </section>
+            }
+
+            <!-- ─── SOBRE LA POSADA ─────────────────────────────────────── -->
+            @if (inn.description) {
+              <section class="pd__block">
+                <h2 class="pd__block-title">{{ 'innDetail.about' | t }}</h2>
+                <p class="pd__desc" [class.pd__desc--expanded]="descriptionExpanded">
+                  {{ inn.description }}
+                </p>
+                <button class="pd__more" type="button" (click)="toggleDescription()">
+                  {{ (descriptionExpanded ? 'common.seeLess' : 'common.readMore') | t }}
+                  <ion-icon name="chevron-down" aria-hidden="true"></ion-icon>
+                </button>
+              </section>
+            }
+
+            <!-- ─── EXPERIENCIA LOCAL (solo con datos reales) ──────────── -->
+            @if (inn.location || inn.providerName) {
+              <section class="pd__experience">
+                <span class="pd__experience-tag">{{ 'innDetail.localExperience' | t }}</span>
+                <h2 class="pd__experience-title">{{ 'innDetail.localTitle' | t }}</h2>
+                <p class="pd__experience-text">
+                  {{ 'innDetail.localTextPlace' | t: { place: inn.location || 'San Andrés' } }}
+                  @if (inn.providerName) {
+                    {{ 'innDetail.localTextProvider' | t: { provider: inn.providerName } }}
+                  }
+                  {{ 'innDetail.localTextEnd' | t }}
+                </p>
+              </section>
+            }
+
+            <!-- ─── HABITACIONES ────────────────────────────────────────── -->
+            @if (inn.rooms.length > 0) {
+              <section class="pd__block">
+                <h2 class="pd__block-title">{{ 'innDetail.rooms' | t }}</h2>
+                <div class="pd__rooms">
+                  @for (room of inn.rooms; track room.id) {
+                    <article class="pd__room">
+                      <div class="pd__room-media">
+                        @if (room.image) {
+                          <img [src]="room.image" appSafeImg [alt]="room.name" loading="lazy" decoding="async" />
+                        } @else {
+                          <ion-icon name="bed-outline" aria-hidden="true"></ion-icon>
+                        }
+                      </div>
+                      <div class="pd__room-body">
+                        <strong class="pd__room-name">{{ room.name }}</strong>
+                        @if (room.capacity > 0) {
+                          <span class="pd__room-cap">
+                            <ion-icon name="people-outline" aria-hidden="true"></ion-icon>
+                            {{ 'common.guestsUpTo' | t: { count: room.capacity } }}
+                          </span>
+                        }
+                        @if (room.description) {
+                          <p class="pd__room-desc">{{ room.description }}</p>
+                        }
+                        <div class="pd__room-foot">
+                          @if (room.price > 0) {
+                            <span class="pd__room-price">
+                              {{ room.price | currencyCOP }}<small>{{ 'common.perNightShort' | t }}</small>
+                            </span>
+                          }
+                          @if (inn.availability) {
+                            <button class="pd__room-cta" type="button" (click)="reserve(inn, room)">{{ 'innDetail.choose' | t }}</button>
+                          }
+                        </div>
+                      </div>
+                    </article>
+                  }
+                </div>
+              </section>
+            }
+
+            <!-- ─── SERVICIOS ───────────────────────────────────────────── -->
+            @if (inn.services.length > 0) {
+              <section class="pd__block">
+                <h2 class="pd__block-title">{{ 'innDetail.services' | t }}</h2>
+                <div class="pd__amenities">
+                  @for (service of visibleServices(inn); track service) {
+                    <span class="pd__amenity">
+                      <ion-icon [name]="serviceIcon(service)" aria-hidden="true"></ion-icon>
+                      {{ service }}
+                    </span>
+                  }
+                </div>
+                @if (hasMoreServices) {
+                  <button class="pd__more" type="button" (click)="toggleServices()">
+                    {{ (servicesExpanded ? 'innDetail.seeLessServices' : 'innDetail.seeAllServices') | t }}
+                    <ion-icon name="chevron-down" aria-hidden="true"></ion-icon>
+                  </button>
+                }
+              </section>
+            }
+
+            <!-- ─── UBICACIÓN ───────────────────────────────────────────── -->
+            @if (inn.location) {
+              <section class="pd__block">
+                <h2 class="pd__block-title">{{ 'innDetail.locationTitle' | t }}</h2>
+                <button class="pd__map" type="button" (click)="openMap(inn)">
+                  <span class="pd__map-pin">
+                    <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+                  </span>
+                  <span class="pd__map-text">
+                    <strong>{{ inn.location }}</strong>
+                    <small>{{ 'common.viewOnMaps' | t }}</small>
+                  </span>
+                  <ion-icon name="navigate-outline" aria-hidden="true"></ion-icon>
+                </button>
+              </section>
+            }
+
+            <!-- ─── PROVEEDOR ───────────────────────────────────────────── -->
+            @if (inn.providerName) {
+              <section class="pd__block">
+                <h2 class="pd__block-title">{{ 'innDetail.offeredBy' | t }}</h2>
+                <div class="pd__provider">
+                  <span class="pd__provider-logo">
+                    @if (inn.providerLogo) {
+                      <img [src]="inn.providerLogo" appSafeImg alt="" />
+                    } @else {
+                      <ion-icon name="business-outline" aria-hidden="true"></ion-icon>
+                    }
+                  </span>
+                  <span class="pd__provider-info">
+                    <strong>{{ inn.providerName }}</strong>
+                    @if (inn.providerVerified) {
+                      <span class="pd__provider-verified">
+                        <ion-icon name="shield-checkmark" aria-hidden="true"></ion-icon>
+                        {{ 'common.verifiedBySeven' | t }}
+                      </span>
+                    } @else {
+                      <small>{{ 'innDetail.localHost' | t }}</small>
+                    }
+                  </span>
+                  @if (inn.providerPhone) {
+                    <button
+                      class="pd__provider-contact"
+                      type="button"
+                      (click)="contactProvider(inn)"
+                      [attr.aria-label]="'innDetail.providerWhatsapp' | t"
+                    >
+                      <ion-icon name="logo-whatsapp" aria-hidden="true"></ion-icon>
+                    </button>
+                  }
+                </div>
+              </section>
+            }
+
+            <!-- ─── OPINIONES (sistema existente) ───────────────────────── -->
+            <section class="pd__block pd__block--comments">
+              <app-comments-section target="inn" [slug]="inn.slug"></app-comments-section>
+            </section>
+
+            <!-- ─── RELACIONADOS ────────────────────────────────────────── -->
+            @if (related$ | async; as related) {
+              @if (related.length > 0) {
+                <section class="pd__block pd__block--last">
+                  <h2 class="pd__block-title">{{ 'common.youMayAlsoLike' | t }}</h2>
+                  <div class="pd__rail">
+                    @for (item of related; track item.type + '-' + item.id) {
+                      <app-discovery-card
+                        class="pd__rail-card"
+                        [item]="item"
+                        [saved]="isSaved(item)"
+                        (open)="openRelated($event)"
+                        (toggleSave)="toggleSaveRelated($event)"
+                      ></app-discovery-card>
+                    }
+                  </div>
+                </section>
+              }
+            }
+          </div>
+        </ion-content>
+
+        <!-- ─── BARRA FIJA · RESERVA ─────────────────────────────────────── -->
+        <footer class="pd__bar">
+          <div class="pd__bar-price">
+            @if (inn.price > 0) {
+              <span>{{ 'common.from' | t }}</span>
+              <strong>{{ inn.price | currencyCOP }}</strong>
+              <small>{{ 'common.perNight' | t }}</small>
+            } @else {
+              <strong>{{ 'common.priceOnRequest' | t }}</strong>
+            }
+          </div>
+
+          @if (inn.providerPhone) {
+            <button
+              class="pd__bar-wa"
+              type="button"
+              (click)="contactProvider(inn)"
+              aria-label="Escribir al anfitrión por WhatsApp"
+            >
+              <ion-icon name="logo-whatsapp" aria-hidden="true"></ion-icon>
+            </button>
+          }
+
+          @if (inn.availability) {
+          <button class="pd__cta" type="button" (click)="reserve(inn)">
+            {{ 'common.reserve' | t }}
+            <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+          </button>
+          } @else {
+            <button class="pd__cta pd__cta--off" type="button" disabled>
+              {{ 'common.unavailable' | t }}
+            </button>
+          }
+        </footer>
+      </div>
+    } @else {
+      <div class="pd__empty">
+        <ion-icon name="bed-outline" aria-hidden="true"></ion-icon>
+        <h2>{{ 'innDetail.notFoundTitle' | t }}</h2>
+        <p>{{ 'common.notFoundText' | t }}</p>
+        <button class="pd__empty-btn" type="button" (click)="goExplore()">{{ 'common.backToExplore' | t }}</button>
+      </div>
+    }
+  }
+}

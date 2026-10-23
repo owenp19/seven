@@ -1,0 +1,433 @@
+// =============================================================================
+// SEVEN DESIGN SYSTEM — Official Theme Tokens
+// -----------------------------------------------------------------------------
+// Brand anchors extracted from the SEVEN identity:
+//   SEVEN DEEP-SEA    -> #0B2D4A  = institutional / deep navy (headings, dark UI)
+//   SEVEN OCEAN-BLUE  -> #0077B6  = interactive (CTAs, links, buttons)
+//   SEVEN TROPICAL-TIDE -> #00D1C5 = accent (highlights, active states, eco)
+//   SEVEN LAGOON-BLUE -> #1CA7EC  = informational / secondary accent
+//
+// SUPPORTING EXTENSIONS (derived, documented)
+//   Caribbean Aqua   -> aqua complement for special sections          (#4ED8DC)
+//   Palm Green       -> nature, eco-experiences, confirmations, success    (#1F8A5C)
+//   Soft Coral       -> promos, highlights, featured, warnings             (#FF7A59)
+//   Sun Gold         -> stars / ratings and warm accents                   (#FF9E45)
+//   Arena            -> premium / editorial section backgrounds            (#E8DCC8)
+//
+// NEUTRALS: cool slate grays with a blue undertone (gray-50 .. gray-900)
+//
+// TYPOGRAPHY
+//   Oswald   -> display / headings (titles, destinations) 400..700
+//   Poppins  -> body / UI / buttons / menus                300..700
+//
+// TAGLINE: MÁS QUE UN DESTINO
+// =============================================================================
+
+:root {
+  // ---------------------------------------------------------------------------
+  // 1. IONIC BASE COLOR OVERRIDES
+  // ---------------------------------------------------------------------------
+
+  --ion-color-primary: #0077B6;
+  --ion-color-primary-rgb: 0, 119, 182;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #00689F;
+  --ion-color-primary-tint: #1F8ACE;
+
+  --ion-color-secondary: #0B2D4A;
+  --ion-color-secondary-rgb: 11, 45, 74;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #08243C;
+  --ion-color-secondary-tint: #234360;
+
+  --ion-color-success: #1F8A5C;
+  --ion-color-success-rgb: 31, 138, 92;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #1B774F;
+  --ion-color-success-tint: #369771;
+
+  --ion-color-warning: #FF7A59;
+  --ion-color-warning-rgb: 255, 122, 89;
+  --ion-color-warning-contrast: #ffffff;
+  --ion-color-warning-contrast-rgb: 255, 255, 255;
+  --ion-color-warning-shade: #E06A4C;
+  --ion-color-warning-tint: #FF8B6E;
+
+  --ion-color-danger: #D64550;
+  --ion-color-danger-rgb: 214, 69, 80;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #BD3D47;
+  --ion-color-danger-tint: #DB5963;
+
+  --ion-color-light: #F4F7FA;
+  --ion-color-light-rgb: 244, 247, 250;
+  --ion-color-light-contrast: #0B2D4A;
+  --ion-color-light-contrast-rgb: 11, 45, 74;
+  --ion-color-medium: #6E8296;
+  --ion-color-medium-rgb: 110, 130, 150;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-dark: #0B2D4A;
+  --ion-color-dark-rgb: 11, 45, 74;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary: #1CA7EC;
+  --ion-color-tertiary-rgb: 28, 167, 236;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+
+  // ---------------------------------------------------------------------------
+  // 2. SEVEN IONIC GLOBAL CONFIGURATION
+  // ---------------------------------------------------------------------------
+
+  --ion-font-family: var(--seven-font-body);
+
+  --ion-text-color: var(--seven-secondary);
+  --ion-text-color-rgb: 11, 45, 74;
+
+  --ion-background-color: var(--seven-background);
+  --ion-background-color-rgb: 244, 247, 250;
+
+  --ion-toolbar-background: var(--seven-background);
+  --ion-toolbar-color: var(--seven-secondary);
+
+  --ion-card-background: var(--seven-surface);
+
+  --ion-tab-bar-background: var(--seven-surface);
+  --ion-tab-bar-color: var(--seven-text-muted);
+  --ion-tab-bar-color-selected: var(--seven-primary);
+
+  // ---------------------------------------------------------------------------
+  // 3. SEVEN BRAND PALETTE — ANCHOR SCALES
+  // ---------------------------------------------------------------------------
+
+  // Deep Sea — institutional navy: headings, navigation, dark surfaces
+  --seven-deep-sea: #0B2D4A;
+  --seven-deep-sea-rgb: 11, 45, 74;
+  --seven-deep-sea-50: #EBF0F5;
+  --seven-deep-sea-100: #CEDCE6;
+  --seven-deep-sea-200: #A3BCCD;
+  --seven-deep-sea-300: #7497AE;
+  --seven-deep-sea-400: #4B7692;
+  --seven-deep-sea-500: #2A5674;
+  --seven-deep-sea-600: #17405F;
+  --seven-deep-sea-700: #0B2D4A;
+  --seven-deep-sea-800: #07243C;
+  --seven-deep-sea-900: #041B2E;
+
+  // Ocean Blue — interactive: CTAs, links, selected states
+  --seven-ocean-blue: #0077B6;
+  --seven-ocean-blue-rgb: 0, 119, 182;
+  --seven-ocean-blue-50: #E6F2FA;
+  --seven-ocean-blue-100: #C2E3F4;
+  --seven-ocean-blue-200: #88C8E9;
+  --seven-ocean-blue-300: #54ACDD;
+  --seven-ocean-blue-400: #2F95CC;
+  --seven-ocean-blue-500: #0077B6;
+  --seven-ocean-blue-600: #00689F;
+  --seven-ocean-blue-700: #005783;
+  --seven-ocean-blue-800: #004566;
+  --seven-ocean-blue-900: #00334A;
+
+  // Tropical Tide — accent: highlights, eco experiences, active badges
+  --seven-tropical-tide: #00D1C5;
+  --seven-tropical-tide-rgb: 0, 209, 197;
+  --seven-tropical-tide-50: #E0FAF8;
+  --seven-tropical-tide-100: #B3F2EE;
+  --seven-tropical-tide-200: #7CE7E0;
+  --seven-tropical-tide-300: #45DCD4;
+  --seven-tropical-tide-400: #00D1C5;
+  --seven-tropical-tide-500: #00B8AD;
+  --seven-tropical-tide-600: #00988F;
+  --seven-tropical-tide-700: #007A73;
+  --seven-tropical-tide-800: #005E58;
+  --seven-tropical-tide-900: #00403C;
+
+  // Lagoon Blue — informational / secondary accent
+  --seven-lagoon-blue: #1CA7EC;
+  --seven-lagoon-blue-rgb: 28, 167, 236;
+  --seven-lagoon-blue-50: #E4F5FD;
+  --seven-lagoon-blue-100: #BCE7FB;
+  --seven-lagoon-blue-200: #8BD4F7;
+  --seven-lagoon-blue-300: #57C0F2;
+  --seven-lagoon-blue-400: #31B2EE;
+  --seven-lagoon-blue-500: #1CA7EC;
+  --seven-lagoon-blue-600: #0F8FD3;
+  --seven-lagoon-blue-700: #0B78B3;
+  --seven-lagoon-blue-800: #0A5E8C;
+  --seven-lagoon-blue-900: #084466;
+
+  // Supporting extensions
+  --seven-caribbean-aqua: #4ED8DC;
+  --seven-caribbean-aqua-rgb: 78, 216, 220;
+  --seven-palm-green: #1F8A5C;
+  --seven-palm-green-rgb: 31, 138, 92;
+  --seven-soft-coral: #FF7A59;
+  --seven-soft-coral-rgb: 255, 122, 89;
+  --seven-sun-gold: #FF9E45;
+  --seven-sun-gold-rgb: 255, 158, 69;
+  --seven-arena: #E8DCC8;
+  --seven-arena-rgb: 232, 220, 200;
+
+  // ---------------------------------------------------------------------------
+  // 4. NEUTRALS (cool slate, blue undertone)
+  // ---------------------------------------------------------------------------
+  --seven-gray-50: #F4F7FA;
+  --seven-gray-100: #E7ECF1;
+  --seven-gray-200: #D4DCE4;
+  --seven-gray-300: #B8C4CF;
+  --seven-gray-400: #93A4B3;
+  --seven-gray-500: #6E8296;
+  --seven-gray-600: #566B7E;
+  --seven-gray-700: #41566A;
+  --seven-gray-800: #2E4253;
+  --seven-gray-900: #1C2E3D;
+
+  // ---------------------------------------------------------------------------
+  // 5. SEMANTIC TOKENS
+  // ---------------------------------------------------------------------------
+
+  // Primary — actions, CTAs, active states, interactive elements (Ocean Blue)
+  --seven-primary: var(--seven-ocean-blue);
+  --seven-primary-rgb: 0, 119, 182;
+  --seven-primary-soft: var(--seven-ocean-blue-50);
+  --seven-primary-dark: var(--seven-ocean-blue-600);
+
+  // Secondary — institutional navy: headings, titles, navigation, dark UI
+  --seven-secondary: var(--seven-deep-sea);
+  --seven-secondary-rgb: 11, 45, 74;
+  --seven-secondary-soft: var(--seven-deep-sea-600);
+  --seven-secondary-muted: var(--seven-deep-sea-400);
+
+  // Accent — Tropical Tide for highlights and eco emphasis
+  --seven-accent: var(--seven-tropical-tide);
+  --seven-accent-rgb: 0, 209, 197;
+  --seven-accent-soft: var(--seven-tropical-tide-50);
+  --seven-accent-dark: var(--seven-tropical-tide-600);
+
+  // Informational (Lagoon Blue)
+  --seven-info: var(--seven-lagoon-blue);
+  --seven-info-rgb: 28, 167, 236;
+  --seven-info-soft: var(--seven-lagoon-blue-50);
+  --seven-info-dark: var(--seven-lagoon-blue-600);
+
+  // Success (Palm Green)
+  --seven-success: #1F8A5C;
+  --seven-success-rgb: 31, 138, 92;
+  --seven-success-soft: #E8F5EE;
+  --seven-success-dark: #176B47;
+
+  // Warning / promo (Soft Coral)
+  --seven-warning: #FF7A59;
+  --seven-warning-rgb: 255, 122, 89;
+  --seven-warning-soft: #FFEDE5;
+  --seven-warning-dark: #E05F3C;
+
+  // Danger
+  --seven-danger: #D64550;
+  --seven-danger-rgb: 214, 69, 80;
+  --seven-danger-soft: #FBEAEC;
+  --seven-danger-dark: #B32F39;
+
+  // ---------------------------------------------------------------------------
+  // 6. BACKGROUNDS & SURFACES
+  // ---------------------------------------------------------------------------
+
+  --seven-background: var(--seven-gray-50);
+  --seven-surface: #FFFFFF;
+  --seven-surface-raised: #FFFFFF;
+  --seven-surface-muted: var(--seven-gray-100);
+  --seven-surface-brand: var(--seven-deep-sea);
+
+  // Hero / section backgrounds (solid brand colors, no gradients)
+  --seven-background-ocean: var(--seven-deep-sea);
+  --seven-background-caribbean: var(--seven-ocean-blue);
+  --seven-background-sunset: var(--seven-deep-sea);
+
+  // ---------------------------------------------------------------------------
+  // 7. TEXT COLOURS
+  // ---------------------------------------------------------------------------
+
+  --seven-text: var(--seven-gray-900);
+  --seven-text-strong: var(--seven-deep-sea);
+  --seven-text-muted: var(--seven-gray-500);
+  --seven-text-faint: var(--seven-gray-400);
+  --seven-text-inverse: #FFFFFF;
+  --seven-text-link: var(--seven-ocean-blue);
+  --seven-text-on-accent: #FFFFFF;
+
+  // ---------------------------------------------------------------------------
+  // 8. BORDERS & DIVIDERS
+  // ---------------------------------------------------------------------------
+
+  --seven-border: var(--seven-gray-200);
+  --seven-border-strong: var(--seven-deep-sea-200);
+  --seven-border-soft: rgba(11, 45, 74, 0.08);
+  --seven-border-on-dark: rgba(255, 255, 255, 0.16);
+  --seven-focus-ring: rgba(0, 119, 182, 0.4);
+
+  // ---------------------------------------------------------------------------
+  // 9. SEVEN TYPOGRAPHY
+  // ---------------------------------------------------------------------------
+
+  --seven-font-display: 'Oswald', system-ui, sans-serif;
+  --seven-font-body: 'Poppins', system-ui, -apple-system, sans-serif;
+  --seven-font-ui: var(--seven-font-body);
+
+  // ---------------------------------------------------------------------------
+  // 10. SPACING (4px base scale)
+  // ---------------------------------------------------------------------------
+  --seven-space-1: 0.25rem;   // 4px
+  --seven-space-2: 0.5rem;    // 8px
+  --seven-space-3: 0.75rem;   // 12px
+  --seven-space-4: 1rem;      // 16px
+  --seven-space-5: 1.5rem;    // 24px
+  --seven-space-6: 2rem;      // 32px
+  --seven-space-8: 3rem;      // 48px
+
+  // ---------------------------------------------------------------------------
+  // 10b. LAYOUT METRICS (mobile-first rhythm & shell measurements)
+  // ---------------------------------------------------------------------------
+  // Horizontal padding shared by every page so content aligns edge-to-edge.
+  --seven-page-padding: 1rem;              // 16px
+  // Vertical gap between two stacked sections.
+  --seven-section-gap: 1.5rem;             // 24px
+  // Gap between cards inside a grid/list.
+  --seven-card-gap: 0.75rem;               // 12px
+  // Height of the bottom navigation bar (without the safe-area inset).
+  --seven-bottom-nav-height: 3.5rem;       // 56px
+  // Maximum width for centred page content on large screens.
+  --seven-content-max-width: 72rem;        // 1152px
+  // Reading column for detail/editorial pages on large screens (≈720px).
+  --seven-reading-width: 45rem;            // 720px
+  // Height of a Detail sticky action bar: 12px + 52px CTA + 12px (sin safe-area).
+  --seven-detail-bar-height: 4.75rem;      // 76px
+
+  // ---------------------------------------------------------------------------
+  // 11. RADIUS
+  // ---------------------------------------------------------------------------
+  --seven-radius-sm: 0.5rem;    // 8px
+  --seven-radius-md: 0.75rem;   // 12px
+  --seven-radius-lg: 1rem;      // 16px
+  --seven-radius-xl: 1.25rem;   // 20px
+  --seven-radius-pill: 999px;
+
+  // ---------------------------------------------------------------------------
+  // 12. ELEVATION
+  // ---------------------------------------------------------------------------
+  --seven-shadow-soft: 0 2px 10px rgba(11, 45, 74, 0.06);
+  --seven-shadow-card: 0 6px 20px rgba(11, 45, 74, 0.08);
+  --seven-shadow-raised: 0 12px 28px rgba(11, 45, 74, 0.16);
+
+  // ---------------------------------------------------------------------------
+  // 13. SEVEN CONTENT CARDS
+  // ---------------------------------------------------------------------------
+  --seven-card-radius: var(--seven-radius-xl);
+  --seven-card-shadow: var(--seven-shadow-card);
+  --seven-card-image-height: 10rem;
+
+  // ---------------------------------------------------------------------------
+  // 14. LEGACY ALIASES (mapped to the SEVEN tokens)
+  // ---------------------------------------------------------------------------
+
+  // Primary (was Go Blue Caribbean) -> SEVEN Ocean Blue
+  --go-primary: var(--seven-primary);
+  --go-primary-rgb: var(--seven-primary-rgb);
+  --go-primary-soft: var(--seven-primary-soft);
+  --go-primary-dark: var(--seven-primary-dark);
+
+  // Secondary (was Island Navy) -> SEVEN Deep Sea
+  --go-secondary: var(--seven-secondary);
+  --go-secondary-rgb: var(--seven-secondary-rgb);
+  --go-secondary-soft: var(--seven-secondary-soft);
+  --go-secondary-muted: var(--seven-secondary-muted);
+
+  // Ocean complement -> SEVEN Ocean Blue tonal
+  --go-ocean: var(--seven-ocean-blue);
+  --go-ocean-rgb: var(--seven-ocean-blue-rgb);
+  --go-ocean-soft: var(--seven-ocean-blue-50);
+  --go-ocean-dark: var(--seven-ocean-blue-600);
+
+  // Green -> SEVEN Palm Green
+  --go-green: var(--seven-success);
+  --go-green-rgb: var(--seven-success-rgb);
+  --go-green-soft: var(--seven-success-soft);
+  --go-green-dark: var(--seven-success-dark);
+
+  // Sunset -> SEVEN Soft Coral
+  --go-sunset: var(--seven-warning);
+  --go-sunset-rgb: var(--seven-warning-rgb);
+  --go-sunset-soft: var(--seven-warning-soft);
+
+  // Gold (ratings, stars) -> SEVEN Sun Gold
+  --go-gold: var(--seven-sun-gold);
+  --go-gold-soft: #FFF1E0;
+  --go-gold-dark: #C88A1D;
+  --go-gold-glow: 0 8px 20px rgba(244, 185, 66, 0.35);
+
+  // Blue soft (soft ocean-blue surface, used by buttons & badges)
+  --go-blue-soft: var(--seven-ocean-blue-50);
+
+  // Background & surfaces
+  --go-background: var(--seven-background);
+  --go-surface: var(--seven-surface);
+  --go-white: #FFFFFF;
+
+  // Text
+  --go-text-muted: var(--seven-text-muted);
+
+  // Legacy aliases (backwards compat for existing components)
+  --go-navy: var(--seven-secondary);
+  --go-navy-rgb: var(--seven-secondary-rgb);
+  --go-navy-soft: var(--seven-secondary-soft);
+  --go-navy-muted: var(--seven-text-muted);
+  --go-sand: var(--seven-background);
+  --go-sand-rgb: 244, 247, 250;
+  --go-sand-muted: var(--seven-gray-100);
+
+  // Danger / negative states
+  --go-danger: var(--seven-danger);
+  --go-danger-rgb: var(--seven-danger-rgb);
+  --go-danger-soft: var(--seven-danger-soft);
+
+  // Surfaces & ink
+  --go-ink: var(--seven-gray-900);
+  --go-ink-soft: var(--seven-gray-800);
+  --go-ink-muted: var(--seven-gray-500);
+  --go-line: var(--seven-border-soft);
+
+  // Typography
+  --go-font-display: var(--seven-font-display);
+  --go-font-body: var(--seven-font-body);
+  --go-font-ui: var(--seven-font-ui);
+
+  // Spacing
+  --go-space-1: var(--seven-space-1);
+  --go-space-2: var(--seven-space-2);
+  --go-space-3: var(--seven-space-3);
+  --go-space-4: var(--seven-space-4);
+  --go-space-5: var(--seven-space-5);
+  --go-space-6: var(--seven-space-6);
+  --go-space-8: var(--seven-space-8);
+
+  // Radius
+  --go-radius-sm: var(--seven-radius-sm);
+  --go-radius-md: var(--seven-radius-md);
+  --go-radius-lg: var(--seven-radius-lg);
+  --go-radius-xl: var(--seven-radius-xl);
+  --go-radius-pill: var(--seven-radius-pill);
+
+  // Elevation
+  --go-shadow-soft: var(--seven-shadow-soft);
+  --go-shadow-card: var(--seven-shadow-card);
+  --go-shadow-raised: var(--seven-shadow-raised);
+
+  // Tour / content card
+  --go-card-radius: var(--seven-card-radius);
+  --go-card-shadow: var(--seven-card-shadow);
+  --go-card-image-height: var(--seven-card-image-height);
+}

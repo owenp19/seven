@@ -1,0 +1,74 @@
+// =============================================================================
+// LANGUAGE SELECTOR — control segmentado ES / EN / PT
+// =============================================================================
+
+.language-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--go-space-2);
+  padding: 6px;
+  border-radius: var(--go-radius-pill);
+  background: rgba(255, 255, 255, 0.12);
+  -webkit-tap-highlight-color: transparent;
+
+  &__option {
+    min-width: 2.75rem;
+    padding: 8px 10px;
+    border: 0;
+    border-radius: var(--go-radius-pill);
+    background: transparent;
+    color: var(--go-white);
+    font-family: var(--go-font-body);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: background 180ms ease, color 180ms ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    &.is-active {
+      background: var(--go-white);
+      color: var(--go-primary);
+    }
+  }
+
+  &__separator {
+    width: 1px;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.28);
+  }
+}
+
+// Dentro de Configuración el selector va sobre la franja de control, que ya
+// es tintada, así que necesita la variante opuesta en dos niveles: fondo claro
+// para separarse de la franja, y `--go-ocean` para el activo en lugar de
+// blanco sobre blanco.
+:host-context(.settings) .language-selector {
+  width: 100%;
+  padding: 4px;
+  background: var(--go-white);
+  border: 1px solid var(--go-line);
+
+  .language-selector__option {
+    flex: 1 1 0;
+    min-width: 0;
+    color: var(--go-navy-muted);
+
+    &:hover {
+      background: var(--go-ocean-soft);
+    }
+
+    &.is-active {
+      background: var(--go-ocean);
+      color: var(--go-white);
+      box-shadow: 0 1px 3px rgba(11, 45, 74, 0.25);
+    }
+  }
+
+  .language-selector__separator {
+    background: var(--go-line);
+  }
+}

@@ -1,0 +1,183 @@
+<app-page-header [title]="'news.title' | t" defaultHref="/home"></app-page-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content
+      pullingText="{{ 'news.pull' | t }}"
+      refreshingText="{{ 'news.refreshing' | t }}"
+    ></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="news">
+    <!-- ── MASTHEAD: cabecera de la revista ─────────────────────────────── -->
+    <header class="news__masthead">
+      <p class="news__kicker">{{ 'news.mastheadKicker' | t }}</p>
+      <h2 class="news__headline">{{ 'news.headline' | t }}</h2>
+      <p class="news__standfirst">{{ 'news.standfirst' | t }}</p>
+    </header>
+
+    @if (vm$ | async; as feed) {
+      <!-- ── CATEGORÍAS: solo las que existen de verdad ────────────────── -->
+      @if (feed.categories.length > 1) {
+        <nav class="news__chips" [attr.aria-label]="'news.title' | t">
+          <button
+            type="button"
+            class="news__chip"
+            [class.news__chip--active]="isActive('all')"
+            [attr.aria-pressed]="isActive('all')"
+            (click)="setFilter('all')"
+          >
+            {{ 'news.all' | t }}
+          </button>
+
+          @for (category of feed.categories; track category) {
+            <button
+              type="button"
+              class="news__chip"
+              [class.news__chip--active]="isActive(category)"
+              [attr.aria-pressed]="isActive(category)"
+              (click)="setFilter(category)"
+            >
+              <ion-icon [name]="kindIcon(category)" aria-hidden="true"></ion-icon>
+              {{ kindLabel(category) | t }}
+            </button>
+          }
+        </nav>
+      }
+
+      @if (feed.featured) {
+        <div class="news__columns">
+          <!-- ── COLUMNA PRINCIPAL: hero + destacados ──────────────────── -->
+          <div class="news__main">
+            <a class="news__featured" [routerLink]="['/noticias', feed.featured.slug]">
+              <span class="news__featured-media">
+                @if (feed.featured.image) {
+                  <img
+                    class="news__featured-img"
+                    appSafeImg
+                    [src]="feed.featured.image"
+                    [alt]="feed.featured.title"
+                  />
+                } @else {
+                  <span class="news__media-fallback" aria-hidden="true">
+                    <ion-icon [name]="kindIcon(feed.featured.kind)"></ion-icon>
+                  </span>
+                }
+
+                <span class="news__tag" [attr.data-kind]="feed.featured.kind">
+                  <ion-icon [name]="kindIcon(feed.featured.kind)" aria-hidden="true"></ion-icon>
+                  {{ kindLabel(feed.featured.kind) | t }}
+                </span>
+              </span>
+
+              <span class="news__featured-body">
+                <h3 class="news__featured-title">{{ feed.featured.title }}</h3>
+                @if (feed.featured.excerpt) {
+                  <span class="news__featured-excerpt">{{ feed.featured.excerpt }}</span>
+                }
+                <span class="news__meta">
+                  {{ feed.featured.publishedAt | newsDate: language() }}
+                  @if (feed.featured.providerName) {
+                    · {{ 'news.author' | t: { name: feed.featured.providerName } }}
+                  }
+                </span>
+              </span>
+            </a>
+
+            @if (feed.highlights.length) {
+              <section class="news__block">
+                <h3 class="news__section-title">{{ 'news.highlights' | t }}</h3>
+                <ol class="news__ranked">
+                  @for (item of feed.highlights; track item.id; let i = $index) {
+                    <li class="news__ranked-item">
+                      <a class="news__ranked-link" [routerLink]="['/noticias', item.slug]">
+                        <span class="news__ranked-index">{{ i + 1 }}</span>
+                        <span class="news__ranked-body">
+                          <span class="news__ranked-title">{{ item.title }}</span>
+                          <span class="news__ranked-meta">
+                            {{ kindLabel(item.kind) | t }} ·
+                            {{ item.publishedAt | newsDate: language() }}
+                          </span>
+                        </span>
+                      </a>
+                    </li>
+                  }
+                </ol>
+              </section>
+            }
+          </div>
+
+          <!-- ── COLUMNA LATERAL: últimas historias ────────────────────── -->
+          @if (feed.latest.length) {
+            <div class="news__side">
+              <h3 class="news__section-title">{{ 'news.latest' | t }}</h3>
+
+              <div class="news__stories">
+                @for (item of feed.latest; track item.id) {
+                  <a class="news__story" [routerLink]="['/noticias', item.slug]">
+                    <span class="news__story-media">
+                      @if (item.image) {
+                        <img class="news__story-img" appSafeImg [src]="item.image" [alt]="item.title" />
+                      } @else {
+                        <span class="news__story-fallback">
+                          <ion-icon [name]="kindIcon(item.kind)" aria-hidden="true"></ion-icon>
+                        </span>
+                      }
+                    </span>
+
+                    <span class="news__story-body">
+                      <span class="news__story-meta">
+                        <span [attr.data-kind]="item.kind">{{ kindLabel(item.kind) | t }}</span>
+                        <span class="news__dot" aria-hidden="true">·</span>
+                        <span>{{ item.publishedAt | newsDate: language() }}</span>
+                      </span>
+                      <span class="news__story-title">{{ item.title }}</span>
+                      @if (item.excerpt) {
+                        <span class="news__story-excerpt">{{ item.excerpt }}</span>
+                      }
+                    </span>
+                  </a>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="news__empty">
+          <ion-icon name="newspaper-outline" aria-hidden="true"></ion-icon>
+          <p>{{ 'news.emptyTitle' | t }}</p>
+          <a class="news__empty-cta" routerLink="/explore">
+            {{ 'news.emptyCta' | t }}
+            <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+          </a>
+        </div>
+      }
+    } @else {
+      <!-- ── ESQUELETO EDITORIAL: hero + sumario ───────────────────────── -->
+      <div class="news__columns">
+        <div class="news__main">
+          <div class="news__ghost-hero">
+            <ion-skeleton-text animated class="news__ghost-media"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 42%; height: 12px; margin: 16px 0 0"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 92%; height: 24px; margin-top: 12px"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 100%; height: 13px; margin-top: 10px"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 78%; height: 13px; margin-top: 8px"></ion-skeleton-text>
+          </div>
+        </div>
+
+        <div class="news__side">
+          @for (ghost of ghosts; track ghost) {
+            <div class="news__ghost-row">
+              <ion-skeleton-text animated class="news__ghost-thumb"></ion-skeleton-text>
+              <div class="news__ghost-lines">
+                <ion-skeleton-text animated style="width: 34%; height: 11px"></ion-skeleton-text>
+                <ion-skeleton-text animated style="width: 96%; height: 15px; margin-top: 8px"></ion-skeleton-text>
+                <ion-skeleton-text animated style="width: 68%; height: 12px; margin-top: 8px"></ion-skeleton-text>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</ion-content>

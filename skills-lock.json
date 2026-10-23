@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "skills": {
+    "api-security-review": {
+      "source": "owasp/secure-agent-playbook",
+      "sourceType": "github",
+      "skillPath": "plugins/code-security-skills/skills/api-security-review/SKILL.md",
+      "computedHash": "fac03deef4e335dcae09bd9b7687489881261e8abdc6cbcb6e160cb81e571fda"
+    },
+    "capacitor-accessibility": {
+      "source": "cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-accessibility/SKILL.md",
+      "computedHash": "fea6c4c18ec848a200ad30173def5308f8b8600b3a718d520fbd5a6fa15412e7"
+    },
+    "capacitor-best-practices": {
+      "source": "cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-best-practices/SKILL.md",
+      "computedHash": "a9a331f48d73a3d61e4db4670ca93b1ddfbbf942bae5f804fe04be613533aae5"
+    },
+    "capacitor-keyboard": {
+      "source": "cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-keyboard/SKILL.md",
+      "computedHash": "f9f6b10c69caeaef2b25bc4844bb631d7027d5bee8a0d30c326ecc3c24e005b7"
+    },
+    "capacitor-performance": {
+      "source": "cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-performance/SKILL.md",
+      "computedHash": "d2121f916ead918e2aa23dc32c95b1fd8202c9e6811df87360c384af85044d88"
+    },
+    "capacitor-security": {
+      "source": "cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-security/SKILL.md",
+      "computedHash": "52a889c018172c86569ac06a8e07c3bbdf6e4e00087ec4913961d39a82435ed8"
+    },
+    "capacitor-testing": {
+      "source": "cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-testing/SKILL.md",
+      "computedHash": "d9f4fd292f1ce0d407a1ea84274c9b7a133bd71d156f9af9886c45e778ba62fd"
+    },
+    "code-review-security": {
+      "source": "owasp/secure-agent-playbook",
+      "sourceType": "github",
+      "skillPath": "plugins/code-security-skills/skills/code-review-security/SKILL.md",
+      "computedHash": "1d4ca3f0c384b938faaef2493cf0da2aaa011f9b522905373d5294d11bf41db8"
+    },
+    "debugging-capacitor": {
+      "source": "cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/debugging-capacitor/SKILL.md",
+      "computedHash": "27f15e076d49fd4eab7d636324ba81784b085f21191a8168f8c643d69ce57e66"
+    },
+    "design-system": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/design-system/SKILL.md",
+      "computedHash": "a8d1f1cd0f55979a872a2ce9717d3c33df23b0c378738b8d6adb574bfb266c77"
+    },
+    "ionic-design": {
+      "source": "cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/ionic-design/SKILL.md",
+      "computedHash": "601a042b549e12f1bd21333d705c92769b254970d91af2008f3eeacbe5c09d04"
+    },
+    "mobile-code-review": {
+      "source": "owasp/secure-agent-playbook",
+      "sourceType": "github",
+      "skillPath": "plugins/code-security-skills/skills/mobile-code-review/SKILL.md",
+      "computedHash": "af4870bf9ca85c657bf7b45a6bbeaa9e3515a54af5f05054928714f147a38968"
+    },
+    "safe-area-handling": {
+      "source": "cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-area-handling/SKILL.md",
+      "computedHash": "7ec364496e68373cf9e5d563358236d2dca0c4d92c543b4ed260aedda5731ebb"
+    },
+    "sca-audit": {
+      "source": "owasp/secure-agent-playbook",
+      "sourceType": "github",
+      "skillPath": "plugins/code-security-skills/skills/sca-audit/SKILL.md",
+      "computedHash": "2653082ff85d1ff48679561dfdd548638f5b90836ee052f98f66ba4cdb26a6aa"
+    },
+    "secrets-scan": {
+      "source": "owasp/secure-agent-playbook",
+      "sourceType": "github",
+      "skillPath": "plugins/code-security-skills/skills/secrets-scan/SKILL.md",
+      "computedHash": "a23315e493dbc8dcf31deef2effc670661a1ed58de4afd10db66269c4d6df64a"
+    },
+    "security-guidance": {
+      "source": "owasp/secure-agent-playbook",
+      "sourceType": "github",
+      "skillPath": "plugins/code-security-skills/skills/security-guidance/SKILL.md",
+      "computedHash": "40ae24f8f851fee60298d840a578e0e0e2014fb3648d3010ad8abc8ecca54ec2"
+    },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/ui-ux-pro-max/SKILL.md",
+      "computedHash": "7ac62d931e52dbc7c309ed8ee067101969db2454709339b02daa583e80e98d5f"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "computedHash": "f3bc47f890f42a44db1007ab390709ec368e4b8c089baee6b0007182236ac474"
+    },
+    "web-security-review": {
+      "source": "owasp/secure-agent-playbook",
+      "sourceType": "github",
+      "skillPath": "plugins/code-security-skills/skills/web-security-review/SKILL.md",
+      "computedHash": "26e11a326ea825f8389ee554c8ce049f908e03ab3a71fae8fb949b5a849b977c"
+    },
+    "webapp-to-capacitor": {
+      "source": "cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/webapp-to-capacitor/SKILL.md",
+      "computedHash": "47ae1b2ec003c729785537d9ebee2a35ab193855271200a08c9cf00a16024fa2"
+    }
+  }
+}

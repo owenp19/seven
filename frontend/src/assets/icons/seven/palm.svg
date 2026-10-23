@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <!-- palm: curved palm tree with leaves -->
+  <path d="M12 21V9" />
+  <path d="M12 10c-1.5-1.5-4-1-5.5.5C8 13 10 13.5 12 11z" />
+  <path d="M12 10c1.5-1.5 4-1 5.5.5C16 13 14 13.5 12 11z" />
+  <path d="M11 12c-1.8.5-3.4 2-4 4 2-.2 4-1 5-2.5" />
+  <path d="M13 12c1.8.5 3.4 2 4 4-2-.2-4-1-5-2.5" />
+  <path d="M2 21h20" />
+</svg>

@@ -1,0 +1,249 @@
+<div class="explore">
+  <ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+      <ion-refresher-content
+        pullingIcon="chevron-down-circle-outline"
+        refreshingSpinner="crescent"
+        [pullingText]="'common.pullToRefresh' | t"
+        [refreshingText]="'common.refreshing' | t"
+      ></ion-refresher-content>
+    </ion-refresher>
+
+    <header class="explore__hero">
+      <h1 class="explore__title">{{ 'explore.title' | t }}</h1>
+      <p class="explore__subtitle">{{ 'explore.subtitle' | t }}</p>
+    </header>
+
+    <div class="explore__sticky">
+      <div class="explore__search">
+        <ion-icon class="explore__search-icon" name="search-outline" aria-hidden="true"></ion-icon>
+        <input
+          class="explore__search-input"
+          type="search"
+          inputmode="search"
+          autocomplete="off"
+          [formControl]="searchControl"
+          [placeholder]="'explore.searchPlaceholder' | t"
+          [attr.aria-label]="'explore.searchLabel' | t"
+        />
+        @if (searchText()) {
+          <button
+            type="button"
+            class="explore__search-clear"
+            [attr.aria-label]="'catalog.clearSearch' | t"
+            (click)="clearSearch()"
+          >
+            <ion-icon name="close-circle" aria-hidden="true"></ion-icon>
+          </button>
+        }
+      </div>
+
+      <div class="explore__chips" role="tablist" [attr.aria-label]="'explore.categoriesLabel' | t">
+        <button
+          type="button"
+          role="tab"
+          class="explore__chip"
+          [class.explore__chip--active]="!activeCategory()"
+          [attr.aria-selected]="!activeCategory()"
+          (click)="selectCategory('')"
+        >
+          {{ 'explore.all' | t }}
+        </button>
+
+        @if (categories$ | async; as catState) {
+          @if (catState.status === 'ready') {
+            @for (category of catState.data; track category.id) {
+              <button
+                type="button"
+                role="tab"
+                class="explore__chip"
+                [class.explore__chip--active]="activeCategory() === category.slug"
+                [attr.aria-selected]="activeCategory() === category.slug"
+                (click)="selectCategory(category.slug)"
+              >
+                {{ category.name }}
+              </button>
+            }
+          } @else {
+            @for (ghost of [1, 2, 3]; track ghost) {
+              <span class="explore__chip explore__chip--ghost">
+                <ion-skeleton-text animated style="width: 56px; height: 14px;"></ion-skeleton-text>
+              </span>
+            }
+          }
+        }
+      </div>
+    </div>
+
+    <div class="explore__toolbar">
+      <button
+        type="button"
+        class="explore__filter"
+        [class.explore__filter--active]="hasAdvancedFilters()"
+        (click)="openFilters()"
+      >
+        <ion-icon name="options-outline" aria-hidden="true"></ion-icon>
+        {{ 'explore.filters' | t }}
+        @if (hasAdvancedFilters()) {
+          <span class="explore__filter-dot" aria-hidden="true"></span>
+        }
+      </button>
+
+      <button
+        type="button"
+        class="explore__filter"
+        [class.explore__filter--active]="!!nearby()"
+        (click)="toggleNearby()"
+      >
+        <ion-icon name="navigate-outline" aria-hidden="true"></ion-icon>
+        {{ 'explore.nearby' | t }}
+      </button>
+
+      <button
+        type="button"
+        class="explore__filter"
+        [class.explore__filter--active]="sort() === 'rating'"
+        (click)="toggleBestRated()"
+      >
+        <ion-icon name="star" aria-hidden="true"></ion-icon>
+        {{ 'explore.bestRated' | t }}
+      </button>
+    </div>
+
+    @if (locationError()) {
+      <p class="explore__notice" role="status">
+        {{ 'explore.locationError' | t }}
+      </p>
+    }
+
+    <div class="explore__results">
+      @if (businesses$ | async; as state) {
+        @switch (state.status) {
+          @case ('ready') {
+            <p class="explore__context">
+              {{ (state.data.length === 1 ? 'explore.resultOne' : 'explore.resultMany') | t: { count: state.data.length } }}
+            </p>
+
+            <div class="explore__list">
+              @for (business of state.data; track business.id) {
+                <app-seven-result-card
+                  [image]="business.coverImage ?? ''"
+                  [name]="business.name"
+                  [category]="business.category?.name || 'Negocio'"
+                  [rating]="business.ratingAvg"
+                  [ratingCount]="business.ratingCount"
+                  [location]="business.address || 'San Andrés'"
+                  [verified]="business.isVerified"
+                  [link]="'/business/' + business.id"
+                ></app-seven-result-card>
+              } @empty {
+                <div class="explore__state">
+                  <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+                  <h2>{{ 'explore.emptyTitle' | t }}</h2>
+                  <p>{{ 'explore.emptyText' | t }}</p>
+                  <button type="button" class="explore__state-action" (click)="clearFilters()">
+                    {{ 'explore.clear' | t }}
+                  </button>
+                </div>
+              }
+            </div>
+          }
+          @case ('error') {
+            <div class="explore__state explore__state--error" role="alert">
+              <ion-icon name="cloud-offline-outline" aria-hidden="true"></ion-icon>
+              <h2>{{ 'explore.errorTitle' | t }}</h2>
+              <p>{{ state.message }}</p>
+              <button type="button" class="explore__state-action" (click)="retry()">
+                {{ 'explore.retry' | t }}
+              </button>
+            </div>
+          }
+          @default {
+            <app-seven-context-loader variant="list" type="business"></app-seven-context-loader>
+          }
+        }
+      }
+    </div>
+  </ion-content>
+
+  <ion-modal
+    class="explore-filters"
+    [isOpen]="filtersOpen()"
+    [initialBreakpoint]="0.72"
+    [breakpoints]="[0, 0.72]"
+    (didDismiss)="closeFilters()"
+  >
+    <div class="filters">
+      <header class="filters__head">
+        <h2 class="filters__title">{{ 'explore.filters' | t }}</h2>
+        <button
+          type="button"
+          class="filters__close"
+          [attr.aria-label]="'explore.closeFilters' | t"
+          (click)="closeFilters()"
+        >
+          <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+        </button>
+      </header>
+
+      <section class="filters__section">
+        <h3 class="filters__label">{{ 'explore.sortBy' | t }}</h3>
+        <div class="filters__options">
+          <button
+            type="button"
+            class="filters__option"
+            [class.filters__option--active]="sort() === 'relevance'"
+            (click)="setSort('relevance')"
+          >
+            {{ 'explore.sortRelevance' | t }}
+          </button>
+          <button
+            type="button"
+            class="filters__option"
+            [class.filters__option--active]="sort() === 'rating'"
+            (click)="setSort('rating')"
+          >
+            {{ 'explore.bestRated' | t }}
+          </button>
+          <button
+            type="button"
+            class="filters__option"
+            [class.filters__option--active]="sort() === 'distance'"
+            (click)="setSort('distance')"
+          >
+            {{ 'explore.sortDistance' | t }}
+          </button>
+        </div>
+      </section>
+
+      <section class="filters__section">
+        <h3 class="filters__label">{{ 'explore.minRating' | t }}</h3>
+        <div class="filters__options">
+          @for (option of ratingOptions; track option) {
+            <button
+              type="button"
+              class="filters__option"
+              [class.filters__option--active]="minRating() === option"
+              (click)="setMinRating(option)"
+            >
+              {{ option === 0 ? ('explore.all' | t) : option + '+' }}
+            </button>
+          }
+        </div>
+      </section>
+
+      <p class="filters__note">
+        {{ 'explore.filtersNote' | t }}
+      </p>
+
+      <div class="filters__actions">
+        <button type="button" class="filters__action filters__action--ghost" (click)="clearFilters()">
+          {{ 'explore.clear' | t }}
+        </button>
+        <button type="button" class="filters__action filters__action--primary" (click)="closeFilters()">
+          {{ 'explore.apply' | t }}
+        </button>
+      </div>
+    </div>
+  </ion-modal>
+</div>

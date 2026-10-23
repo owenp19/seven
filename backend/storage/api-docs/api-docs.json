@@ -1,0 +1,3482 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "SEVEN API",
+        "description": "API pública de SEVEN — San Andrés, más que un destino. Ofrece tours, experiencias, restaurantes, posadas nativas, panaderías, promociones y reservas de San Andrés Isla. Todas las respuestas usan el mismo sobre: success, message, data, errors y meta. Códigos de estado comunes: 200 OK, 201 Creado, 404 No encontrado, 422 Validación, 429 Límite superado.",
+        "contact": {
+            "name": "SEVEN App"
+        },
+        "license": {
+            "name": "Datos abiertos — fotos Wikimedia Commons (CC BY-SA)"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api/v1"
+        }
+    ],
+    "paths": {
+        "/admin/media": {
+            "post": {
+                "tags": [
+                    "Administración"
+                ],
+                "summary": "Sube un archivo de media",
+                "description": "POST /api/v1/admin/media — upload a media file.",
+                "operationId": "storeAdminMedia",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "image",
+                                            "logo",
+                                            "cover",
+                                            "gallery",
+                                            "product",
+                                            "banner",
+                                            "promotion",
+                                            "video"
+                                        ]
+                                    },
+                                    "order": {
+                                        "type": "integer",
+                                        "example": 0
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Media creado correctamente."
+                    },
+                    "422": {
+                        "description": "Error de validación."
+                    }
+                }
+            }
+        },
+        "/accommodations": {
+            "get": {
+                "tags": [
+                    "Alojamientos"
+                ],
+                "summary": "Busca alojamientos",
+                "description": "Busca alojamientos aprobados por capacidad (guests) y texto libre. Resultados paginados.",
+                "operationId": "listAccommodations",
+                "parameters": [
+                    {
+                        "name": "guests",
+                        "in": "query",
+                        "description": "Capacidad mínima de huéspedes.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 4
+                        }
+                    },
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Búsqueda de texto libre.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "playa"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Cantidad de resultados por página (máx. 100).",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10,
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Alojamientos obtenidos correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Accommodations retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "pagination": {
+                                                    "properties": {
+                                                        "total": {
+                                                            "type": "integer"
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer"
+                                                        },
+                                                        "current_page": {
+                                                            "type": "integer"
+                                                        },
+                                                        "last_page": {
+                                                            "type": "integer"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/accommodations/{accommodation}": {
+            "get": {
+                "tags": [
+                    "Alojamientos"
+                ],
+                "summary": "Consulta un alojamiento por id",
+                "description": "Devuelve el perfil de un alojamiento aprobado.",
+                "operationId": "showAccommodation",
+                "parameters": [
+                    {
+                        "name": "accommodation",
+                        "in": "path",
+                        "description": "ID del alojamiento.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Alojamiento obtenido correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Accommodation retrieved successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Alojamiento no encontrado o no aprobado."
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/accommodations/{accommodation}/availability": {
+            "get": {
+                "tags": [
+                    "Alojamientos"
+                ],
+                "summary": "Disponibilidad de un alojamiento",
+                "description": "Consultar la disponibilidad de un alojamiento para una fecha concreta.",
+                "operationId": "accommodationAvailability",
+                "parameters": [
+                    {
+                        "name": "accommodation",
+                        "in": "path",
+                        "description": "ID del alojamiento.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Fecha a consultar (YYYY-MM-DD). Por defecto, hoy.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2026-10-01"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Disponibilidad obtenida correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Availability retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Alojamiento no encontrado."
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/admin/auth/login": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Autentica un usuario administrativo",
+                "description": "Devuelve un token personal (Bearer) para usar en el resto de endpoints /admin/*.",
+                "operationId": "adminLogin",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "admin@seven.test"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password"
+                                    },
+                                    "device_name": {
+                                        "type": "string",
+                                        "example": "Panel Web"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Autenticación exitosa.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Authenticated successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string"
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "example": "Bearer"
+                                                },
+                                                "user": {
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Credenciales incorrectas."
+                    },
+                    "403": {
+                        "description": "El usuario no tiene un rol administrativo."
+                    },
+                    "422": {
+                        "description": "Error de validación."
+                    },
+                    "429": {
+                        "description": "Demasiados intentos de login."
+                    }
+                }
+            }
+        },
+        "/admin/auth/logout": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Cierra la sesión revocando el token actual",
+                "description": "POST /api/v1/admin/auth/logout — revoca el token en uso.",
+                "operationId": "adminLogout",
+                "responses": {
+                    "200": {
+                        "description": "Sesión cerrada."
+                    },
+                    "401": {
+                        "description": "No autenticado."
+                    }
+                }
+            }
+        },
+        "/admin/auth/me": {
+            "get": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Devuelve el usuario autenticado con sus roles y permisos",
+                "description": "GET /api/v1/admin/auth/me — usuario autenticado.",
+                "operationId": "adminMe",
+                "responses": {
+                    "200": {
+                        "description": "Usuario autenticado."
+                    },
+                    "401": {
+                        "description": "No autenticado."
+                    }
+                }
+            }
+        },
+        "/admin/auth/tokens": {
+            "get": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Lista los tokens personales del usuario",
+                "description": "GET /api/v1/admin/auth/tokens — tokens personales del usuario.",
+                "operationId": "adminTokens",
+                "responses": {
+                    "200": {
+                        "description": "Lista de tokens."
+                    },
+                    "401": {
+                        "description": "No autenticado."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Genera un token personal adicional",
+                "description": "POST /api/v1/admin/auth/tokens — genera un token personal.",
+                "operationId": "adminStoreToken",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "CI Windows"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Token generado."
+                    },
+                    "401": {
+                        "description": "No autenticado."
+                    },
+                    "422": {
+                        "description": "Error de validación."
+                    }
+                }
+            }
+        },
+        "/admin/auth/tokens/{tokenId}": {
+            "delete": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Revoca un token personal",
+                "description": "DELETE /api/v1/admin/auth/tokens/{tokenId} — revoca un token.",
+                "operationId": "adminRevokeToken",
+                "parameters": [
+                    {
+                        "name": "tokenId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token revocado."
+                    },
+                    "401": {
+                        "description": "No autenticado."
+                    },
+                    "404": {
+                        "description": "El token no existe o no pertenece al usuario."
+                    }
+                }
+            }
+        },
+        "/bakeries": {
+            "get": {
+                "tags": [
+                    "Panaderías"
+                ],
+                "summary": "Lista las panaderías y cafeterías aprobadas",
+                "description": "Devuelve las panaderías aprobadas con su catálogo de productos y proveedor, paginadas.",
+                "operationId": "listBakeries",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Cantidad de resultados por página (máx. 100).",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10,
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Panaderías obtenidas correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Bakeries retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "slug": {
+                                                        "type": "string",
+                                                        "example": "panaderia-suzette"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Panadería Suzette"
+                                                    },
+                                                    "logo": {
+                                                        "type": "string"
+                                                    },
+                                                    "cover_image": {
+                                                        "type": "string"
+                                                    },
+                                                    "description": {
+                                                        "type": "string"
+                                                    },
+                                                    "address": {
+                                                        "type": "string"
+                                                    },
+                                                    "phone": {
+                                                        "type": "string"
+                                                    },
+                                                    "category": {
+                                                        "type": "string"
+                                                    },
+                                                    "rating": {
+                                                        "type": "number",
+                                                        "format": "float"
+                                                    },
+                                                    "reviews": {
+                                                        "type": "integer"
+                                                    },
+                                                    "opening_hours": {
+                                                        "type": "string"
+                                                    },
+                                                    "price_range": {
+                                                        "type": "string"
+                                                    },
+                                                    "location": {
+                                                        "properties": {
+                                                            "latitude": {
+                                                                "type": "number"
+                                                            },
+                                                            "longitude": {
+                                                                "type": "number"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "status": {
+                                                        "type": "string"
+                                                    },
+                                                    "products": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "provider": {
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "pagination": {
+                                                    "properties": {
+                                                        "total": {
+                                                            "type": "integer",
+                                                            "example": 3
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer",
+                                                            "example": 15
+                                                        },
+                                                        "current_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "last_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/bakeries/{slug}": {
+            "get": {
+                "tags": [
+                    "Panaderías"
+                ],
+                "summary": "Consulta una panadería por slug",
+                "description": "Devuelve el perfil de una panadería aprobada con su catálogo de productos.",
+                "operationId": "showBakery",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug de la panadería (ej: panaderia-suzette).",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "panaderia-suzette"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Panadería obtenida correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Bakery retrieved successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "slug": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "logo": {
+                                                    "type": "string"
+                                                },
+                                                "cover_image": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "address": {
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "type": "string"
+                                                },
+                                                "category": {
+                                                    "type": "string"
+                                                },
+                                                "rating": {
+                                                    "type": "number",
+                                                    "format": "float"
+                                                },
+                                                "reviews": {
+                                                    "type": "integer"
+                                                },
+                                                "opening_hours": {
+                                                    "type": "string"
+                                                },
+                                                "price_range": {
+                                                    "type": "string"
+                                                },
+                                                "location": {
+                                                    "type": "object"
+                                                },
+                                                "status": {
+                                                    "type": "string"
+                                                },
+                                                "products": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "provider": {
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Panadería no encontrada o no aprobada."
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/banners": {
+            "get": {
+                "tags": [
+                    "Banners"
+                ],
+                "summary": "Lista los banners activos",
+                "description": "Devuelve todos los banners activos dentro de su rango de fechas (start_date / end_date).",
+                "operationId": "listBanners",
+                "responses": {
+                    "200": {
+                        "description": "Banners obtenidos correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Banners retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Marea de ofertas"
+                                                    },
+                                                    "subtitle": {
+                                                        "type": "string",
+                                                        "example": "Promociones para tu visita"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Las mejores experiencias de San Andrés a precios especiales."
+                                                    },
+                                                    "image": {
+                                                        "type": "string",
+                                                        "example": "http://localhost:8000/storage/banners/playa-san-luis.jpg"
+                                                    },
+                                                    "button_text": {
+                                                        "type": "string",
+                                                        "example": "Ver ofertas"
+                                                    },
+                                                    "button_url": {
+                                                        "type": "string",
+                                                        "example": "https://seven.app/promotions"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "active",
+                                                        "enum": [
+                                                            "active",
+                                                            "inactive",
+                                                            "scheduled",
+                                                            "expired"
+                                                        ]
+                                                    },
+                                                    "order": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "start_date": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2026-09-01"
+                                                    },
+                                                    "end_date": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2026-12-31"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/bookings": {
+            "get": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Lista las reservas del dispositivo",
+                "description": "Lista las reservas creadas desde este dispositivo, identificadas por la cabecera X-Install-Id. Sin ese identificador la petición se rechaza.",
+                "operationId": "listBookings",
+                "parameters": [
+                    {
+                        "name": "X-Install-Id",
+                        "in": "header",
+                        "description": "UUID del dispositivo (mismo valor que se envía al crear la reserva).",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "5f0a1b3c-6d2e-4a7b-9c8d-1e2f3a4b5c6d"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reservas obtenidas correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Bookings retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "booking_code": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    },
+                                                    "status": {
+                                                        "type": "string"
+                                                    },
+                                                    "bookable": {
+                                                        "properties": {
+                                                            "type": {
+                                                                "type": "string"
+                                                            },
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "start_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "end_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "nullable": true
+                                                    },
+                                                    "guests": {
+                                                        "type": "integer"
+                                                    },
+                                                    "total_amount": {
+                                                        "type": "integer"
+                                                    },
+                                                    "currency": {
+                                                        "type": "string"
+                                                    },
+                                                    "special_requests": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "customer": {
+                                                        "type": "object"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "pagination": {
+                                                    "properties": {
+                                                        "total": {
+                                                            "type": "integer"
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer"
+                                                        },
+                                                        "current_page": {
+                                                            "type": "integer"
+                                                        },
+                                                        "last_page": {
+                                                            "type": "integer"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Falta el X-Install-Id o la reserva pertenece a otro dispositivo."
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Crea una reserva",
+                "description": "Crea una reserva asociada a un bookable (business, accommodation, experience, tour, restaurant o inn). El cliente se localiza por teléfono o se crea automáticamente.",
+                "operationId": "storeBooking",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "bookable_type",
+                                    "bookable_id",
+                                    "type",
+                                    "start_at",
+                                    "guests",
+                                    "customer"
+                                ],
+                                "properties": {
+                                    "bookable_type": {
+                                        "type": "string",
+                                        "example": "experience",
+                                        "enum": [
+                                            "business",
+                                            "accommodation",
+                                            "experience",
+                                            "tour",
+                                            "restaurant",
+                                            "inn"
+                                        ]
+                                    },
+                                    "bookable_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "example": "experience",
+                                        "enum": [
+                                            "gastronomic",
+                                            "accommodation",
+                                            "experience"
+                                        ]
+                                    },
+                                    "start_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2026-10-01T09:00:00"
+                                    },
+                                    "end_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "nullable": true
+                                    },
+                                    "guests": {
+                                        "type": "integer",
+                                        "example": 2,
+                                        "maximum": 20,
+                                        "minimum": 1
+                                    },
+                                    "special_requests": {
+                                        "type": "string",
+                                        "example": "Quisiera compartir vehículo.",
+                                        "nullable": true
+                                    },
+                                    "currency": {
+                                        "type": "string",
+                                        "example": "COP",
+                                        "maxLength": 3
+                                    },
+                                    "customer": {
+                                        "required": [
+                                            "name",
+                                            "phone"
+                                        ],
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Ana Martínez"
+                                            },
+                                            "phone": {
+                                                "type": "string",
+                                                "example": "+573001234567"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "format": "email",
+                                                "example": "ana@example.com"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Reserva creada correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Booking created successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "booking_code": {
+                                                    "type": "string",
+                                                    "example": "SVN-9F2K7Q"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "confirmed"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "bookable_type": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The bookable_type must be either business, accommodation, experience, tour, restaurant or inn."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/bookings/{bookingCode}": {
+            "get": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Consulta una reserva por código",
+                "description": "Devuelve el detalle de una reserva a partir de su código público. Solo el dispositivo que la creó puede consultarlo.",
+                "operationId": "showBooking",
+                "parameters": [
+                    {
+                        "name": "bookingCode",
+                        "in": "path",
+                        "description": "Código de la reserva (ej: SVN-9F2K7Q).",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "SVN-9F2K7Q"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reserva obtenida correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Booking retrieved successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "booking_code": {
+                                                    "type": "string",
+                                                    "example": "SVN-9F2K7Q"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "confirmed"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "La reserva es de otro dispositivo."
+                    },
+                    "404": {
+                        "description": "Reserva no encontrada."
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Actualiza el estado de una reserva",
+                "description": "Endpoint público: solo permite pasar la reserva a cancelled, y únicamente si pertenece al dispositivo que la creó. Confirmar o completar se hace desde /admin/bookings/{code}/status.",
+                "operationId": "updateBooking",
+                "parameters": [
+                    {
+                        "name": "bookingCode",
+                        "in": "path",
+                        "description": "Código de la reserva.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "SVN-9F2K7Q"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "status"
+                                ],
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "example": "cancelled",
+                                        "enum": [
+                                            "cancelled"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Reserva actualizada correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Booking updated successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "booking_code": {
+                                                    "type": "string"
+                                                },
+                                                "status": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "La reserva es de otro dispositivo, o el cliente intenta fijar un estado que no le corresponde."
+                    },
+                    "404": {
+                        "description": "Reserva no encontrada."
+                    },
+                    "409": {
+                        "description": "Transición de estado no permitida (p. ej. la reserva ya está cancelada o completada).",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "A booking in status [cancelled] is final and cannot change."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación."
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Cancela una reserva",
+                "description": "Marca la reserva como cancelada (status = cancelled).",
+                "operationId": "cancelBooking",
+                "parameters": [
+                    {
+                        "name": "bookingCode",
+                        "in": "path",
+                        "description": "Código de la reserva.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "SVN-9F2K7Q"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reserva cancelada correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Booking cancelled successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "booking_code": {
+                                                    "type": "string"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "cancelled"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "La reserva es de otro dispositivo."
+                    },
+                    "404": {
+                        "description": "Reserva no encontrada."
+                    },
+                    "409": {
+                        "description": "La reserva ya está en un estado final (cancelada o completada).",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "A booking in status [cancelled] is final and cannot change."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/businesses": {
+            "get": {
+                "tags": [
+                    "Negocios"
+                ],
+                "summary": "Busca negocios del marketplace",
+                "description": "Busca negocios aprobados por categoría, texto libre y/o destacados. Resultados paginados.",
+                "operationId": "listBusinesses",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "Filtra por slug de categoría.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "tours"
+                        }
+                    },
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Búsqueda de texto libre en nombre y descripción.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "johnny"
+                        }
+                    },
+                    {
+                        "name": "featured",
+                        "in": "query",
+                        "description": "Devuelve únicamente negocios destacados.",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "example": true
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Cantidad de resultados por página (máx. 100).",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10,
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Negocios obtenidos correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Businesses retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "pagination": {
+                                                    "properties": {
+                                                        "total": {
+                                                            "type": "integer"
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer"
+                                                        },
+                                                        "current_page": {
+                                                            "type": "integer"
+                                                        },
+                                                        "last_page": {
+                                                            "type": "integer"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/businesses/{business}": {
+            "get": {
+                "tags": [
+                    "Negocios"
+                ],
+                "summary": "Consulta un negocio por id",
+                "description": "Devuelve el perfil de un negocio aprobado con su categoría.",
+                "operationId": "showBusiness",
+                "parameters": [
+                    {
+                        "name": "business",
+                        "in": "path",
+                        "description": "ID del negocio.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Negocio obtenido correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Business retrieved successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "category": {
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Negocio no encontrado o no aprobado."
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/businesses/{business}/availability": {
+            "get": {
+                "tags": [
+                    "Negocios"
+                ],
+                "summary": "Disponibilidad de un negocio",
+                "description": "Consultar la disponibilidad de un negocio para una fecha concreta.",
+                "operationId": "businessAvailability",
+                "parameters": [
+                    {
+                        "name": "business",
+                        "in": "path",
+                        "description": "ID del negocio.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Fecha a consultar (YYYY-MM-DD). Por defecto, hoy.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2026-10-01"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Disponibilidad obtenida correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Availability retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Negocio no encontrado."
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/categories": {
+            "get": {
+                "tags": [
+                    "Categorías"
+                ],
+                "summary": "Lista las categorías activas",
+                "description": "Devuelve las categorías activas del marketplace con su icono.",
+                "operationId": "listCategories",
+                "responses": {
+                    "200": {
+                        "description": "Categorías obtenidas correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Categories retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "slug": {
+                                                        "type": "string",
+                                                        "example": "tours"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Tours y experiencias"
+                                                    },
+                                                    "icon": {
+                                                        "type": "string",
+                                                        "example": "boat-outline"
+                                                    },
+                                                    "image": {
+                                                        "type": "string"
+                                                    },
+                                                    "description": {
+                                                        "type": "string"
+                                                    },
+                                                    "sort_order": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "order": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "active"
+                                                    },
+                                                    "business_count": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/categories/{slug}": {
+            "get": {
+                "tags": [
+                    "Categorías"
+                ],
+                "summary": "Consulta una categoría",
+                "description": "Devuelve una categoría activa junto con sus negocios aprobados.",
+                "operationId": "showCategory",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug de la categoría (ej: tours, restaurantes, posadas-nativas, panaderias).",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "tours"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Categoría obtenida correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Category retrieved successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "slug": {
+                                                    "type": "string",
+                                                    "example": "tours"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Tours y experiencias"
+                                                },
+                                                "icon": {
+                                                    "type": "string",
+                                                    "example": "boat-outline"
+                                                },
+                                                "image": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "sort_order": {
+                                                    "type": "integer"
+                                                },
+                                                "order": {
+                                                    "type": "integer"
+                                                },
+                                                "status": {
+                                                    "type": "string"
+                                                },
+                                                "business_count": {
+                                                    "type": "integer"
+                                                },
+                                                "businesses": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Categoría no encontrada."
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/tours/{slug}/comments": {
+            "get": {
+                "tags": [
+                    "Comentarios"
+                ],
+                "summary": "Lista los comentarios publicados de un tour",
+                "description": "GET /api/tours/{slug}/comments — opiniones publicadas de un tour.",
+                "operationId": "listTourComments",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug del tour (ej: vuelta-a-la-isla-en-chiva).",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "vuelta-a-la-isla-en-chiva"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Comentarios obtenidos correctamente."
+                    },
+                    "404": {
+                        "description": "Tour no encontrado o no aprobado."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Comentarios"
+                ],
+                "summary": "Publica un comentario en un tour",
+                "description": "POST /api/tours/{slug}/comments — publica la opinión de este dispositivo.",
+                "operationId": "storeTourComment",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug del tour.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "vuelta-a-la-isla-en-chiva"
+                        }
+                    },
+                    {
+                        "name": "X-Install-Id",
+                        "in": "header",
+                        "description": "Identificador del dispositivo. Sin él no se puede publicar.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "7F3A1C8E-0000-4000-8000-000000000001"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Comentario publicado."
+                    },
+                    "403": {
+                        "description": "Falta el X-Install-Id."
+                    },
+                    "422": {
+                        "description": "Este dispositivo ya comentó, o los datos no son válidos."
+                    },
+                    "429": {
+                        "description": "Demasiados comentarios desde este dispositivo."
+                    }
+                }
+            }
+        },
+        "/experiences": {
+            "get": {
+                "tags": [
+                    "Experiencias"
+                ],
+                "summary": "Busca experiencias",
+                "description": "Busca experiencias aprobadas por capacidad, categoría y texto libre. Resultados paginados.",
+                "operationId": "listExperiences",
+                "parameters": [
+                    {
+                        "name": "guests",
+                        "in": "query",
+                        "description": "Capacidad mínima de participantes.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 4
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "Filtra por categoría.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "tours"
+                        }
+                    },
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Búsqueda de texto libre.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "johnny"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Cantidad de resultados por página (máx. 100).",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10,
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Experiencias obtenidas correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Experiences retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "pagination": {
+                                                    "properties": {
+                                                        "total": {
+                                                            "type": "integer"
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer"
+                                                        },
+                                                        "current_page": {
+                                                            "type": "integer"
+                                                        },
+                                                        "last_page": {
+                                                            "type": "integer"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/experiences/{experience}": {
+            "get": {
+                "tags": [
+                    "Experiencias"
+                ],
+                "summary": "Consulta una experiencia por id",
+                "description": "Devuelve el perfil de una experiencia aprobada.",
+                "operationId": "showExperience",
+                "parameters": [
+                    {
+                        "name": "experience",
+                        "in": "path",
+                        "description": "ID de la experiencia.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Experiencia obtenida correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Experience retrieved successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Experiencia no encontrada o no aprobada."
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/experiences/{experience}/availability": {
+            "get": {
+                "tags": [
+                    "Experiencias"
+                ],
+                "summary": "Disponibilidad de una experiencia",
+                "description": "Consultar la disponibilidad de una experiencia para una fecha concreta.",
+                "operationId": "experienceAvailability",
+                "parameters": [
+                    {
+                        "name": "experience",
+                        "in": "path",
+                        "description": "ID de la experiencia.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Fecha a consultar (YYYY-MM-DD). Por defecto, hoy.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2026-10-01"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Disponibilidad obtenida correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Availability retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Experiencia no encontrada."
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "tags": [
+                    "Sistema"
+                ],
+                "summary": "Estado de los servicios críticos",
+                "description": "Verifica base de datos, caché y cola. 200 solo si los tres están OK, 503 en caso contrario.",
+                "operationId": "healthCheck",
+                "responses": {
+                    "200": {
+                        "description": "Todos los servicios operativos.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "OK"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "ok"
+                                                },
+                                                "environment": {
+                                                    "type": "string",
+                                                    "example": "production"
+                                                },
+                                                "checks": {
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "503": {
+                        "description": "Algún servicio está degradado."
+                    }
+                }
+            }
+        },
+        "/inns": {
+            "get": {
+                "tags": [
+                    "Posadas nativas"
+                ],
+                "summary": "Lista las posadas nativas aprobadas",
+                "description": "Devuelve las posadas nativas aprobadas con sus habitaciones y proveedor, paginadas.",
+                "operationId": "listInns",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Cantidad de resultados por página (máx. 100).",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10,
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Posadas obtenidas correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Inns retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "slug": {
+                                                        "type": "string",
+                                                        "example": "posada-miss-trinie"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Posada Miss Trinie"
+                                                    },
+                                                    "description": {
+                                                        "type": "string"
+                                                    },
+                                                    "cover_image": {
+                                                        "type": "string"
+                                                    },
+                                                    "location": {
+                                                        "type": "string"
+                                                    },
+                                                    "price": {
+                                                        "type": "integer"
+                                                    },
+                                                    "services": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "availability": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "rating": {
+                                                        "type": "number",
+                                                        "format": "float"
+                                                    },
+                                                    "status": {
+                                                        "type": "string"
+                                                    },
+                                                    "rooms": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "provider": {
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "pagination": {
+                                                    "properties": {
+                                                        "total": {
+                                                            "type": "integer",
+                                                            "example": 3
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer",
+                                                            "example": 15
+                                                        },
+                                                        "current_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "last_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/inns/{slug}": {
+            "get": {
+                "tags": [
+                    "Posadas nativas"
+                ],
+                "summary": "Consulta una posada por slug",
+                "description": "Devuelve el perfil de una posada nativa aprobada con sus habitaciones.",
+                "operationId": "showInn",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug de la posada (ej: posada-miss-trinie).",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "posada-miss-trinie"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Posada obtenida correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Inn retrieved successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "slug": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "cover_image": {
+                                                    "type": "string"
+                                                },
+                                                "location": {
+                                                    "type": "string"
+                                                },
+                                                "price": {
+                                                    "type": "integer"
+                                                },
+                                                "services": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "availability": {
+                                                    "type": "boolean"
+                                                },
+                                                "rating": {
+                                                    "type": "number",
+                                                    "format": "float"
+                                                },
+                                                "status": {
+                                                    "type": "string"
+                                                },
+                                                "rooms": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "provider": {
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Posada no encontrada o no aprobada."
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/news": {
+            "get": {
+                "tags": [
+                    "Noticias"
+                ],
+                "summary": "Lista las noticias publicadas",
+                "description": "Devuelve las noticias publicadas cuya fecha de publicación ya pasó, ordenadas por destacado y fecha.",
+                "operationId": "listNews",
+                "responses": {
+                    "200": {
+                        "description": "Noticias obtenidas correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "News retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "San Andrés celebra el Festival de la Arepa de Huevo"
+                                                    },
+                                                    "slug": {
+                                                        "type": "string",
+                                                        "example": "festival-arepa-huevo-2026"
+                                                    },
+                                                    "excerpt": {
+                                                        "type": "string"
+                                                    },
+                                                    "body": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "image": {
+                                                        "type": "string"
+                                                    },
+                                                    "kind": {
+                                                        "type": "string",
+                                                        "example": "event",
+                                                        "enum": [
+                                                            "news",
+                                                            "event",
+                                                            "tip",
+                                                            "promotion"
+                                                        ]
+                                                    },
+                                                    "link_url": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "published",
+                                                        "enum": [
+                                                            "published",
+                                                            "draft",
+                                                            "archived"
+                                                        ]
+                                                    },
+                                                    "is_featured": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    },
+                                                    "published_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "provider": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/news/{slug}": {
+            "get": {
+                "tags": [
+                    "Noticias"
+                ],
+                "summary": "Detalle de una noticia",
+                "description": "GET /api/news/{slug} — una noticia por su slug.",
+                "operationId": "getNews",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "example": "festival-arepa-huevo-2026",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Noticia obtenida correctamente."
+                    },
+                    "404": {
+                        "description": "La noticia no existe o no está publicada."
+                    }
+                }
+            }
+        },
+        "/promotions": {
+            "get": {
+                "tags": [
+                    "Promociones"
+                ],
+                "summary": "Lista las promociones activas",
+                "description": "Devuelve todas las promociones activas junto con su proveedor.",
+                "operationId": "listPromotions",
+                "responses": {
+                    "200": {
+                        "description": "Promociones obtenidas correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Promotions retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "provider_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Tour a Johnny Cay con 20% OFF"
+                                                    },
+                                                    "description": {
+                                                        "type": "string"
+                                                    },
+                                                    "image": {
+                                                        "type": "string"
+                                                    },
+                                                    "discount": {
+                                                        "type": "integer",
+                                                        "example": 20
+                                                    },
+                                                    "price": {
+                                                        "type": "integer",
+                                                        "example": 96000,
+                                                        "nullable": true
+                                                    },
+                                                    "start_date": {
+                                                        "type": "string",
+                                                        "format": "date"
+                                                    },
+                                                    "end_date": {
+                                                        "type": "string",
+                                                        "format": "date"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "active",
+                                                        "enum": [
+                                                            "active",
+                                                            "inactive",
+                                                            "expired"
+                                                        ]
+                                                    },
+                                                    "provider": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/restaurants": {
+            "get": {
+                "tags": [
+                    "Restaurantes"
+                ],
+                "summary": "Lista los restaurantes aprobados",
+                "description": "Devuelve los restaurantes aprobados con su menú (productos) y proveedor, paginados.",
+                "operationId": "listRestaurants",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Cantidad de resultados por página (máx. 100).",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10,
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Restaurantes obtenidos correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Restaurants retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "slug": {
+                                                        "type": "string",
+                                                        "example": "la-regatta"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "La Regatta"
+                                                    },
+                                                    "logo": {
+                                                        "type": "string"
+                                                    },
+                                                    "cover_image": {
+                                                        "type": "string"
+                                                    },
+                                                    "description": {
+                                                        "type": "string"
+                                                    },
+                                                    "address": {
+                                                        "type": "string"
+                                                    },
+                                                    "phone": {
+                                                        "type": "string",
+                                                        "example": "+57 8 512 0437"
+                                                    },
+                                                    "category": {
+                                                        "type": "string"
+                                                    },
+                                                    "rating": {
+                                                        "type": "number",
+                                                        "format": "float"
+                                                    },
+                                                    "reviews": {
+                                                        "type": "integer"
+                                                    },
+                                                    "opening_hours": {
+                                                        "type": "string"
+                                                    },
+                                                    "price_range": {
+                                                        "type": "string"
+                                                    },
+                                                    "location": {
+                                                        "properties": {
+                                                            "latitude": {
+                                                                "type": "number"
+                                                            },
+                                                            "longitude": {
+                                                                "type": "number"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "status": {
+                                                        "type": "string"
+                                                    },
+                                                    "products": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "provider": {
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "pagination": {
+                                                    "properties": {
+                                                        "total": {
+                                                            "type": "integer",
+                                                            "example": 3
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer",
+                                                            "example": 15
+                                                        },
+                                                        "current_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "last_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/restaurants/{slug}": {
+            "get": {
+                "tags": [
+                    "Restaurantes"
+                ],
+                "summary": "Consulta un restaurante por slug",
+                "description": "Devuelve el perfil de un restaurante aprobado con su menú.",
+                "operationId": "showRestaurant",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug del restaurante (ej: la-regatta).",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "la-regatta"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Restaurante obtenido correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Restaurant retrieved successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "slug": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "logo": {
+                                                    "type": "string"
+                                                },
+                                                "cover_image": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "address": {
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "type": "string"
+                                                },
+                                                "category": {
+                                                    "type": "string"
+                                                },
+                                                "rating": {
+                                                    "type": "number",
+                                                    "format": "float"
+                                                },
+                                                "reviews": {
+                                                    "type": "integer"
+                                                },
+                                                "opening_hours": {
+                                                    "type": "string"
+                                                },
+                                                "price_range": {
+                                                    "type": "string"
+                                                },
+                                                "location": {
+                                                    "type": "object"
+                                                },
+                                                "status": {
+                                                    "type": "string"
+                                                },
+                                                "products": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "provider": {
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Restaurante no encontrado o no aprobado."
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/tours": {
+            "get": {
+                "tags": [
+                    "Tours"
+                ],
+                "summary": "Lista los tours y experiencias aprobados",
+                "description": "Devuelve los tours aprobados con imágenes, incluye, recomendaciones y proveedor, paginados.",
+                "operationId": "listTours",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Cantidad de resultados por página (máx. 100).",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10,
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tours obtenidos correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tours retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "slug": {
+                                                        "type": "string",
+                                                        "example": "johnny-cay-paseo-en-lancha"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Johnny Cay, paseo en lancha"
+                                                    },
+                                                    "subtitle": {
+                                                        "type": "string"
+                                                    },
+                                                    "description": {
+                                                        "type": "string"
+                                                    },
+                                                    "category": {
+                                                        "type": "string",
+                                                        "example": "boat"
+                                                    },
+                                                    "location": {
+                                                        "type": "string",
+                                                        "example": "San Andrés Isla"
+                                                    },
+                                                    "duration": {
+                                                        "type": "string",
+                                                        "example": "5 horas"
+                                                    },
+                                                    "price": {
+                                                        "type": "integer",
+                                                        "example": 120000
+                                                    },
+                                                    "rating": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 4.8
+                                                    },
+                                                    "reviews": {
+                                                        "type": "integer",
+                                                        "example": 1300
+                                                    },
+                                                    "cover_image": {
+                                                        "type": "string"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "active"
+                                                    },
+                                                    "images": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "includes": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "recommendations": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "provider": {
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "pagination": {
+                                                    "properties": {
+                                                        "total": {
+                                                            "type": "integer",
+                                                            "example": 3
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer",
+                                                            "example": 15
+                                                        },
+                                                        "current_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "last_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/tours/{slug}": {
+            "get": {
+                "tags": [
+                    "Tours"
+                ],
+                "summary": "Consulta un tour por slug",
+                "description": "Devuelve el perfil completo de un tour aprobado con todas sus relaciones.",
+                "operationId": "showTour",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug del tour (ej: johnny-cay-paseo-en-lancha).",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "johnny-cay-paseo-en-lancha"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tour obtenido correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tour retrieved successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "slug": {
+                                                    "type": "string",
+                                                    "example": "johnny-cay-paseo-en-lancha"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Johnny Cay, paseo en lancha"
+                                                },
+                                                "subtitle": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "category": {
+                                                    "type": "string"
+                                                },
+                                                "location": {
+                                                    "type": "string"
+                                                },
+                                                "duration": {
+                                                    "type": "string"
+                                                },
+                                                "price": {
+                                                    "type": "integer"
+                                                },
+                                                "rating": {
+                                                    "type": "number",
+                                                    "format": "float"
+                                                },
+                                                "reviews": {
+                                                    "type": "integer"
+                                                },
+                                                "cover_image": {
+                                                    "type": "string"
+                                                },
+                                                "status": {
+                                                    "type": "string"
+                                                },
+                                                "images": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "includes": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "recommendations": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "provider": {
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tour no encontrado o no aprobado."
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "tags": [
+                    "Raíz"
+                ],
+                "summary": "Información de la API",
+                "description": "Devuelve el nombre, la versión y el estado de la API.",
+                "operationId": "apiRoot",
+                "responses": {
+                    "200": {
+                        "description": "Bienvenida de la API.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Welcome to the SEVEN API"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "SEVEN API"
+                                                },
+                                                "version": {
+                                                    "type": "string",
+                                                    "example": "v1"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "ok"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Demasiadas peticiones (límite 120/min)."
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Categorías",
+            "description": "Categorías activas del marketplace"
+        },
+        {
+            "name": "Tours",
+            "description": "Tours y experiencias náuticas aprobados"
+        },
+        {
+            "name": "Experiencias",
+            "description": "Experiencias del marketplace con disponibilidad"
+        },
+        {
+            "name": "Restaurantes",
+            "description": "Restaurantes aprobados con su menú"
+        },
+        {
+            "name": "Posadas nativas",
+            "description": "Posadas nativas aprobadas con sus habitaciones"
+        },
+        {
+            "name": "Panaderías",
+            "description": "Panaderías y cafeterías aprobadas con su catálogo"
+        },
+        {
+            "name": "Negocios",
+            "description": "Negocios del marketplace por categoría"
+        },
+        {
+            "name": "Alojamientos",
+            "description": "Alojamientos con disponibilidad y búsqueda"
+        },
+        {
+            "name": "Banners",
+            "description": "Banners activos dentro de su rango de fechas"
+        },
+        {
+            "name": "Promociones",
+            "description": "Promociones activas"
+        },
+        {
+            "name": "Reservas",
+            "description": "Creación, consulta y gestión de reservas por código"
+        },
+        {
+            "name": "Raíz",
+            "description": "Información general de la API"
+        },
+        {
+            "name": "Autenticación",
+            "description": "Autenticación"
+        },
+        {
+            "name": "Administración",
+            "description": "Administración"
+        },
+        {
+            "name": "Comentarios",
+            "description": "Comentarios"
+        },
+        {
+            "name": "Sistema",
+            "description": "Sistema"
+        },
+        {
+            "name": "Noticias",
+            "description": "Noticias"
+        }
+    ]
+}

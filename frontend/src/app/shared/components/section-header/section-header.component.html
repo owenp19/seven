@@ -1,0 +1,15 @@
+<div class="section-header">
+  <div class="section-header__text">
+    @if (subtitle) {
+      <span class="section-header__subtitle">{{ subtitle }}</span>
+    }
+    <h2 class="section-header__title">{{ title }}</h2>
+  </div>
+
+  @if (linkLabel && linkUrl) {
+    <a class="section-header__link" [routerLink]="linkUrl">
+      {{ linkLabel }}
+      <ion-icon name="chevron-forward" aria-hidden="true"></ion-icon>
+    </a>
+  }
+</div>

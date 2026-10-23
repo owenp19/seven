@@ -1,0 +1,94 @@
+@if (variant === 'grid') {
+  <a class="result-card result-card--grid" [routerLink]="link" [attr.aria-label]="name">
+    <div class="result-card__cover">
+      <img
+        [src]="image"
+        appSafeImg
+        [alt]="alt || name"
+        loading="lazy"
+        decoding="async"
+        class="result-card__img"
+      />
+
+      <div class="result-card__flags">
+        @if (category) {
+          <span class="result-card__badge">{{ category }}</span>
+        }
+      </div>
+
+      @if (rating > 0) {
+        <span class="result-card__score">
+          <ion-icon name="star" aria-hidden="true"></ion-icon>
+          {{ rating }}
+        </span>
+      }
+    </div>
+
+    <div class="result-card__panel">
+      <h3 class="result-card__name">{{ name }}</h3>
+
+      @if (description) {
+        <p class="result-card__desc">{{ description }}</p>
+      }
+
+      <div class="result-card__footer">
+        <app-rating-stars [rating]="rating" [count]="ratingCount"></app-rating-stars>
+
+        @if (price && price > 0) {
+          <div class="result-card__price">
+            <span class="result-card__price-label">{{ priceLabel }}</span>
+            <strong>{{ price | currencyCOP }}</strong>
+          </div>
+        }
+      </div>
+    </div>
+  </a>
+} @else {
+  <a class="result-card result-card--list" [routerLink]="link" [attr.aria-label]="name">
+    <div class="result-card__media">
+      <img
+        [src]="image"
+        appSafeImg
+        [alt]="alt || name"
+        loading="lazy"
+        decoding="async"
+        class="result-card__img"
+      />
+    </div>
+
+    <div class="result-card__body">
+      <div class="result-card__top">
+        <span class="result-card__category">{{ category }}</span>
+
+        @if (ratingCount > 0) {
+          <span class="result-card__score result-card__score--inline">
+            <ion-icon name="star" aria-hidden="true"></ion-icon>
+            {{ ratingLabel }}
+          </span>
+        } @else {
+          <span class="result-card__score result-card__score--inline result-card__score--new">
+            {{ 'common.new' | t }}
+          </span>
+        }
+      </div>
+
+      <h3 class="result-card__name">{{ name }}</h3>
+
+      <div class="result-card__meta">
+        @if (location) {
+          <span class="result-card__location">
+            <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+            <span class="result-card__location-text">{{ location }}</span>
+          </span>
+        }
+
+        @if (verified) {
+          <span class="result-card__verified">
+            <ion-icon name="shield-checkmark" aria-hidden="true"></ion-icon>
+            {{ 'common.verified' | t }}
+          </span>
+        }
+      </div>
+    </div>
+  </a>
+}

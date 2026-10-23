@@ -1,0 +1,16 @@
+<nav class="bottom-nav" [attr.aria-label]="'nav.main' | t">
+  @for (item of items; track item.id) {
+    <button
+      class="bottom-nav__item"
+      [class.is-active]="isActive(item)"
+      [class.bottom-nav__item--center]="item.center"
+      type="button"
+      (click)="go(item)"
+    >
+      <span class="bottom-nav__glyph">
+        <ion-icon [name]="item.icon" aria-hidden="true"></ion-icon>
+      </span>
+      <span class="bottom-nav__label">{{ item.labelKey | t }}</span>
+    </button>
+  }
+</nav>

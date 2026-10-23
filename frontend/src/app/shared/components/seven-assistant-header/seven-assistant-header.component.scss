@@ -1,0 +1,82 @@
+// =============================================================================
+// SEVEN ASSISTANT HEADER — identidad del concierge
+// =============================================================================
+
+.ah {
+  display: flex;
+  align-items: center;
+  gap: var(--seven-space-3);
+  flex: none;
+  padding: calc(env(safe-area-inset-top) + var(--seven-space-3)) var(--seven-space-4)
+    var(--seven-space-3);
+  background: var(--seven-deep-sea);
+  color: var(--seven-text-inverse);
+}
+
+.ah__avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(140deg, var(--seven-tropical-tide), var(--seven-lagoon-blue));
+  color: var(--seven-text-inverse);
+  font-size: 1.25rem;
+  box-shadow: 0 4px 14px rgba(0, 209, 197, 0.35);
+}
+
+.ah__id {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.ah__name {
+  font-family: var(--seven-font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--seven-text-inverse);
+}
+
+.ah__role {
+  font-size: 0.74rem;
+  color: var(--seven-deep-sea-100);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ah__reset {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: var(--seven-border-on-dark);
+  color: var(--seven-text-inverse);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 160ms ease, transform 160ms ease;
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.26);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--seven-tropical-tide);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}

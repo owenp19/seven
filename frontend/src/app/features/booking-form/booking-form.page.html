@@ -1,0 +1,191 @@
+<ion-content class="bf" [fullscreen]="true">
+  <div class="bf__header">
+    <button class="bf__back" type="button" (click)="goBack()" [attr.aria-label]="'common.back' | t">
+      <ion-icon name="chevron-back" aria-hidden="true"></ion-icon>
+    </button>
+    <h1 class="bf__heading">{{ success ? ('bookingForm.headingSuccess' | t) : ('bookingForm.heading' | t) }}</h1>
+    <span class="bf__spacer" aria-hidden="true"></span>
+  </div>
+
+  <div class="bf__page">
+    @if (!success) {
+      <!-- ─── Resumen del servicio ─────────────────────────────────────── -->
+      <div class="bf__summary">
+        <span class="bf__summary-chip">{{ 'bookingForm.summaryChip' | t }}</span>
+        <h2 class="bf__summary-title">{{ title }}</h2>
+        @if (location || duration) {
+          <div class="bf__summary-meta">
+            @if (location) {
+              <span>
+                <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+                {{ location }}
+              </span>
+            }
+            @if (duration) {
+              <span>
+                <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+                {{ duration }}
+              </span>
+            }
+          </div>
+        }
+        @if (price > 0) {
+          <div class="bf__summary-price">
+            <span>{{ 'common.from' | t }}</span>
+            <strong>{{ price | currencyCOP }}</strong>
+            <small>/ persona</small>
+          </div>
+        }
+      </div>
+
+      <!-- ─── Datos del viajero ────────────────────────────────────────── -->
+      <form class="bf__form" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="bf__card">
+          <h3 class="bf__card-title">{{ 'bookingForm.yourData' | t }}</h3>
+
+          <label class="bf__field">
+            <span class="bf__label">{{ 'bookingForm.fullName' | t }}</span>
+            <input class="bf__input" type="text" formControlName="name" name="name" autocomplete="name" [placeholder]="'bookingForm.fullNamePlaceholder' | t" />
+            @if (name.touched && name.invalid) {
+              <span class="bf__error">{{ 'bookingForm.nameError' | t }}</span>
+            }
+          </label>
+
+          <label class="bf__field">
+            <span class="bf__label">{{ 'bookingForm.phone' | t }}</span>
+            <input class="bf__input" type="tel" formControlName="phone" name="phone" autocomplete="tel" placeholder="+57 300 123 4567" inputmode="tel" />
+            @if (phone.touched && phone.invalid) {
+              <span class="bf__error">{{ 'bookingForm.phoneError' | t }}</span>
+            }
+          </label>
+        </div>
+
+        <div class="bf__card">
+          <h3 class="bf__card-title">{{ 'bookingForm.dateGroup' | t }}</h3>
+
+          <label class="bf__field">
+            <span class="bf__label">{{ 'bookingForm.startAt' | t }}</span>
+            <input class="bf__input" type="datetime-local" formControlName="startAt" name="startAt" [min]="startAtMin" />
+            @if (startAt.touched && startAt.invalid) {
+              <span class="bf__error">{{ 'bookingForm.startAtError' | t }}</span>
+            }
+          </label>
+
+          <div class="bf__field">
+            <span class="bf__label">{{ 'bookingForm.people' | t }}</span>
+            <div class="bf__stepper">
+              <button class="bf__stepper-btn" type="button" (click)="removePerson()" [disabled]="guests === minGuests" [attr.aria-label]="'common.removePerson' | t">
+                <ion-icon name="remove" aria-hidden="true"></ion-icon>
+              </button>
+              <span class="bf__stepper-value">
+                {{ guests }}
+                <small>{{ (guests === 1 ? 'common.personOne' : 'common.personMany') | t }}</small>
+              </span>
+              <button class="bf__stepper-btn" type="button" (click)="addPerson()" [disabled]="guests === maxGuests" [attr.aria-label]="'common.addPerson' | t">
+                <ion-icon name="add" aria-hidden="true"></ion-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bf__card">
+          <h3 class="bf__card-title">¿Algo que debamos saber?</h3>
+          <label class="bf__field">
+            <span class="bf__label">Solicitudes especiales (opcional)</span>
+            <textarea class="bf__input bf__textarea" formControlName="special" name="special" rows="3" placeholder="Alergias, embarazadas, niños pequeños…"></textarea>
+            @if (special.touched && special.invalid) {
+              <span class="bf__error">Máximo 1.000 caracteres.</span>
+            }
+          </label>
+        </div>
+
+        @if (error) {
+          <div class="bf__alert" role="alert">
+            <ion-icon name="alert-circle-outline" aria-hidden="true"></ion-icon>
+            <span>{{ error }}</span>
+          </div>
+        }
+
+        <button class="bf__submit" type="submit" [disabled]="submitting">
+          @if (submitting) {
+            <span class="bf__spinner" aria-hidden="true"></span>
+            Enviando…
+          } @else {
+            <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+            Reservar
+            @if (estimate > 0) {
+              <strong>{{ estimate | currencyCOP }}</strong>
+            }
+          }
+        </button>
+
+        <p class="bf__note">
+          <ion-icon name="shield-checkmark-outline" aria-hidden="true"></ion-icon>
+          Sin contraseñas: te identificamos por tu dispositivo y código de reserva.
+        </p>
+      </form>
+    } @else {
+      <!-- ─── Éxito ────────────────────────────────────────────────────── -->
+      <div class="bf__success">
+        <div class="bf__success-badge">
+          <ion-icon name="checkmark-circle" aria-hidden="true"></ion-icon>
+        </div>
+
+        <h2 class="bf__success-title">¡Solicitud enviada!</h2>
+        <p class="bf__success-sub">
+          Tu código de reserva es único y con él seguimos tu estado en tiempo real.
+        </p>
+
+        <button class="bf__code" type="button" (click)="copyCode(success.bookingCode)" [attr.aria-label]="copied ? 'Código copiado' : 'Copiar código'">
+          <span class="bf__code-label">Código de reserva</span>
+          <strong>{{ success.bookingCode }}</strong>
+          <span class="bf__code-copy">
+            <ion-icon [name]="copied ? 'checkmark' : 'copy-outline'" aria-hidden="true"></ion-icon>
+            {{ copied ? 'Copiado' : 'Copiar' }}
+          </span>
+        </button>
+
+        <div class="bf__receipt">
+          <div class="bf__receipt-row">
+            <span>Servicio</span>
+            <strong>{{ title }}</strong>
+          </div>
+          <div class="bf__receipt-row">
+            <span>Fecha</span>
+            <strong>{{ success.startAt | date: 'EEE, d MMM · h:mm a' }}</strong>
+          </div>
+          <div class="bf__receipt-row">
+            <span>Personas</span>
+            <strong>{{ success.guests }}</strong>
+          </div>
+          @if (success.totalAmount > 0) {
+            <div class="bf__receipt-row">
+              <span>Total estimado</span>
+              <strong>{{ success.totalAmount | currencyCOP }}</strong>
+            </div>
+          }
+          <div class="bf__receipt-row">
+            <span>Estado</span>
+            <strong class="bf__status bf__status--{{ success.status }}">{{ statusLabel(success.status) }}</strong>
+          </div>
+        </div>
+
+        <div class="bf__success-actions">
+          <a class="bf__wa" href="{{ operatorWhatsapp() }}" target="_blank" rel="noopener">
+            <ion-icon name="logo-whatsapp" aria-hidden="true"></ion-icon>
+            Confirmar en WhatsApp
+          </a>
+          <button class="bf__link-btn" type="button" (click)="goToBookings()">
+            Ver mis reservas
+            <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+          </button>
+        </div>
+
+        <p class="bf__note">
+          <ion-icon name="notifications-outline" aria-hidden="true"></ion-icon>
+          Te avisaremos aquí mismo cuando el operador confirme (solo este dispositivo).
+        </p>
+      </div>
+    }
+  </div>
+</ion-content>

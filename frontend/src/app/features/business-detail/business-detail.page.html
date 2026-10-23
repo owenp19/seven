@@ -1,0 +1,244 @@
+@if (loading) {
+  <app-seven-context-loader type="business" hero="short"></app-seven-context-loader>
+} @else {
+  @if (business$ | async; as business) {
+    @if (business) {
+      <div class="bd">
+        <ion-content [fullscreen]="true">
+          <!-- ─── GALERÍA / HERO ──────────────────────────────────────── -->
+          <section class="bd__hero">
+            @if (isWide() && galleryImages().length >= 3) {
+              <!-- Composición editorial de escritorio: una foto grande + dos apiladas. -->
+              <div class="bd__gallery">
+                <img class="bd__gallery-main" [src]="galleryImages()[0]" appSafeImg [alt]="business.name" />
+                <div class="bd__gallery-side">
+                  <img [src]="galleryImages()[1]" appSafeImg [alt]="business.name" loading="lazy" decoding="async" />
+                  <img [src]="galleryImages()[2]" appSafeImg [alt]="business.name" loading="lazy" decoding="async" />
+                </div>
+              </div>
+            } @else if (galleryImages().length > 0) {
+              <app-media-carousel
+                class="bd__hero-media"
+                [images]="galleryImages()"
+                [alt]="business.name"
+                [showDots]="false"
+              ></app-media-carousel>
+              <span class="bd__hero-shade"></span>
+            } @else {
+              <div class="bd__hero-fallback">
+                <ion-icon name="storefront-outline" aria-hidden="true"></ion-icon>
+              </div>
+            }
+
+            <div class="bd__hero-top">
+              <button class="bd__pill-btn" type="button" (click)="goBack()" [attr.aria-label]="'common.back' | t">
+                <ion-icon name="chevron-back" aria-hidden="true"></ion-icon>
+              </button>
+
+              @if (galleryImages().length > 1) {
+                <span class="bd__counter">{{ 'common.photos' | t: { count: galleryImages().length } }}</span>
+              }
+
+              <div class="bd__pill-row">
+                <button
+                  class="bd__pill-btn"
+                  type="button"
+                  (click)="share(business)"
+                  [attr.aria-label]="'common.share' | t"
+                >
+                  <ion-icon name="share-social-outline" aria-hidden="true"></ion-icon>
+                </button>
+                <button
+                  class="bd__pill-btn"
+                  type="button"
+                  (click)="toggleFavorite(business)"
+                  [attr.aria-label]="(favorite ? 'saved.remove' : 'common.save') | t"
+                >
+                  <ion-icon [name]="favorite ? 'heart' : 'heart-outline'" aria-hidden="true"></ion-icon>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <div class="bd__body">
+            <!-- ─── INFO PRINCIPAL ──────────────────────────────────────── -->
+            <p class="bd__eyebrow">{{ business.category?.name ?? ('businessDetail.defaultCategory' | t) }}</p>
+            <h1 class="bd__name">{{ business.name }}</h1>
+
+            @if (business.ratingCount > 0 || business.ratingAvg > 0) {
+              <div class="bd__rating">
+                <app-rating-stars [rating]="business.ratingAvg" [count]="business.ratingCount"></app-rating-stars>
+              </div>
+            }
+
+            @if (business.isVerified) {
+              <span class="bd__badge">
+                <ion-icon name="shield-checkmark" aria-hidden="true"></ion-icon>
+                {{ 'common.verifiedBySeven' | t }}
+              </span>
+            }
+
+            <!-- ─── LO ESENCIAL ─────────────────────────────────────────── -->
+            @if (essentials(business).length > 0) {
+              <section class="bd__essentials">
+                @for (fact of essentials(business); track fact.label) {
+                  <div class="bd__fact" [class.bd__fact--warn]="fact.warn">
+                    <ion-icon [name]="fact.icon" aria-hidden="true"></ion-icon>
+                    <strong>{{ fact.value }}</strong>
+                    <span>{{ fact.label }}</span>
+                  </div>
+                }
+              </section>
+            }
+
+            <!-- ─── SOBRE EL LUGAR ──────────────────────────────────────── -->
+            @if (business.description) {
+              <section class="bd__block">
+                <h2 class="bd__block-title">{{ 'businessDetail.about' | t }}</h2>
+                <p class="bd__desc" [class.bd__desc--expanded]="descriptionExpanded">
+                  {{ business.description }}
+                </p>
+                <button class="bd__more" type="button" (click)="toggleDescription()">
+                  {{ (descriptionExpanded ? 'common.seeLess' : 'common.readMore') | t }}
+                  <ion-icon name="chevron-down" aria-hidden="true"></ion-icon>
+                </button>
+              </section>
+            }
+
+            <!-- ─── LO QUE OFRECE ───────────────────────────────────────── -->
+            @if (business.features.length > 0) {
+              <section class="bd__block">
+                <h2 class="bd__block-title">{{ 'businessDetail.offers' | t }}</h2>
+                <div class="bd__features">
+                  @for (feature of visibleFeatures(business); track feature) {
+                    <span class="bd__feature">
+                      <ion-icon [name]="featureIcon(feature)" aria-hidden="true"></ion-icon>
+                      {{ feature }}
+                    </span>
+                  }
+                </div>
+                @if (hasMoreFeatures) {
+                  <button class="bd__more" type="button" (click)="toggleFeatures()">
+                    {{ featuresExpanded ? 'Ver menos' : 'Ver todo' }}
+                    <ion-icon name="chevron-down" aria-hidden="true"></ion-icon>
+                  </button>
+                }
+              </section>
+            }
+
+            <!-- ─── ETIQUETAS ───────────────────────────────────────────── -->
+            @if (business.tags.length > 0) {
+              <section class="bd__block">
+                <h2 class="bd__block-title">{{ 'businessDetail.tags' | t }}</h2>
+                <div class="bd__tags">
+                  @for (tag of business.tags; track tag) {
+                    <span class="bd__tag">{{ tag }}</span>
+                  }
+                </div>
+              </section>
+            }
+
+            <!-- ─── HORARIO ─────────────────────────────────────────────── -->
+            @if (openingRows(business).length > 0) {
+              <section class="bd__block">
+                <h2 class="bd__block-title">{{ 'businessDetail.hours' | t }}</h2>
+                <ul class="bd__hours">
+                  @for (row of openingRows(business); track row.label) {
+                    <li class="bd__hour" [class.bd__hour--today]="row.today">
+                      <span class="bd__hour-day">{{ row.label }}</span>
+                      <span class="bd__hour-time">{{ row.hours }}</span>
+                    </li>
+                  }
+                </ul>
+              </section>
+            }
+
+            <!-- ─── UBICACIÓN Y CONTACTO ────────────────────────────────── -->
+            @if (business.address || business.phone) {
+              <section class="bd__block">
+                <h2 class="bd__block-title">{{ 'businessDetail.location' | t }}</h2>
+
+                @if (business.address) {
+                  <button class="bd__map" type="button" (click)="openMap(business)">
+                    <span class="bd__map-pin">
+                      <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+                    </span>
+                    <span class="bd__map-text">
+                      <strong>{{ business.address }}</strong>
+                      <small>{{ 'common.viewOnMaps' | t }}</small>
+                    </span>
+                    <ion-icon name="navigate-outline" aria-hidden="true"></ion-icon>
+                  </button>
+                }
+
+                @if (business.phone) {
+                  <button class="bd__map" type="button" (click)="call(business)">
+                    <span class="bd__map-pin">
+                      <ion-icon name="call-outline" aria-hidden="true"></ion-icon>
+                    </span>
+                    <span class="bd__map-text">
+                      <strong>{{ business.phone }}</strong>
+                      <small>{{ 'businessDetail.call' | t }}</small>
+                    </span>
+                    <ion-icon name="call-outline" aria-hidden="true"></ion-icon>
+                  </button>
+                }
+              </section>
+            }
+
+            <!-- ─── RELACIONADOS ────────────────────────────────────────── -->
+            @if (related$ | async; as related) {
+              @if (related.length > 0) {
+                <section class="bd__block bd__block--last">
+                  <h2 class="bd__block-title">{{ 'common.youMayAlsoLike' | t }}</h2>
+                  <div class="bd__rail">
+                    @for (item of related; track item.type + '-' + item.id) {
+                      <app-discovery-card
+                        class="bd__rail-card"
+                        [item]="item"
+                        [saved]="isSaved(item)"
+                        (open)="openRelated($event)"
+                        (toggleSave)="toggleSaveRelated($event)"
+                      ></app-discovery-card>
+                    }
+                  </div>
+                </section>
+              }
+            }
+          </div>
+        </ion-content>
+
+        <!-- ─── BARRA FIJA · RESERVA ─────────────────────────────────────── -->
+        <footer class="bd__bar">
+          <div class="bd__bar-info">
+            <span>{{ business.category?.name ?? ('businessDetail.defaultCategory' | t) }}</span>
+            <strong>{{ business.name }}</strong>
+          </div>
+
+          @if (business.whatsapp || business.phone) {
+            <button
+              class="bd__bar-wa"
+              type="button"
+              (click)="contactWhatsapp(business)"
+              [attr.aria-label]="'common.whatsappWrite' | t"
+            >
+              <ion-icon name="logo-whatsapp" aria-hidden="true"></ion-icon>
+            </button>
+          }
+
+          <button class="bd__cta" type="button" (click)="reserve(business)">
+            {{ 'common.reserveTable' | t }}
+            <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+          </button>
+        </footer>
+      </div>
+    } @else {
+      <div class="bd__empty">
+        <ion-icon name="storefront-outline" aria-hidden="true"></ion-icon>
+        <h2>{{ 'businessDetail.notFoundTitle' | t }}</h2>
+        <p>{{ 'common.notFoundText' | t }}</p>
+        <button class="bd__empty-btn" type="button" (click)="goExplore()">{{ 'common.backToExplore' | t }}</button>
+      </div>
+    }
+  }
+}

@@ -1,0 +1,23 @@
+<div class="loader">
+  <img
+    class="loader__logo"
+    [src]="logo"
+    alt="SEVEN"
+    width="180"
+    height="180"
+    loading="eager"
+    fetchpriority="high"
+  />
+
+  @if (spinner) {
+    <ion-spinner class="loader__spinner" name="crescent" color="light"></ion-spinner>
+  }
+
+  @if (tagline) {
+    <span class="loader__tagline">{{ tagline }}</span>
+  }
+
+  @if (label) {
+    <span class="loader__label">{{ label }}</span>
+  }
+</div>

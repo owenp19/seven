@@ -1,0 +1,27 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// SEVEN — SIDE MENU (cajón lateral)
+// El cajón vive sobre el azul profundo de marca: el header con el logo y la
+// lista de secciones comparten esa superficie para que el panel se lea como una
+// extensión de la marca y no como un panel de sistema cualquiera.
+// -----------------------------------------------------------------------------
+.side-menu {
+  --width: 304px;
+  --max-width: 86vw;
+
+  &__content {
+    // Fondo de marca solicitado: el azul primario de Ionic (#0077B6).
+    --background: var(--ion-color-primary);
+    --color: var(--ion-color-primary-contrast);
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: var(--seven-space-6);
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0 var(--seven-space-3) var(--seven-space-4);
+  }
+}

@@ -1,0 +1,35 @@
+<div class="tn-carousel">
+  <swiper-container
+    #swiperEl
+    class="tn-carousel__swiper"
+    init="false"
+    space-between="12"
+    slides-per-view="1.05"
+    centered-slides="true"
+    grab-cursor="true"
+  >
+    @for (slide of displaySlides; track $index) {
+      <swiper-slide>
+        <article class="tn-slide">
+          <img class="tn-slide__bg" [src]="slide.image" [alt]="slide.title" loading="lazy" />
+          <span class="tn-slide__overlay" aria-hidden="true"></span>
+
+          <div class="tn-slide__content">
+            <span class="tn-slide__kicker" aria-hidden="true">La isla · SEVEN</span>
+            <h3 class="tn-slide__title">{{ slide.title }}</h3>
+            <p class="tn-slide__desc">{{ slide.description }}</p>
+
+            @if (slide.actionText) {
+              <button class="tn-slide__cta" (click)="onAction(slide, $event)">
+                {{ slide.actionText }}
+                <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+              </button>
+            }
+          </div>
+        </article>
+      </swiper-slide>
+    }
+  </swiper-container>
+
+  <div class="tn-carousel__pagination" aria-label="Navegación de noticias"></div>
+</div>

@@ -1,0 +1,59 @@
+<article
+  class="arc"
+  [class.arc--link]="!!recommendation.route"
+  [attr.role]="recommendation.route ? 'link' : null"
+  [attr.tabindex]="recommendation.route ? 0 : null"
+  [attr.aria-label]="recommendation.name"
+  (click)="onOpen()"
+  (keydown.enter)="onOpen()"
+>
+  <div class="arc__media">
+    <img
+      class="arc__img"
+      [src]="recommendation.image"
+      appSafeImg
+      [alt]="recommendation.name"
+      loading="lazy"
+      decoding="async"
+    />
+
+    @if (recommendation.rating > 0) {
+      <span class="arc__rating">
+        <ion-icon name="star" aria-hidden="true"></ion-icon>
+        {{ ratingLabel }}
+      </span>
+    }
+
+    @if (recommendation.isUnavailable) {
+      <span class="arc__overlay">{{ 'assistant.unavailable' | t }}</span>
+    }
+  </div>
+
+  <div class="arc__body">
+    <span class="arc__type">{{ typeKey | t }}</span>
+    <h3 class="arc__name">{{ recommendation.name }}</h3>
+
+    @if (recommendation.location) {
+      <span class="arc__loc">
+        <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+        {{ recommendation.location }}
+      </span>
+    }
+
+    <div class="arc__foot">
+      @if (recommendation.hasPrice) {
+        <span class="arc__price">
+          <small>{{ priceKey | t }}</small>
+          <strong>{{ recommendation.price | currencyCOP }}</strong>
+        </span>
+      }
+
+      @if (recommendation.route) {
+        <span class="arc__cta">
+          {{ 'assistant.viewService' | t }}
+          <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+        </span>
+      }
+    </div>
+  </div>
+</article>

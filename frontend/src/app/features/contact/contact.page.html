@@ -1,0 +1,111 @@
+<ion-content class="ct" [fullscreen]="true">
+  <div class="ct__page">
+    <!-- PERFIL -->
+    <header class="ct__profile">
+      <span class="ct__avatar" aria-hidden="true">
+        <ion-icon name="sparkles-outline"></ion-icon>
+      </span>
+      <div class="ct__identity">
+        <h1 class="ct__name">SEVEN</h1>
+        <p class="ct__tagline">{{ 'contact.profileTagline' | t }}</p>
+        <span class="ct__badge">
+          <span class="ct__badge-dot" aria-hidden="true"></span>
+          {{ 'contact.assistantBadge' | t }}
+        </span>
+      </div>
+    </header>
+
+    <!--
+      ASISTENTE SEVEN — protagonista.
+      Las respuestas NO son estáticas: el CTA y los chips navegan (enviando la
+      pregunta) al asistente real, que responde con el catálogo.
+    -->
+    <section class="ct__assistant" [attr.aria-label]="'contact.assistantTitle' | t">
+      <div class="ct__assistant-head">
+        <span class="ct__assistant-icon" aria-hidden="true">
+          <ion-icon name="sparkles-outline"></ion-icon>
+        </span>
+        <div class="ct__assistant-copy">
+          <h2 class="ct__assistant-title">{{ 'contact.assistantTitle' | t }}</h2>
+          <p class="ct__assistant-text">{{ 'contact.assistantText' | t }}</p>
+        </div>
+      </div>
+
+      <p class="ct__examples-label">{{ 'contact.examplesTitle' | t }}</p>
+      <div class="ct__chips">
+        @for (example of examples; track example) {
+          <button class="ct__chip" type="button" (click)="openExample(example)">
+            {{ example | t }}
+          </button>
+        }
+      </div>
+
+      <button class="ct__assistant-cta" type="button" (click)="openAssistant()">
+        <ion-icon name="sparkles-outline" aria-hidden="true"></ion-icon>
+        {{ 'contact.assistantCta' | t }}
+      </button>
+    </section>
+
+    <!-- TODO EN UN LUGAR — absorbe los accesos del antiguo menú -->
+    <section class="ct__section">
+      <h2 class="ct__section-title">
+        <span class="ct__section-dot" aria-hidden="true"></span>
+        {{ 'contact.linksTitle' | t }}
+      </h2>
+
+      <div class="ct__links">
+        @for (link of hubLinks; track link.route) {
+          <a class="ct__link" [routerLink]="link.route" (click)="onTap()">
+            <span class="ct__link-icon" aria-hidden="true">
+              <ion-icon [name]="link.icon"></ion-icon>
+            </span>
+            <span class="ct__link-label">{{ link.labelKey | t }}</span>
+            <ion-icon class="ct__link-chevron" name="chevron-forward" aria-hidden="true"></ion-icon>
+          </a>
+        }
+      </div>
+    </section>
+
+    <!-- CONTACTO DIRECTO — solo canales reales -->
+    <section class="ct__section">
+      <h2 class="ct__section-title">
+        <span class="ct__section-dot" aria-hidden="true"></span>
+        {{ 'contact.directTitle' | t }}
+      </h2>
+
+      <a class="ct__email" [href]="emailHref" (click)="onTap()">
+        <span class="ct__email-icon" aria-hidden="true">
+          <ion-icon name="mail-outline"></ion-icon>
+        </span>
+        <span class="ct__email-body">
+          <span class="ct__email-label">{{ 'contact.emailLabel' | t }}</span>
+          <span class="ct__email-value">{{ email }}</span>
+        </span>
+        <ion-icon class="ct__email-chevron" name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+      </a>
+      <p class="ct__email-note">{{ 'contact.emailNote' | t }}</p>
+    </section>
+
+    <!-- INFORMACIÓN Y SOPORTE -->
+    <section class="ct__section">
+      <h2 class="ct__section-title">
+        <span class="ct__section-dot" aria-hidden="true"></span>
+        {{ 'contact.infoTitle' | t }}
+      </h2>
+
+      <ul class="ct__info">
+        @for (block of infoBlocks; track block.titleKey) {
+          <li class="ct__info-item">
+            <span class="ct__info-icon" aria-hidden="true">
+              <ion-icon [name]="block.icon"></ion-icon>
+            </span>
+            <span class="ct__info-body">
+              <span class="ct__info-title">{{ block.titleKey | t }}</span>
+              <span class="ct__info-text">{{ block.textKey | t }}</span>
+            </span>
+          </li>
+        }
+      </ul>
+    </section>
+  </div>
+</ion-content>

@@ -1,0 +1,71 @@
+<ion-content [fullscreen]="true" class="welcome-page">
+
+  <main class="welcome" [class.welcome--leaving]="leaving">
+
+    <!-- Fondo -->
+    <div class="welcome__background"></div>
+
+    <!-- Overlay para legibilidad -->
+    <div class="welcome__overlay"></div>
+
+    <!-- Decoración superior -->
+    <header class="welcome__header">
+
+      <button
+        type="button"
+        class="skip-button"
+        (click)="continueToApp()"
+        [attr.aria-label]="'welcome.skip' | t"
+      >
+        {{ 'welcome.skip' | t }}
+      </button>
+
+    </header>
+
+    <!-- Logo -->
+    <section class="welcome__brand">
+      <img
+        src="assets/img/brand/seven-logo-blanco.png"
+        alt="SEVEN - Más que un destino"
+        class="welcome__logo"
+      />
+    </section>
+
+    <!-- Contenido principal -->
+    <section class="welcome__content">
+
+      <div class="welcome__line"></div>
+
+      <h1 class="welcome__title">
+        {{ 'welcome.title' | t }}
+      </h1>
+
+      <div class="welcome__line welcome__line--small"></div>
+
+      <p class="welcome__description">
+        {{ 'welcome.subtitle' | t }}
+      </p>
+
+      <ion-button
+        expand="block"
+        class="welcome__cta"
+        (click)="continueToApp()"
+      >
+        <span>{{ 'welcome.cta' | t }}</span>
+
+        <ion-icon
+          slot="end"
+          name="arrow-forward-outline"
+        ></ion-icon>
+      </ion-button>
+
+      <!-- Idiomas -->
+      <div class="welcome__languages">
+        <app-language-selector></app-language-selector>
+      </div>
+
+    </section>
+
+  </main>
+
+</ion-content>

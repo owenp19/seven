@@ -1,0 +1,154 @@
+<app-page-header [title]="'about.title' | t" defaultHref="/home"></app-page-header>
+
+<ion-content [fullscreen]="true">
+  <div class="about">
+    <!--
+      PORTADA
+
+      El nombre va en la marca de display y no en un `h1`: el titular de la
+      página ya lo pone el toolbar, y aquí la prioridad es el carácter de la
+      marca. La versión baja como chip porque es un dato, no un subtítulo.
+    -->
+    <header class="about__hero">
+      <span class="about__glow" aria-hidden="true"></span>
+
+      <span class="about__mark" aria-hidden="true">SEVEN</span>
+      <p class="about__tagline">{{ 'about.tagline' | t }}</p>
+
+      <span class="about__version">{{ 'about.version' | t: { version: appVersion } }}</span>
+    </header>
+
+    <p class="about__lead">{{ 'about.lead' | t }}</p>
+
+    <!-- QUÉ HACE -->
+    <section class="about__section">
+      <h2 class="about__title">
+        <span class="about__title-dot" aria-hidden="true"></span>
+        {{ 'about.pointsTitle' | t }}
+      </h2>
+
+      <ul class="about__points">
+        <li class="about__point">
+          <span class="about__point-icon" aria-hidden="true">
+            <ion-icon name="compass-outline"></ion-icon>
+          </span>
+          <span class="about__point-text">{{ 'about.pointExplore' | t }}</span>
+        </li>
+        <li class="about__point">
+          <span class="about__point-icon" aria-hidden="true">
+            <ion-icon name="ticket-outline"></ion-icon>
+          </span>
+          <span class="about__point-text">{{ 'about.pointBooking' | t }}</span>
+        </li>
+        <li class="about__point">
+          <span class="about__point-icon" aria-hidden="true">
+            <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+          </span>
+          <span class="about__point-text">{{ 'about.pointWhatsapp' | t }}</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- SEVEN EN CIFRAS -->
+    <section class="about__section">
+      <h2 class="about__title">
+        <span class="about__title-dot" aria-hidden="true"></span>
+        {{ 'about.statsTitle' | t }}
+      </h2>
+
+      <div class="about__stats">
+        @for (stat of stats; track stat.value) {
+          <div class="about__stat">
+            <strong class="about__stat-value">{{ stat.value }}</strong>
+            <span class="about__stat-label">{{ stat.label }}</span>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- POR QUÉ SEVEN -->
+    <section class="about__section">
+      <h2 class="about__title">
+        <span class="about__title-dot" aria-hidden="true"></span>
+        {{ 'about.valueTitle' | t }}
+      </h2>
+
+      <div class="about__values">
+        @for (value of values; track value.title) {
+          <article class="about__value">
+            <span class="about__value-icon" aria-hidden="true">
+              <ion-icon [name]="value.icon"></ion-icon>
+            </span>
+            <h3 class="about__value-title">{{ value.title }}</h3>
+            <p class="about__value-text">{{ value.description }}</p>
+          </article>
+        }
+      </div>
+    </section>
+
+    <!-- ¿ERES UN NEGOCIO DE LA ISLA? -->
+    <section class="about__section">
+      <a
+        class="about__business"
+        [href]="businessHref"
+        target="_blank"
+        rel="noopener noreferrer"
+        (click)="onOpenLink()"
+      >
+        <span class="about__business-body">
+          <span class="about__business-title">{{ 'about.businessTitle' | t }}</span>
+          <span class="about__business-text">{{ 'about.businessText' | t }}</span>
+        </span>
+        <span class="about__business-cta">
+          {{ 'about.businessCta' | t }}
+          <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+        </span>
+      </a>
+    </section>
+
+    <!-- CONTACTO -->
+    <section class="about__section">
+      <h2 class="about__title">
+        <span class="about__title-dot" aria-hidden="true"></span>
+        {{ 'about.contactTitle' | t }}
+      </h2>
+
+      <div class="about__links">
+        @for (link of contact; track link.label) {
+          <a
+            class="about__link"
+            [href]="link.href"
+            target="_blank"
+            rel="noopener noreferrer"
+            (click)="onOpenLink()"
+          >
+            <span class="about__link-icon" aria-hidden="true">
+              <ion-icon [name]="link.icon"></ion-icon>
+            </span>
+            <span class="about__link-text">
+              <span class="about__link-label">{{ link.label }}</span>
+              <span class="about__link-value">{{ link.value }}</span>
+            </span>
+            <ion-icon name="arrow-forward-outline" aria-hidden="true" class="about__link-chevron"></ion-icon>
+          </a>
+        }
+      </div>
+    </section>
+
+    <!--
+      PRIVACIDAD
+
+      No es una fila más: es el compromiso de la app, así que va como una
+      tarjeta ancha con fondo de marca en vez de como otro enlace suelto.
+    -->
+    <a class="about__privacy" routerLink="/privacidad">
+      <span class="about__privacy-icon" aria-hidden="true">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+      </span>
+      <span class="about__privacy-text">{{ 'about.privacyLink' | t }}</span>
+      <ion-icon name="chevron-forward" aria-hidden="true" class="about__privacy-chevron"></ion-icon>
+    </a>
+
+    <p class="about__legal">{{ 'about.legal' | t }}</p>
+  </div>
+</ion-content>

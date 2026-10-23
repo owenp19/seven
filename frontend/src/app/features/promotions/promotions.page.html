@@ -1,0 +1,97 @@
+<app-page-header [title]="'catalog.promotions.title' | t" defaultHref="/home"></app-page-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      refreshingSpinner="crescent"
+      [pullingText]="'common.pullToRefresh' | t"
+      [refreshingText]="'common.refreshing' | t"
+    ></ion-refresher-content>
+  </ion-refresher>
+
+  @if (promotions$ | async) {
+    <div class="catalog">
+      <div class="catalog__intro">
+        <p class="catalog__subtitle">{{ 'catalog.promotions.subtitle' | t }}</p>
+      </div>
+
+      <label class="catalog__search">
+        <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+        <input
+          type="search"
+          inputmode="search"
+          autocomplete="off"
+          [value]="query()"
+          (input)="onSearch($event)"
+          [placeholder]="'catalog.searchPlaceholder' | t"
+          [attr.aria-label]="'catalog.searchLabel' | t"
+        />
+        @if (query()) {
+          <button
+            type="button"
+            class="catalog__search-clear"
+            [attr.aria-label]="'catalog.clearSearch' | t"
+            (click)="clearSearch()"
+          >
+            <ion-icon name="close-circle" aria-hidden="true"></ion-icon>
+          </button>
+        }
+      </label>
+
+      <div class="catalog__grid">
+        @for (promotion of filtered(); track promotion.id) {
+          <article class="promotion-card">
+            <div class="promotion-card__media">
+              <img
+                class="promotion-card__img"
+                [src]="promotion.image"
+                [alt]="promotion.title"
+                appSafeImg
+              />
+              <span class="promotion-card__badge">
+                <ion-icon name="pricetag-outline" aria-hidden="true"></ion-icon>
+                {{ promotion.discount }}
+              </span>
+            </div>
+
+            <div class="promotion-card__body">
+              @if (promotion.providerName) {
+                <span class="promotion-card__provider">{{ promotion.providerName }}</span>
+              }
+              <h2 class="promotion-card__title">{{ promotion.title }}</h2>
+              @if (promotion.description) {
+                <p class="promotion-card__desc">{{ promotion.description }}</p>
+              }
+              <div class="promotion-card__meta">
+                @if (promotion.price) {
+                  <span class="promotion-card__price">{{ promotion.price | currencyCOP }}</span>
+                }
+                @if (promotion.endDate) {
+                  <span class="promotion-card__end">
+                    {{ 'catalog.promotions.validUntil' | t: { date: (promotion.endDate | date: 'd MMM') || '' } }}
+                  </span>
+                }
+              </div>
+            </div>
+          </article>
+        } @empty {
+          <div class="catalog__state">
+            <ion-icon [name]="query() ? 'search-outline' : 'pricetags-outline'" aria-hidden="true"></ion-icon>
+            @if (query()) {
+              <h2>{{ 'catalog.noResultsTitle' | t }}</h2>
+              <p>{{ 'catalog.noResultsHint' | t }}</p>
+              <button type="button" class="catalog__state-action" (click)="clearSearch()">
+                {{ 'catalog.clearFilters' | t }}
+              </button>
+            } @else {
+              <h2>{{ 'catalog.promotions.empty' | t }}</h2>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  } @else {
+    <app-seven-context-loader variant="list" type="promotion"></app-seven-context-loader>
+  }
+</ion-content>

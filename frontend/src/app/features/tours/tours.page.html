@@ -1,0 +1,76 @@
+<app-page-header [title]="'catalog.tours.title' | t" defaultHref="/home"></app-page-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      refreshingSpinner="crescent"
+      [pullingText]="'common.pullToRefresh' | t"
+      [refreshingText]="'common.refreshing' | t"
+    ></ion-refresher-content>
+  </ion-refresher>
+
+  @if (tours$ | async) {
+    <div class="catalog">
+      <div class="catalog__intro">
+        <p class="catalog__subtitle">{{ 'catalog.tours.subtitle' | t }}</p>
+      </div>
+
+      <label class="catalog__search">
+        <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+        <input
+          type="search"
+          inputmode="search"
+          autocomplete="off"
+          [value]="query()"
+          (input)="onSearch($event)"
+          [placeholder]="'catalog.searchPlaceholder' | t"
+          [attr.aria-label]="'catalog.searchLabel' | t"
+        />
+        @if (query()) {
+          <button
+            type="button"
+            class="catalog__search-clear"
+            [attr.aria-label]="'catalog.clearSearch' | t"
+            (click)="clearSearch()"
+          >
+            <ion-icon name="close-circle" aria-hidden="true"></ion-icon>
+          </button>
+        }
+      </label>
+
+      <div class="catalog__grid">
+        @for (tour of filtered(); track tour.id) {
+          <app-seven-result-card
+            variant="grid"
+            [image]="tour.cover"
+            [name]="tour.name"
+            [category]="tour.category ?? 'Tours y experiencias'"
+            [description]="tour.subtitle || tour.description"
+            [rating]="tour.rating"
+            [ratingCount]="tour.reviews"
+            [price]="tour.price"
+            priceLabel="Desde"
+            [link]="'/tour/' + tour.slug"
+            [alt]="tour.name"
+          ></app-seven-result-card>
+        } @empty {
+          <div class="catalog__state">
+            <ion-icon [name]="query() ? 'search-outline' : 'compass-outline'" aria-hidden="true"></ion-icon>
+            @if (query()) {
+              <h2>{{ 'catalog.noResultsTitle' | t }}</h2>
+              <p>{{ 'catalog.noResultsHint' | t }}</p>
+              <button type="button" class="catalog__state-action" (click)="clearSearch()">
+                {{ 'catalog.clearFilters' | t }}
+              </button>
+            } @else {
+              <h2>{{ 'catalog.tours.empty' | t }}</h2>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  } @else {
+    <app-seven-context-loader variant="list" type="tour"></app-seven-context-loader>
+  }
+</ion-content>

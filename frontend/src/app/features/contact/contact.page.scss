@@ -1,0 +1,463 @@
+// =============================================================================
+// SEVEN · CONTACTO (hub del viajero)
+// -----------------------------------------------------------------------------
+// Una sola columna en el teléfono: perfil, asistente protagonista, accesos,
+// contacto directo e información. En pantallas medianas los accesos pasan a dos
+// columnas: son filas cortas y en una sola la lista se alarga en exceso.
+// =============================================================================
+
+.ct {
+  &__page {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: var(--seven-space-5) var(--seven-page-padding) var(--seven-space-6);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Perfil
+  // ---------------------------------------------------------------------------
+  &__profile {
+    display: flex;
+    align-items: center;
+    gap: var(--seven-space-4);
+    margin-bottom: var(--seven-space-5);
+  }
+
+  &__avatar {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    background: linear-gradient(150deg, var(--seven-tropical-tide) 0%, var(--seven-ocean-blue) 60%, var(--seven-deep-sea) 100%);
+    color: var(--seven-text-inverse);
+    font-size: 1.8rem;
+    box-shadow: var(--seven-shadow-card);
+  }
+
+  &__identity {
+    display: flex;
+    flex-direction: column;
+    gap: var(--seven-space-1);
+    min-width: 0;
+  }
+
+  &__name {
+    margin: 0;
+    font-family: var(--seven-font-display);
+    font-size: 1.55rem;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+    color: var(--seven-text-strong);
+  }
+
+  &__tagline {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.4;
+    color: var(--seven-text-muted);
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--seven-space-2);
+    align-self: flex-start;
+    margin-top: var(--seven-space-1);
+    padding: 3px var(--seven-space-3);
+    border-radius: var(--seven-radius-pill);
+    background: var(--seven-tropical-tide-50);
+    color: var(--seven-tropical-tide-700);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  &__badge-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--seven-tropical-tide);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Asistente Seven
+  // ---------------------------------------------------------------------------
+  &__assistant {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--seven-space-3);
+    padding: var(--seven-space-5);
+    margin-bottom: var(--seven-space-5);
+    border-radius: var(--seven-radius-xl);
+    background: linear-gradient(160deg, var(--seven-ocean-blue) 0%, var(--seven-deep-sea) 100%);
+    color: var(--seven-text-inverse);
+    overflow: hidden;
+  }
+
+  &__assistant-head {
+    display: flex;
+    gap: var(--seven-space-3);
+    align-items: flex-start;
+  }
+
+  &__assistant-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--seven-space-1);
+    min-width: 0;
+  }
+
+  &__assistant-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--seven-radius-lg);
+    background: rgba(255, 255, 255, 0.16);
+    color: var(--seven-text-inverse);
+    font-size: 1.5rem;
+  }
+
+  &__assistant-title {
+    margin: 0;
+    font-family: var(--seven-font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--seven-text-inverse);
+  }
+
+  &__assistant-text {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  &__examples-label {
+    margin: var(--seven-space-1) 0 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--seven-space-2);
+  }
+
+  &__chip {
+    min-height: 36px;
+    padding: var(--seven-space-2) var(--seven-space-3);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: var(--seven-radius-pill);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--seven-text-inverse);
+    font-family: var(--seven-font-body);
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: left;
+    cursor: pointer;
+    transition: background 180ms ease;
+    -webkit-tap-highlight-color: transparent;
+
+    &:active {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--seven-text-inverse);
+      outline-offset: 2px;
+    }
+  }
+
+  &__assistant-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--seven-space-2);
+    align-self: stretch;
+    min-height: 48px;
+    padding: var(--seven-space-3) var(--seven-space-4);
+    border: none;
+    border-radius: var(--seven-radius-lg);
+    background: var(--seven-text-inverse);
+    color: var(--seven-ocean-blue);
+    font-family: var(--seven-font-body);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 180ms ease;
+    -webkit-tap-highlight-color: transparent;
+
+    ion-icon {
+      font-size: 1.1rem;
+    }
+
+    &:active {
+      opacity: 0.85;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--seven-text-inverse);
+      outline-offset: 2px;
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Secciones
+  // ---------------------------------------------------------------------------
+  &__section {
+    margin-bottom: var(--seven-space-5);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--seven-space-3);
+    margin: 0 0 var(--seven-space-3);
+    font-family: var(--seven-font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--seven-text-muted);
+
+    &::after {
+      content: '';
+      flex: 1 1 auto;
+      height: 1px;
+      background: var(--seven-border);
+    }
+  }
+
+  &__section-dot {
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--seven-ocean-blue);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Todo en un lugar (accesos)
+  // ---------------------------------------------------------------------------
+  &__links {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--seven-card-gap);
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: var(--seven-space-3);
+    min-height: 56px;
+    padding: var(--seven-space-3) var(--seven-space-4);
+    border: 1px solid var(--seven-border);
+    border-radius: var(--seven-radius-lg);
+    background: var(--seven-surface);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 180ms ease, border-color 180ms ease;
+
+    &:active {
+      background: var(--seven-gray-100);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--seven-ocean-blue);
+      outline-offset: 2px;
+    }
+  }
+
+  &__link-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--seven-radius-md);
+    background: var(--seven-tropical-tide-50);
+    color: var(--seven-tropical-tide-600);
+    font-size: 1.2rem;
+  }
+
+  &__link-label {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--seven-text-strong);
+  }
+
+  &__link-chevron {
+    flex-shrink: 0;
+    font-size: 1rem;
+    color: var(--seven-text-faint);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Contacto directo
+  // ---------------------------------------------------------------------------
+  &__email {
+    display: flex;
+    align-items: center;
+    gap: var(--seven-space-3);
+    min-height: 56px;
+    padding: var(--seven-space-3) var(--seven-space-4);
+    border: 1px solid var(--seven-border);
+    border-radius: var(--seven-radius-lg);
+    background: var(--seven-surface);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 180ms ease, border-color 180ms ease;
+
+    &:active {
+      background: var(--seven-gray-100);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--seven-ocean-blue);
+      outline-offset: 2px;
+    }
+  }
+
+  &__email-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--seven-ocean-blue-50);
+    color: var(--seven-ocean-blue);
+    font-size: 1.2rem;
+  }
+
+  &__email-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__email-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--seven-text-muted);
+  }
+
+  &__email-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--seven-text-strong);
+    overflow-wrap: anywhere;
+  }
+
+  &__email-chevron {
+    flex-shrink: 0;
+    font-size: 1rem;
+    color: var(--seven-ocean-blue);
+  }
+
+  &__email-note {
+    margin: var(--seven-space-2) var(--seven-space-1) 0;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--seven-text-muted);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Información y soporte
+  // ---------------------------------------------------------------------------
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--seven-card-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__info-item {
+    display: flex;
+    gap: var(--seven-space-3);
+    padding: var(--seven-space-4);
+    border: 1px solid var(--seven-border);
+    border-radius: var(--seven-radius-lg);
+    background: var(--seven-surface);
+  }
+
+  &__info-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--seven-radius-md);
+    background: var(--seven-ocean-blue-50);
+    color: var(--seven-ocean-blue);
+    font-size: 1.1rem;
+  }
+
+  &__info-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--seven-space-1);
+    min-width: 0;
+  }
+
+  &__info-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--seven-text-strong);
+  }
+
+  &__info-text {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--seven-text-muted);
+  }
+}
+
+@media (min-width: 600px) {
+  .ct__links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ct__assistant-cta {
+    align-self: flex-start;
+    padding-inline: var(--seven-space-6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct__chip,
+  .ct__assistant-cta,
+  .ct__email,
+  .ct__link {
+    transition: none;
+  }
+}

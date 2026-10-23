@@ -1,0 +1,49 @@
+<article class="apc">
+  <header class="apc__head">
+    <span class="apc__icon" aria-hidden="true">
+      <ion-icon name="sparkles-outline"></ion-icon>
+    </span>
+    <div class="apc__head-text">
+      <h3 class="apc__title">{{ 'assistant.package' | t }}</h3>
+      <span class="apc__count">{{ 'assistant.packageItems' | t: { count: package.items.length } }}</span>
+    </div>
+  </header>
+
+  <ol class="apc__steps">
+    @for (item of package.items; track item.key; let last = $last) {
+      <li
+        class="apc__step"
+        [class.apc__step--link]="!!item.route"
+        [class.apc__step--last]="last"
+        [attr.role]="item.route ? 'link' : null"
+        [attr.tabindex]="item.route ? 0 : null"
+        (click)="onOpenItem(item)"
+        (keydown.enter)="onOpenItem(item)"
+      >
+        <span class="apc__marker" aria-hidden="true">{{ $index + 1 }}</span>
+
+        <div class="apc__step-body">
+          <img
+            class="apc__thumb"
+            [src]="item.image"
+            appSafeImg
+            [alt]="item.name"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="apc__step-info">
+            <span class="apc__step-type">{{ typeKey(item.type) | t }}</span>
+            <span class="apc__step-name">{{ item.name }}</span>
+          </div>
+          @if (item.route) {
+            <ion-icon class="apc__chevron" name="chevron-forward" aria-hidden="true"></ion-icon>
+          }
+        </div>
+      </li>
+    }
+  </ol>
+
+  <footer class="apc__foot">
+    <app-seven-budget-meter [spent]="package.total" [budget]="budget"></app-seven-budget-meter>
+  </footer>
+</article>

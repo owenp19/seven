@@ -1,0 +1,36 @@
+{
+  "destinations": [
+    { "destination": "banners/descubre-san-andres.jpg", "queries": ["Caribbean beach palm", "Caribbean sea turquoise", "tropical beach caribbean palm"] },
+    { "destination": "banners/tours-y-cayos-del-caribe.jpg", "queries": ["Spratt Bight San Andrés", "Johnny Cay"] },
+    { "destination": "banners/sabores-de-la-isla.jpg", "queries": ["ceviche de camarones", "caribbean seafood dish"] },
+    { "destination": "banners/posadas-nativas-autenticas.jpg", "queries": ["colored wooden house caribbean", "Caribbean architecture house palm", "san andres colorful house"] },
+    { "destination": "banners/panaderias-y-reposteria-islena.jpg", "queries": ["pan de coco", "bakery bread display"] },
+
+    { "destination": "tours/johnny-cay/cover.jpg", "queries": ["Johnny Cay", "Johnny Cay San Andrés"] },
+    { "destination": "tours/johnny-cay/photo-1.jpg", "queries": ["Johnny Cay beach", "Johnny Cay arena blanca"] },
+    { "destination": "tours/johnny-cay/photo-2.jpg", "queries": ["Spratt Bight", "San Andrés Island beach palma", "Caribbean beach palm sand"] },
+    { "destination": "tours/johnny-cay/photo-3.jpg", "queries": ["lancha caribe turquesa", "boat turquoise caribbean"] },
+
+    { "destination": "tours/acuario-haynes-cay/cover.jpg", "queries": ["Haynes Cay", "Haynes Cay San Andrés"] },
+    { "destination": "tours/acuario-haynes-cay/photo-1.jpg", "queries": ["Acuario San Andrés", "Rose Cay"] },
+    { "destination": "tours/acuario-haynes-cay/photo-2.jpg", "queries": ["mantarraya caribe snorkel", "stingray clear water"] },
+    { "destination": "tours/acuario-haynes-cay/photo-3.jpg", "queries": ["manglar caribe", "mangroves caribbean"] },
+
+    { "destination": "tours/vuelta-isla-chiva/cover.jpg", "queries": ["Hoyo Soplador", "Hoyo Soplador San Andrés"] },
+    { "destination": "tours/vuelta-isla-chiva/photo-1.jpg", "queries": ["rocky shore ocean waves", "sea rocks coast waves", "ocean spray rock sea"] },
+    { "destination": "tours/vuelta-isla-chiva/photo-2.jpg", "queries": ["cliff ocean waves", "ocean coastline rock", "sea cliffs tropics"] },
+    { "destination": "tours/vuelta-isla-chiva/photo-3.jpg", "queries": ["San Andrés eolic park", "San Andrés Island road", "San Andrés view"] },
+
+    { "destination": "restaurants/la-regatta/cover.jpg", "queries": ["seafood restaurant ocean", "restaurante frente al mar"] },
+    { "destination": "restaurants/donde-francesca/cover.jpg", "queries": ["seafood restaurant grill", "grilled prawns dish", "restaurante playa caribe"] },
+    { "destination": "restaurants/miss-celia/cover.jpg", "queries": ["rondón caribe", "caribbean creole food"] },
+
+    { "destination": "inns/posada-nativa-miss-trinie/cover.jpg", "queries": ["casa raizal San Andrés", "caribbean house palm painted", "guesthouse caribbean"] },
+    { "destination": "inns/posada-nativa-atardecer-isleno/cover.jpg", "queries": ["atardecer caribe casa palmeras", "caribbean sunset palm"] },
+    { "destination": "inns/posada-nativa-miss-casira/cover.jpg", "queries": ["jardín tropical casa caribe", "tropical garden house"] },
+
+    { "destination": "bakeries/panaderia-suzette/cover.jpg", "queries": ["bakery bread shelf", "panaderia artesanal"] },
+    { "destination": "bakeries/panaderia-trigo-dorado/cover.jpg", "queries": ["baking bread fresh", "artisan bread basket"] },
+    { "destination": "bakeries/panaderia-susany/cover.jpg", "queries": ["coconut bread", "sweet bread pastries"] }
+  ]
+}

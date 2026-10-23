@@ -1,0 +1,886 @@
+// ─── Inn Detail (Posada nativa) ────────────────────────────────────────────
+// Comparte el lenguaje de Tour/Restaurant Detail (hero con acciones, bloques
+// separados por una línea, barra fija) pero con personalidad de alojamiento:
+// la galería es más baja, la información vive en el cuerpo y no sobre la
+// foto, y hay franjas propias (lo esencial, experiencia local, habitaciones).
+:host {
+  display: block;
+  background: var(--seven-surface);
+}
+
+.pd {
+  position: relative;
+  min-height: 100%;
+}
+
+// Reserva el alto de la barra fija + 16px para que el último bloque no quede
+// tapado y respire (los relacionados van con el rail sin padding inferior).
+.pd ion-content {
+  --padding-bottom: calc(var(--seven-detail-bar-height) + var(--seven-space-4) + env(safe-area-inset-bottom));
+}
+
+// ─── HERO / GALERÍA ────────────────────────────────────────────────────────
+// Más bajo que en Tour/Restaurant: brief §5 pide 260–320px en móvil para que
+// el gancho sea la posada, no una foto gigante.
+.pd__hero {
+  position: relative;
+  height: min(42svh, 320px);
+  min-height: 260px;
+  overflow: hidden;
+  background: var(--seven-deep-sea-200);
+}
+
+.pd__hero-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.pd__hero-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 45, 74, 0.28) 0%,
+    rgba(11, 45, 74, 0) 30%,
+    rgba(4, 27, 46, 0.28) 100%
+  );
+}
+
+// Composición editorial de escritorio: una imagen grande + dos apiladas.
+.pd__gallery {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: var(--seven-gray-100);
+  }
+}
+
+.pd__gallery-side {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 6px;
+}
+
+.pd__hero-top {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 14px);
+  left: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  z-index: 2;
+}
+
+.pd__pill-row {
+  display: flex;
+  gap: 10px;
+}
+
+.pd__pill-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: var(--seven-radius-pill);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--seven-deep-sea);
+  font-size: 1.25rem;
+  box-shadow: var(--seven-shadow-raised);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: transform 160ms ease, background 200ms ease;
+
+  &:hover {
+    background: #ffffff;
+  }
+
+  &:active {
+    transform: scale(0.92);
+  }
+}
+
+.pd__counter {
+  margin-left: auto;
+  padding: 6px 12px;
+  border-radius: var(--seven-radius-pill);
+  background: rgba(4, 27, 46, 0.5);
+  color: #ffffff;
+  font-family: var(--seven-font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(6px);
+}
+
+// ─── BODY ──────────────────────────────────────────────────────────────────
+.pd__body {
+  padding: 22px 16px 0;
+}
+
+.pd__eyebrow {
+  margin: 0 0 6px;
+  font-family: var(--seven-font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--seven-ocean-blue);
+}
+
+.pd__name {
+  margin: 0;
+  font-family: var(--seven-font-display);
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  color: var(--seven-deep-sea);
+}
+
+.pd__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-top: 10px;
+  font-family: var(--seven-font-body);
+  font-size: 0.85rem;
+  color: var(--seven-text-muted);
+}
+
+.pd__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  ion-icon {
+    font-size: 1rem;
+    color: var(--seven-ocean-blue);
+  }
+
+  &--rating ion-icon {
+    color: var(--seven-sun-gold);
+  }
+
+  &--rating {
+    color: var(--seven-deep-sea);
+    font-weight: 600;
+  }
+}
+
+.pd__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 6px 12px;
+  border-radius: var(--seven-radius-pill);
+  background: var(--seven-success-soft);
+  color: var(--seven-palm-green);
+  font-family: var(--seven-font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  ion-icon {
+    font-size: 1.05rem;
+  }
+}
+
+.pd__from {
+  margin: 14px 0 0;
+  font-family: var(--seven-font-body);
+  font-size: 0.92rem;
+  color: var(--seven-text-muted);
+
+  strong {
+    font-family: var(--seven-font-display);
+    font-size: 1.2rem;
+    color: var(--seven-deep-sea);
+  }
+}
+
+// ─── LO ESENCIAL ───────────────────────────────────────────────────────────
+.pd__essentials {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+  gap: 10px;
+  margin: 18px 0 4px;
+}
+
+.pd__fact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 14px 8px;
+  border: 1px solid var(--seven-border-soft);
+  border-radius: var(--seven-radius-lg);
+  background: var(--seven-gray-50);
+  text-align: center;
+
+  ion-icon {
+    margin-bottom: 3px;
+    color: var(--seven-ocean-blue);
+    font-size: 1.35rem;
+  }
+
+  strong {
+    font-family: var(--seven-font-display);
+    font-size: 0.92rem;
+    color: var(--seven-deep-sea);
+    line-height: 1.2;
+  }
+
+  span {
+    font-family: var(--seven-font-body);
+    font-size: 0.68rem;
+    color: var(--seven-text-muted);
+  }
+
+  &--warn {
+    ion-icon {
+      color: var(--seven-soft-coral);
+    }
+  }
+}
+
+// ─── BLOQUES ───────────────────────────────────────────────────────────────
+.pd__block {
+  padding: 22px 0;
+  border-top: 1px solid var(--seven-border-soft);
+
+  // El último bloque cierra la página: sin borde inferior para que no se lea
+  // como una sección truncada.
+  &--last {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  // Wrapper transparente: `CommentsSectionComponent` ya gestiona su padding.
+  &--comments {
+    padding: 0;
+  }
+}
+
+.pd__block-title {
+  margin: 0 0 14px;
+  font-family: var(--seven-font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--seven-deep-sea);
+}
+
+.pd__desc {
+  margin: 0;
+  font-family: var(--seven-font-body);
+  font-size: 0.92rem;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--seven-text);
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  &--expanded {
+    display: block;
+    -webkit-line-clamp: unset;
+  }
+}
+
+.pd__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--seven-font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--seven-ocean-blue);
+  cursor: pointer;
+
+  ion-icon {
+    transition: transform 200ms ease;
+  }
+
+  &:active ion-icon {
+    transform: rotate(180deg);
+  }
+}
+
+// ─── EXPERIENCIA LOCAL ─────────────────────────────────────────────────────
+.pd__experience {
+  margin: 22px 0;
+  padding: 20px 18px;
+  border-radius: var(--seven-radius-lg);
+  background: linear-gradient(135deg, var(--seven-deep-sea-50), var(--seven-arena));
+  border: 1px solid var(--seven-deep-sea-100);
+}
+
+.pd__experience-tag {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 4px 10px;
+  border-radius: var(--seven-radius-pill);
+  background: var(--seven-palm-green);
+  color: #ffffff;
+  font-family: var(--seven-font-body);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pd__experience-title {
+  margin: 0 0 8px;
+  font-family: var(--seven-font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--seven-deep-sea);
+}
+
+.pd__experience-text {
+  margin: 0;
+  font-family: var(--seven-font-body);
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--seven-text);
+}
+
+// ─── HABITACIONES ──────────────────────────────────────────────────────────
+.pd__rooms {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pd__room {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--seven-border-soft);
+  border-radius: var(--seven-radius-lg);
+  background: var(--seven-surface);
+  box-shadow: var(--seven-shadow-soft);
+}
+
+.pd__room-media {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 6.5rem;
+  height: 6.5rem;
+  overflow: hidden;
+  border-radius: var(--seven-radius-md);
+  background: var(--seven-gray-100);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  ion-icon {
+    font-size: 2rem;
+    color: var(--seven-gray-300);
+  }
+}
+
+.pd__room-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+
+.pd__room-name {
+  font-family: var(--seven-font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--seven-deep-sea);
+}
+
+.pd__room-cap {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--seven-font-body);
+  font-size: 0.76rem;
+  color: var(--seven-text-muted);
+
+  ion-icon {
+    font-size: 0.95rem;
+    color: var(--seven-ocean-blue);
+  }
+}
+
+.pd__room-desc {
+  margin: 0;
+  font-family: var(--seven-font-body);
+  font-size: 0.78rem;
+  font-weight: 300;
+  line-height: 1.45;
+  color: var(--seven-text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pd__room-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+.pd__room-price {
+  font-family: var(--seven-font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ion-color-primary);
+
+  small {
+    margin-left: 2px;
+    font-family: var(--seven-font-body);
+    font-size: 0.68rem;
+    font-weight: 400;
+    color: var(--seven-text-muted);
+  }
+}
+
+.pd__room-cta {
+  padding: 8px 18px;
+  border: 0;
+  border-radius: var(--seven-radius-pill);
+  background: var(--seven-ocean-blue);
+  color: #ffffff;
+  font-family: var(--seven-font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
+  transition: transform 160ms ease;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+// ─── SERVICIOS ─────────────────────────────────────────────────────────────
+.pd__amenities {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 12px;
+}
+
+.pd__amenity {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--seven-font-body);
+  font-size: 0.85rem;
+  color: var(--seven-text-strong);
+
+  ion-icon {
+    flex-shrink: 0;
+    font-size: 1.15rem;
+    color: var(--seven-tropical-tide-500);
+  }
+}
+
+// ─── UBICACIÓN ─────────────────────────────────────────────────────────────
+.pd__map {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--seven-border-soft);
+  border-radius: var(--seven-radius-lg);
+  background: var(--seven-gray-50);
+  text-align: left;
+  cursor: pointer;
+  transition: background 200ms ease, border-color 200ms ease;
+
+  &:active {
+    background: var(--seven-ocean-blue-50);
+    border-color: var(--seven-ocean-blue-200);
+  }
+
+  > ion-icon:last-child {
+    margin-left: auto;
+    color: var(--seven-ocean-blue);
+  }
+}
+
+.pd__map-pin {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--seven-radius-pill);
+  background: var(--seven-ocean-blue-50);
+  color: var(--seven-ocean-blue);
+  font-size: 1.2rem;
+}
+
+.pd__map-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  strong {
+    font-family: var(--seven-font-body);
+    font-size: 0.92rem;
+    color: var(--seven-deep-sea);
+  }
+
+  small {
+    font-family: var(--seven-font-body);
+    font-size: 0.75rem;
+    color: var(--seven-text-muted);
+  }
+}
+
+// ─── PROVEEDOR ─────────────────────────────────────────────────────────────
+.pd__provider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--seven-border-soft);
+  border-radius: var(--seven-radius-lg);
+  background: var(--seven-surface);
+  box-shadow: var(--seven-shadow-soft);
+}
+
+.pd__provider-logo {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  border-radius: var(--seven-radius-md);
+  background: var(--seven-ocean-blue-50);
+  color: var(--seven-ocean-blue);
+  font-size: 1.4rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.pd__provider-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+
+  strong {
+    font-family: var(--seven-font-body);
+    font-size: 0.95rem;
+    color: var(--seven-deep-sea);
+  }
+
+  small {
+    font-family: var(--seven-font-body);
+    font-size: 0.76rem;
+    color: var(--seven-text-muted);
+  }
+}
+
+.pd__provider-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--seven-font-body);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--seven-palm-green);
+
+  ion-icon {
+    font-size: 0.98rem;
+  }
+}
+
+.pd__provider-contact {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: var(--seven-radius-pill);
+  background: #25D366;
+  color: #ffffff;
+  font-size: 1.35rem;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.32);
+  transition: transform 160ms ease;
+
+  &:active {
+    transform: scale(0.92);
+  }
+}
+
+// ─── RELACIONADOS ──────────────────────────────────────────────────────────
+.pd__rail {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  margin: 0 -16px;
+  padding: 4px 16px 6px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.pd__block--last .pd__rail {
+  padding-bottom: 0;
+}
+
+.pd__rail-card {
+  flex: 0 0 15rem;
+  scroll-snap-align: start;
+  height: 20rem;
+}
+
+// ─── BARRA FIJA ────────────────────────────────────────────────────────────
+.pd__bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.94);
+  border-top: 1px solid var(--seven-border-soft);
+  box-shadow: 0 -8px 24px rgba(11, 45, 74, 0.1);
+  backdrop-filter: blur(12px);
+}
+
+.pd__bar-price {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.15;
+
+  span {
+    font-family: var(--seven-font-body);
+    font-size: 0.68rem;
+    color: var(--seven-text-muted);
+  }
+
+  strong {
+    font-family: var(--seven-font-display);
+    font-size: 1.25rem;
+    color: var(--seven-deep-sea);
+  }
+
+  small {
+    font-family: var(--seven-font-body);
+    font-size: 0.66rem;
+    color: var(--seven-text-muted);
+  }
+}
+
+.pd__bar-wa {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: var(--seven-radius-pill);
+  background: #25D366;
+  color: #ffffff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.35);
+  transition: transform 160ms ease;
+
+  &:active {
+    transform: scale(0.92);
+  }
+}
+
+.pd__cta {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 52px;
+  border: 0;
+  border-radius: var(--seven-radius-pill);
+  background: var(--ion-color-primary);
+  color: #ffffff;
+  font-family: var(--seven-font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0, 119, 182, 0.35);
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 200ms ease;
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
+  }
+
+  &--off {
+    flex: 1;
+    background: var(--seven-gray-200);
+    color: var(--seven-text-muted);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+}
+
+// ─── NO ENCONTRADA ─────────────────────────────────────────────────────────
+.pd__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 70vh;
+  padding: 24px;
+  text-align: center;
+
+  > ion-icon {
+    font-size: 2.6rem;
+    color: var(--seven-gray-300);
+  }
+
+  h2 {
+    margin: 0;
+    font-family: var(--seven-font-display);
+    color: var(--seven-deep-sea);
+  }
+
+  p {
+    margin: 0;
+    font-family: var(--seven-font-body);
+    font-size: 0.9rem;
+    color: var(--seven-text-muted);
+  }
+}
+
+.pd__empty-btn {
+  margin-top: 10px;
+  padding: 12px 22px;
+  border: 0;
+  border-radius: var(--seven-radius-pill);
+  background: var(--ion-color-primary);
+  color: #ffffff;
+  font-family: var(--seven-font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 119, 182, 0.35);
+  transition: transform 160ms ease;
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+// ─── RESPONSIVE ────────────────────────────────────────────────────────────
+@media (min-width: 768px) {
+  .pd__body {
+    max-width: var(--seven-reading-width);
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .pd__hero-top {
+    max-width: 728px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .pd__amenities {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  // Galería editorial más baja que la de Tour para no dominar el escritorio.
+  .pd__hero {
+    height: min(34svh, 360px);
+    border-radius: 0 0 var(--seven-radius-lg) var(--seven-radius-lg);
+  }
+
+  .pd__body {
+    max-width: 760px;
+  }
+
+  .pd__gallery,
+  .pd__hero-media {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  .pd__hero-top {
+    max-width: 1120px;
+  }
+
+  .pd__amenities {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .pd__bar {
+    justify-content: center;
+
+    > * {
+      max-width: 1120px;
+    }
+  }
+}
+
+// ─── REDUCIR MOVIMIENTO ────────────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  .pd__pill-btn,
+  .pd__cta,
+  .pd__room-cta,
+  .pd__provider-contact,
+  .pd__bar-wa,
+  .pd__empty-btn,
+  .pd__more ion-icon {
+    transition: none;
+  }
+}

@@ -1,0 +1,116 @@
+// =============================================================================
+// PROMO CARD — tarjeta de oferta de temporada (carrusel de la Home)
+// =============================================================================
+
+.promo-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--seven-radius-xl);
+  background: var(--seven-surface);
+  box-shadow: var(--seven-shadow-card);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 180ms ease, box-shadow 200ms ease;
+
+  &:active {
+    transform: scale(0.985);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--seven-ocean-blue);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
+  &__media {
+    position: relative;
+    flex: none;
+    height: 8.75rem; // 140px
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  &__badge {
+    position: absolute;
+    top: var(--seven-space-3);
+    right: var(--seven-space-3);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--seven-radius-pill);
+    background: var(--seven-warning);
+    color: var(--seven-text-inverse);
+    font-family: var(--seven-font-body);
+    font-size: 0.72rem;
+    font-weight: 700;
+
+    ion-icon {
+      font-size: 0.8rem;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: var(--seven-space-3) var(--seven-space-4) var(--seven-space-4);
+  }
+
+  &__provider {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--seven-ocean-blue);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__title {
+    margin: 0.25rem 0 0;
+    font-family: var(--seven-font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--seven-deep-sea);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--seven-space-3);
+    margin-top: auto;
+    padding-top: var(--seven-space-3);
+  }
+
+  &__until {
+    font-size: 0.72rem;
+    color: var(--seven-text-muted);
+  }
+
+  &__price {
+    flex: none;
+    font-family: var(--seven-font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--seven-palm-green);
+  }
+}

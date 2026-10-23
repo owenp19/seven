@@ -1,0 +1,30 @@
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--go-space-2);
+
+  &__stars {
+    display: inline-flex;
+    gap: 2px;
+    font-size: 0.9rem;
+  }
+
+  &__icon {
+    color: var(--go-sand-muted);
+
+    &--active {
+      color: var(--go-gold);
+    }
+  }
+
+  &__value {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--go-navy-soft);
+  }
+
+  &__count {
+    font-weight: 400;
+    color: var(--go-navy-muted);
+  }
+}

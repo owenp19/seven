@@ -1,0 +1,66 @@
+// =============================================================================
+// SEVEN FORMS
+// -----------------------------------------------------------------------------
+// Consistent input/label styling for the SEVEN mobile-first experience.
+// =============================================================================
+
+.go-label {
+  display: block;
+  margin-bottom: var(--go-space-1);
+  font-family: var(--go-font-body);
+  font-size: 0.8125rem;   // 13px
+  font-weight: 600;
+  color: var(--go-navy);
+}
+
+.go-input {
+  width: 100%;
+  padding: 0.875rem var(--go-space-4);
+  border: 1px solid var(--go-line);
+  border-radius: var(--go-radius-md);
+  background: var(--go-surface);
+  color: var(--go-navy);
+  font-family: var(--go-font-body);
+  font-size: 0.9375rem;   // 15px
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+
+  &::placeholder {
+    color: var(--go-navy-muted);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--go-ocean);
+    box-shadow: 0 0 0 3px var(--go-ocean-soft);
+  }
+}
+
+// Error state
+.go-input--error {
+  border-color: var(--go-danger);
+}
+
+.go-field-error {
+  margin-top: var(--go-space-1);
+  font-size: 0.75rem;
+  color: var(--go-danger);
+}
+
+// Icon-leading input wrapper
+.go-input-wrap {
+  position: relative;
+
+  > ion-icon {
+    position: absolute;
+    left: var(--go-space-3);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--go-navy-muted);
+    font-size: 1.15rem;
+    pointer-events: none;
+  }
+
+  .go-input--icon {
+    padding-left: 2.75rem;
+  }
+}

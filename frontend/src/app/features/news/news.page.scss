@@ -1,0 +1,513 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// SEVEN — NOTICIAS (portada de la revista de la isla)
+//
+// Esto no es un catálogo. La página se lee como una portada de revista: una
+// masthead con voz propia, un destacado que manda, un sumario de historias y
+// una barra de categorías. Nada de rejillas de tarjetas idénticas.
+// -----------------------------------------------------------------------------
+
+.news {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--seven-space-2) var(--seven-page-padding) var(--seven-space-8);
+}
+
+// ─── MASTHEAD ────────────────────────────────────────────────────────────────
+.news__masthead {
+  padding: var(--seven-space-3) 0 var(--seven-space-5);
+  border-bottom: 1px solid var(--seven-border);
+}
+
+.news__kicker {
+  margin: 0;
+  font-family: var(--seven-font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--seven-ocean-blue);
+}
+
+.news__headline {
+  margin: var(--seven-space-2) 0 0;
+  font-family: var(--seven-font-display);
+  font-size: clamp(1.6rem, 6vw, 2.5rem);
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--seven-text-strong);
+}
+
+.news__standfirst {
+  margin: var(--seven-space-3) 0 0;
+  max-width: 48ch;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: var(--seven-text-muted);
+}
+
+// ─── CATEGORÍAS ──────────────────────────────────────────────────────────────
+.news__chips {
+  display: flex;
+  gap: var(--seven-space-2);
+  margin: var(--seven-space-4) 0 var(--seven-space-5);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.news__chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 15px;
+  border: 1px solid var(--seven-border-soft);
+  border-radius: var(--seven-radius-pill);
+  background: var(--seven-surface);
+  color: var(--seven-text-muted);
+  font-family: var(--seven-font-ui);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+
+  ion-icon {
+    font-size: 1rem;
+    color: var(--seven-ocean-blue);
+  }
+
+  &:hover {
+    border-color: var(--seven-ocean-blue-200);
+    color: var(--seven-text-strong);
+  }
+
+  &--active {
+    background: var(--seven-deep-sea);
+    border-color: var(--seven-deep-sea);
+    color: var(--seven-text-inverse);
+
+    ion-icon {
+      color: var(--seven-sun-gold);
+    }
+  }
+}
+
+// ─── REJILLA PRINCIPAL ───────────────────────────────────────────────────────
+.news__columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--seven-space-6);
+}
+
+.news__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--seven-space-6);
+  min-width: 0;
+}
+
+.news__side {
+  min-width: 0;
+}
+
+// ─── DESTACADO (hero) ────────────────────────────────────────────────────────
+.news__featured {
+  display: block;
+  border-radius: var(--seven-radius-xl);
+  overflow: hidden;
+  background: var(--seven-surface);
+  box-shadow: var(--seven-shadow-card);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--seven-shadow-raised);
+
+    .news__featured-img {
+      transform: scale(1.05);
+    }
+
+    .news__featured-title {
+      color: var(--seven-ocean-blue);
+    }
+  }
+}
+
+.news__featured-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  background: linear-gradient(150deg, var(--seven-deep-sea), var(--seven-ocean-blue));
+}
+
+.news__featured-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.news__featured-body {
+  display: block;
+  padding: var(--seven-space-4);
+}
+
+.news__featured-title {
+  margin: 0;
+  font-family: var(--seven-font-display);
+  font-size: clamp(1.35rem, 5.4vw, 1.7rem);
+  line-height: 1.15;
+  font-weight: 700;
+  color: var(--seven-text-strong);
+  transition: color 180ms ease;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.news__featured-excerpt {
+  margin: var(--seven-space-2) 0 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--seven-text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.news__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: var(--seven-space-3) 0 0;
+  font-family: var(--seven-font-ui);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--seven-text-faint);
+}
+
+.news__dot {
+  color: var(--seven-text-faint);
+}
+
+// ─── ETIQUETA EDITORIAL (badge de kind) ──────────────────────────────────────
+.news__tag {
+  position: absolute;
+  top: var(--seven-space-3);
+  left: var(--seven-space-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: var(--seven-radius-pill);
+  background: rgba(11, 45, 74, 0.82);
+  color: var(--seven-text-inverse);
+  font-family: var(--seven-font-ui);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  backdrop-filter: blur(6px);
+
+  ion-icon {
+    font-size: 0.95rem;
+  }
+
+  &[data-kind='event'] ion-icon {
+    color: var(--seven-sun-gold);
+  }
+
+  &[data-kind='tip'] ion-icon {
+    color: var(--seven-palm-green);
+  }
+
+  &[data-kind='promotion'] {
+    background: var(--seven-soft-coral);
+  }
+}
+
+// ─── TÍTULO DE SECCIÓN ───────────────────────────────────────────────────────
+.news__section-title {
+  margin: 0 0 var(--seven-space-3);
+  padding-bottom: var(--seven-space-2);
+  border-bottom: 2px solid var(--seven-deep-sea);
+  font-family: var(--seven-font-ui);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--seven-text-strong);
+}
+
+// ─── DESTACADOS: sumario numérico (jerarquía distinta a las historias) ───────
+.news__ranked {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.news__ranked-item {
+  border-bottom: 1px solid var(--seven-border-soft);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.news__ranked-link {
+  display: flex;
+  align-items: baseline;
+  gap: var(--seven-space-3);
+  padding: var(--seven-space-3) 0;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover .news__ranked-title {
+    color: var(--seven-ocean-blue);
+  }
+}
+
+.news__ranked-index {
+  flex: none;
+  font-family: var(--seven-font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--seven-ocean-blue-200);
+}
+
+.news__ranked-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.news__ranked-title {
+  font-family: var(--seven-font-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--seven-text-strong);
+  transition: color 160ms ease;
+}
+
+.news__ranked-meta {
+  font-family: var(--seven-font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--seven-text-faint);
+}
+
+// ─── ÚLTIMAS HISTORIAS: filas editoriales con miniatura ──────────────────────
+.news__stories {
+  display: flex;
+  flex-direction: column;
+}
+
+.news__story {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: var(--seven-space-3);
+  padding: var(--seven-space-3) 0;
+  border-bottom: 1px solid var(--seven-border-soft);
+  text-decoration: none;
+  color: inherit;
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover .news__story-title {
+    color: var(--seven-ocean-blue);
+  }
+}
+
+.news__story-media {
+  display: block;
+  width: 92px;
+  height: 92px;
+  border-radius: var(--seven-radius-lg);
+  overflow: hidden;
+  background: var(--seven-surface-muted);
+}
+
+.news__story-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.news__story-fallback {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(150deg, var(--seven-deep-sea), var(--seven-ocean-blue));
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.6rem;
+}
+
+.news__story-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.news__story-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--seven-font-ui);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--seven-text-faint);
+
+  [data-kind] {
+    color: var(--seven-ocean-blue);
+  }
+}
+
+.news__story-title {
+  font-family: var(--seven-font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.28;
+  color: var(--seven-text-strong);
+  transition: color 160ms ease;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.news__story-excerpt {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--seven-text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ─── ESTADO VACÍO ────────────────────────────────────────────────────────────
+.news__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--seven-space-3);
+  padding: var(--seven-space-8) var(--seven-space-4);
+  text-align: center;
+  color: var(--seven-text-muted);
+
+  ion-icon {
+    font-size: 3rem;
+    color: var(--seven-ocean-blue-200);
+  }
+
+  p {
+    margin: 0;
+    font-size: 1rem;
+  }
+}
+
+.news__empty-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: var(--seven-radius-pill);
+  background: var(--seven-deep-sea);
+  color: var(--seven-text-inverse);
+  font-family: var(--seven-font-ui);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+// ─── ESQUELETO EDITORIAL ─────────────────────────────────────────────────────
+.news__ghost-media {
+  display: block;
+  width: 100%;
+  height: 210px;
+  border-radius: var(--seven-radius-xl);
+}
+
+.news__ghost-row {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: var(--seven-space-3);
+  padding: var(--seven-space-3) 0;
+  border-bottom: 1px solid var(--seven-border-soft);
+}
+
+.news__ghost-thumb {
+  width: 92px;
+  height: 92px;
+  border-radius: var(--seven-radius-lg);
+}
+
+.news__ghost-lines {
+  display: flex;
+  flex-direction: column;
+}
+
+// ─── RESPONSIVE ──────────────────────────────────────────────────────────────
+@media (min-width: 768px) {
+  .news__featured-body {
+    padding: var(--seven-space-5);
+  }
+
+  .news__story,
+  .news__ghost-row {
+    grid-template-columns: 108px 1fr;
+  }
+
+  .news__story-media,
+  .news__ghost-thumb {
+    width: 108px;
+    height: 108px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .news__columns {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: var(--seven-space-8);
+    align-items: start;
+  }
+
+  .news__featured-title {
+    font-size: 1.85rem;
+  }
+
+  .news__ghost-media {
+    height: 300px;
+  }
+}
