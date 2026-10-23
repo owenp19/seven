@@ -1,4 +1,4 @@
-# SEVEN — Reporte de auditoría (Fase 0 / 0.8 / 1.0)
+# SEVEN — Reporte de auditoría (Fase 0 / 0.8 / 1.0 / 1.1)
 
 Fecha: 2026-10-22, actualizado: 2026-10-23
 Alcance: estructura, stack, API, base de datos, frontend, móvil, seguridad
@@ -6,26 +6,27 @@ básica, skills y entorno OpenCode.
 Modo: auditoría con estabilización. Solo formato (Pint), `.gitignore` y
 documentación; sin cambios de lógica, pantallas, rutas, BD ni dependencias.
 
-> Actualización Fase 1.0 (2026-10-23): el hallazgo crítico de ausencia de Git
-> quedó resuelto con un repositorio local en `main` y el commit base
-> `chore: baseline estable de SEVEN antes del rediseño UI UX`. No hay remoto.
+> Actualización Fase 1.0/1.1 (2026-10-23): el hallazgo crítico de ausencia de Git
+> quedó resuelto con un repositorio en `main`, el commit base
+> `chore: baseline estable de SEVEN antes del rediseño UI UX` y su publicación en
+> `origin` → `https://github.com/owenp19/seven.git`.
 
 ## Resumen ejecutivo
 El proyecto está bien estructurado y tiene una base funcional amplia, con
 documentación previa y una suite de tests sólida (276 backend, 206 frontend).
 Los bloqueos principales están en **release y entorno**: Android no está
 sincronizado con todos los plugins, faltan permisos móviles y el host de
-producción es placeholder. Git ya está inicializado localmente (sin remoto). El
+producción es placeholder. Git está inicializado y publicado en GitHub. El
 build web se reparó durante la auditoría y Pint quedó en verde.
 
 ## Hallazgos
 
-### [RESUELTO en Fase 1.0] No había repositorio Git
+### [RESUELTO en Fase 1.0/1.1] No había repositorio Git
 - Evidencia original: `git status` → `fatal: not a git repository`.
-- Estado actual: repo local en `main`, commit base creado, 913 archivos
-  versionados, sin remoto.
-- Verificación: `git log --oneline`, `git remote -v` (vacío) y escaneo de
-  secretos sobre el árbol versionado.
+- Estado actual: repo en `main`, commit base creado, 913 archivos versionados y
+  push a `origin/main`.
+- Verificación: `git log --oneline`, `git ls-remote origin refs/heads/main` y
+  escaneo de secretos sobre el árbol versionado.
 - Verificado: sí.
 
 ### [ALTO] Proyecto Android desincronizado con los plugins
@@ -131,7 +132,7 @@ build web se reparó durante la auditoría y Pint quedó en verde.
 ## Comandos ejecutados
 | Comando | Resultado |
 |---------|-----------|
-| `git status` | Repo local en `main`, sin remoto |
+| `git status` | `main` sincronizado con `origin/main` |
 | `git log` | 1 commit base (`chore: baseline estable de SEVEN antes del rediseño UI UX`) |
 | `node --version` | v22.15.0 |
 | `npm --version` | 11.19.1 |
@@ -150,7 +151,7 @@ build web se reparó durante la auditoría y Pint quedó en verde.
 | Prueba de `.gitignore` | 13 rutas versionables / 15 ignoradas correctamente |
 
 ## Recomendación de siguiente fase
-1. ~~`git init` + commit base~~ (hecho en Fase 1.0; sin remoto).
+1. ~~`git init` + commit base + push~~ (hecho en Fases 1.0/1.1).
 2. SDK Android + `cap sync` + permisos.
 3. Host de producción.
 4. SCA y prueba de abuso del assistant.

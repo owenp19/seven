@@ -21,8 +21,9 @@ Monorepo de turismo:
 5. No ejecutar `cap sync`, `cap run`, APK ni Android Studio sin aprobación.
 6. No instalar GSD ni herramientas que sobrescriban configuración.
 7. No hacer commit salvo pedido explícito. El repo Git local existe (`main`,
-   baseline en `chore: baseline estable de SEVEN antes del rediseño UI UX`),
-   **sin remoto**; el `.gitignore` raíz está activo.
+   baseline en `chore: baseline estable de SEVEN antes del rediseño UI UX`) y su
+   remoto es `origin` → `github.com/owenp19/seven`; el `.gitignore` raíz está
+   activo. No hacer force-push ni reescribir el historial publicado.
 8. No afirmar que algo funciona si no se ejecutó la verificación.
 9. Reutilizar componentes/servicios existentes antes de crear nuevos.
 10. Documentar cambios de comportamiento en `docs/seven/` y `SESSION_LOG.md`.

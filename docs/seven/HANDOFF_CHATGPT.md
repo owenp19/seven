@@ -9,7 +9,8 @@ backoffice y portal de proveedor. El repo está en
 La Fase 0 fue auditoría y preparación. La **Fase 0.8** cerró el formato de
 Laravel Pint, preparó el `.gitignore` y reverificó la calidad. La **Fase 1.0**
 creó el repositorio Git local (`main`) con el commit base
-`chore: baseline estable de SEVEN antes del rediseño UI UX`, **sin remoto**. No
+`chore: baseline estable de SEVEN antes del rediseño UI UX` y la **Fase 1.1** lo
+publicó en `https://github.com/owenp19/seven.git` (`origin`). No
 se modificó lógica, pantallas, rutas, base de datos ni dependencias. No se
 generó APK.
 
@@ -45,7 +46,7 @@ locales; úsalas según la tarea.
 - `vendor\bin\pint --test` → pasa (tras aplicar formato en 10 archivos).
 - `.gitignore` raíz → validado en repo temporal; secretos, dependencias, builds
   y logs excluidos.
-- Git local → `main` con 1 commit base, 913 archivos y sin remoto; escaneo de
+- Git → `main` con 1 commit base sincronizado con `origin/main`; escaneo de
   secretos sin hallazgos.
 
 ## No verificado (no afirmar que funciona)
@@ -54,7 +55,8 @@ locales; úsalas según la tarea.
 - Escaneo de dependencias/pentest.
 
 ## Riesgos críticos
-1. **Sin remoto.** El repo es solo local: no hay copia externa ni push.
+1. **Remoto en GitHub.** El código está publicado en `origin`; revisar
+   visibilidad, accesos y 2FA de la cuenta.
 2. **Android desincronizado.** `capacitor.plugins.json` solo tiene 3 de 8 plugins.
 3. **Permisos Android incompletos.** Solo `INTERNET`.
 4. **Host de producción placeholder.** La app lanza al arrancar en prod.
@@ -72,14 +74,14 @@ locales; úsalas según la tarea.
 - No hagas commit salvo pedido explícito.
 
 ## Próximos pasos recomendados
-1. ~~Git + commit base~~ (hecho en Fase 1.0; sin remoto).
+1. ~~Git + commit base~~ (hecho en Fase 1.0 y publicado en Fase 1.1).
 2. Configurar `ANDROID_HOME` y `npx cap sync android`.
 3. Añadir permisos Android y probar en dispositivo.
 4. Configurar host real de producción.
 5. Auditar dependencias (SCA).
 
 ## Preguntas abiertas
-- ¿Se autoriza publicar el repo local en un remoto (GitHub)?
+- ¿La visibilidad del repo en GitHub (pública/privada) es la deseada?
 - ¿Qué host/API de producción se usará?
 - ¿Se instala GSD Core o se mantiene el backlog local?
 - ¿Se prioriza release Android o completar verificación web primero?

@@ -9,9 +9,9 @@ frontend Angular 21/Ionic 9 y proyectos Capacitor), con documentación previa y
 un conjunto amplio de tests de backend. En la Fase 0.8 **no se modificó lógica,
 pantallas, rutas, base de datos ni dependencias**: solo se aplicó formato de
 Pint, se añadió la propuesta de `.gitignore` y se actualizó la documentación.
-En la Fase 1.0 se inicializó Git en la raíz (`main`) y se creó el commit base
-`chore: baseline estable de SEVEN antes del rediseño UI UX`, **sin remoto**: el
-proyecto todavía no se publica en GitHub.
+En la Fase 1.0 se creó el baseline local (`main`, commit
+`chore: baseline estable de SEVEN antes del rediseño UI UX`) y en la Fase 1.1 se
+publicó en `https://github.com/owenp19/seven.git` (`origin/main`).
 
 ## Verificado
 - Monorepo con `backend/`, `frontend/`, `docs/` y scripts raíz en `package.json`.
@@ -37,7 +37,7 @@ proyecto todavía no se publica en GitHub.
   `.env.example`, `.env.production.example`, `skills-lock.json`, `.agents/`,
   `.opencode/`, `docs/` y el código fuente.
 - Repositorio Git local en `main` con un único commit base, 913 archivos
-  versionados (~9.6 MB) y sin remoto configurado.
+  versionados (~9.6 MB) y remoto `origin` en GitHub (`main` sigue `origin/main`).
 - Escaneo del contenido versionado: sin claves privadas, tokens, `.env` reales,
   keystores, `local.properties` ni dependencias/builds.
 
@@ -92,7 +92,7 @@ proyecto todavía no se publica en GitHub.
 ## Cambios de esta sesión
 - Fase 1.0: `git init -b main` y commit base
   `chore: baseline estable de SEVEN antes del rediseño UI UX`.
-- Sin remotos: no se publicó en GitHub.
+- Fase 1.1: remoto `origin` y push de `main` a GitHub (upstream configurado).
 - `.gitignore` raíz activo (ya no es propuesta) y verificado por patrones.
 - Formato Pint en 10 archivos de `backend/`.
 - `docs/seven/*` actualizados (estado, auditoría, log, backlog y handoff).
@@ -104,4 +104,4 @@ proyecto todavía no se publica en GitHub.
 2. Sincronizar Capacitor y añadir permisos Android cuando se autorice.
 3. Configurar el host real de producción antes de cualquier release.
 4. Ejecutar auditoría SCA antes de publicar.
-5. Definir un remoto (GitHub) solo cuando se autorice explícitamente.
+5. Mantener `origin/main` actualizado tras cada cambio aprobado.

@@ -3,7 +3,7 @@
 ## P0 — Antes de seguir desarrollando
 | # | Tarea | Motivo | Criterio de done |
 |---|-------|--------|------------------|
-| 1 | ~~Inicializar Git y commit base~~ **Hecho (Fase 1.0)** | Sin remoto; baseline local disponible | Commit base `chore: baseline estable de SEVEN antes del rediseño UI UX` |
+| 1 | ~~Inicializar Git y commit base~~ **Hecho (Fases 1.0/1.1)** | Baseline local publicado en GitHub | Commit base `chore: baseline estable de SEVEN antes del rediseño UI UX` |
 | 2 | Configurar `ANDROID_HOME` | El build Android no es reproducible | `sdkmanager` y Gradle funcionan |
 | 3 | Sincronizar Capacitor | 5 plugins no están en Android | `capacitor.plugins.json` lista los 8 plugins |
 | 4 | Permisos Android de geolocalización/notificaciones | Funciones nativas pueden fallar | Permisos + solicitud runtime probados |

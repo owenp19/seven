@@ -32,7 +32,7 @@
 ## Riesgos y pendientes
 | Severidad | Hallazgo | Acción |
 |-----------|----------|--------|
-| Medio | Sin remoto: el baseline local no tiene copia externa | Definir remoto cuando se autorice |
+| Medio | El código está publicado en GitHub (`origin`) | Revisar visibilidad, accesos y 2FA |
 | Alto | Permisos Android incompletos para geolocalización/notificaciones | Añadir y probar runtime permissions |
 | Medio | Sin escaneo SCA ejecutado | Ejecutar auditoría de dependencias autorizada |
 | Medio | Sin pruebas de carga/abuso del assistant | Definir presupuesto y límites |

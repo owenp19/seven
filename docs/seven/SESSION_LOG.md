@@ -1,5 +1,18 @@
 # SEVEN — Registro de sesiones
 
+## 2026-10-23 — Fase 1.1: publicación del baseline en GitHub
+- **Objetivo**: subir el repositorio a `https://github.com/owenp19/seven.git`
+  (pedido explícito del usuario).
+- **Cambios**:
+  - `gh auth login` por OAuth web y `gh auth setup-git`; token guardado en el
+    keyring del sistema.
+  - Remoto `origin` (HTTPS) y `git push -u origin main` (upstream configurado).
+- **Verificación ejecutada**:
+  - `git ls-remote origin refs/heads/main` → `c25d1e3…`, idéntico a `HEAD`.
+  - `git status -sb` → `## main...origin/main`, sin diferencias.
+- **Pendiente**: mantener `origin/main` actualizado; resto igual que Fase 1.0.
+- **Riesgos**: ver `CURRENT_STATE.md` y `AUDIT_REPORT.md`.
+
 ## 2026-10-23 — Fase 1.0: baseline local de control de versiones
 - **Objetivo**: dejar un punto de recuperación seguro antes del rediseño UI/UX,
   sin remoto ni publicación (instrucción explícita del usuario).

@@ -56,6 +56,16 @@ Formato: fecha, contexto, decisión, alternativas, consecuencia.
 - **Consecuencia**: hay historial y punto de recuperación local, pero no copia
   externa. Definir remoto solo con autorización explícita.
 
+## 2026-10-23 — Publicar el baseline en GitHub
+- **Contexto**: tras crear el baseline local, el usuario pidió subirlo a
+  `https://github.com/owenp19/seven.git`.
+- **Decisión**: remoto `origin` por HTTPS con autenticación OAuth de GitHub CLI
+  y `main` con upstream. Supersede la decisión de mantener el repo solo local.
+- **Alternativas**: seguir sin remoto (descartado por falta de copia externa);
+  token manual (descartado por manejo de secretos).
+- **Consecuencia**: el código queda publicado en GitHub y la autenticación en el
+  keyring del sistema. No se reescribe historial publicado.
+
 ## 2026-10-22 — Mantener la documentación existente
 - **Contexto**: ya existen `docs/ARCHITECTURE.md`, `docs/API.md` y `README.md`.
 - **Decisión**: no reescribirlos; `docs/seven/` los resume y enlaza.
