@@ -1,10 +1,11 @@
 // =============================================================================
 // SEVEN CONTEXT LOADER — precarga contextual con identidad SEVEN
 // -----------------------------------------------------------------------------
-// Estado de carga propio: un esqueleto que imita el layout real (hero, título,
-// metadata, bloques y barra fija) con un símbolo de marca discreto y el texto
-// "Cargando tour…/posada…" según entidad. Nada de spinners gigantes ni shimmer
-// exagerado; el brillo es suave y se desactiva con `prefers-reduced-motion`.
+// Cada vertical tiene un esqueleto distinto que imita su página real:
+// tour (datos + disponibilidad), restaurante (carta), posada (habitaciones),
+// negocio (servicios + horarios), noticia (artículo), promoción (oferta) y
+// catálogo (tarjetas). El copy y el icono también cambian por servicio.
+// Sin spinners gigantes; el brillo es suave y se desactiva con reduce-motion.
 // =============================================================================
 
 :host {
@@ -14,23 +15,46 @@
 .scl {
   --scl-skeleton: var(--seven-gray-100);
   --scl-shine: rgba(255, 255, 255, 0.7);
+  --scl-accent: var(--seven-ocean-blue);
+  --scl-accent-soft: var(--seven-primary-soft);
   display: block;
   min-height: 100%;
   background: var(--seven-surface);
 
-  // ─── HERO esqueleto con símbolo de marca ────────────────────────────────
+  &--restaurant,
+  &--promotion {
+    --scl-accent: var(--ion-color-warning);
+    --scl-accent-soft: var(--seven-warning-soft);
+  }
+
+  &--inn {
+    --scl-accent: var(--seven-palm-green);
+    --scl-accent-soft: rgba(31, 138, 92, 0.12);
+  }
+
+  &--business {
+    --scl-accent: var(--seven-deep-sea);
+    --scl-accent-soft: rgba(11, 45, 74, 0.08);
+  }
+
+  &--experience {
+    --scl-accent: var(--seven-caribbean-aqua);
+    --scl-accent-soft: rgba(78, 216, 220, 0.16);
+  }
+
+  // ─── HERO con marca y vertical ──────────────────────────────────────────
   &__hero {
     position: relative;
     height: min(52svh, 420px);
     min-height: 300px;
     overflow: hidden;
-    background: linear-gradient(135deg, var(--seven-deep-sea) 0%, var(--seven-ocean-blue-600) 100%);
+    background: linear-gradient(135deg, var(--seven-deep-sea) 0%, var(--scl-accent) 130%);
 
     &::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(4, 27, 46, 0) 42%, rgba(4, 27, 46, 0.32) 100%);
+      background: linear-gradient(180deg, rgba(4, 27, 46, 0) 38%, rgba(4, 27, 46, 0.52) 100%);
     }
 
     &--short {
@@ -39,22 +63,96 @@
     }
   }
 
+  &__brand {
+    position: absolute;
+    top: calc(18px + env(safe-area-inset-top));
+    left: var(--seven-page-padding);
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--seven-font-display);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    color: var(--seven-text-inverse);
+    opacity: 0.9;
+  }
+
+  &__brand-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--seven-caribbean-aqua);
+    box-shadow: 0 0 0 4px rgba(78, 216, 220, 0.2);
+  }
+
   &__mark {
     position: absolute;
     inset: 0;
     margin: auto;
+    z-index: 2;
     display: grid;
     place-items: center;
-    width: 54px;
-    height: 54px;
+    width: 58px;
+    height: 58px;
     border-radius: var(--seven-radius-pill);
     background: rgba(255, 255, 255, 0.16);
-    color: #ffffff;
-    font-size: 1.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    color: var(--seven-text-inverse);
+    font-size: 1.5rem;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     animation: scl-breathe 2.6s ease-in-out infinite;
-    z-index: 1;
+  }
+
+  &__hero-lines {
+    position: absolute;
+    left: var(--seven-page-padding);
+    right: var(--seven-page-padding);
+    bottom: calc(58px + env(safe-area-inset-bottom));
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__line--hero-chip {
+    width: 28%;
+    height: 18px;
+    margin: 0;
+    border-radius: var(--seven-radius-pill);
+    background-color: rgba(255, 255, 255, 0.24);
+    background-image: none;
+    animation: none;
+  }
+
+  &__line--hero-title {
+    width: 72%;
+    height: 24px;
+    margin: 0;
+    background-color: rgba(255, 255, 255, 0.3);
+    background-image: none;
+    animation: none;
+  }
+
+  &__rail {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    height: 3px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.16);
+
+    > span {
+      display: block;
+      width: 42%;
+      height: 100%;
+      background: var(--seven-caribbean-aqua);
+      animation: scl-rail 2.2s ease-in-out infinite;
+    }
   }
 
   // ─── CUERPO ─────────────────────────────────────────────────────────────
@@ -62,31 +160,61 @@
     padding: 24px 20px 0;
   }
 
+  &--news &__body {
+    max-width: var(--seven-reading-width);
+    margin-inline: auto;
+    padding-top: 32px;
+  }
+
   &__status {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin: 0 0 20px;
-    font-family: var(--seven-font-body);
-    font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: var(--seven-text-muted);
+    gap: 12px;
+    margin: 0 0 22px;
 
     &--list {
-      margin: 0 0 14px;
+      margin: 0 0 16px;
     }
   }
 
-  &__pulse {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--ion-color-primary);
-    animation: scl-pulse 1.4s ease-in-out infinite;
+  &__status-icon {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--seven-radius-pill);
+    background: var(--scl-accent-soft);
+    color: var(--scl-accent);
+    font-size: 1.15rem;
+    animation: scl-pulse 1.8s ease-in-out infinite;
   }
 
-  // ─── LÍNEAS ESQUELETO ───────────────────────────────────────────────────
+  &__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__title {
+    font-family: var(--seven-font-display);
+    font-size: 0.98rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--seven-text-strong);
+  }
+
+  &__hint {
+    font-family: var(--seven-font-body);
+    font-size: 0.76rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    color: var(--seven-text-muted);
+  }
+
+  // ─── LÍNEAS Y BLOQUES ───────────────────────────────────────────────────
   &__line {
     display: block;
     width: 100%;
@@ -109,13 +237,17 @@
     &--title {
       width: 82%;
       height: 30px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       border-radius: var(--seven-radius-md);
+    }
+
+    &--title-short {
+      width: 56%;
     }
 
     &--sub {
       width: 62%;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
     }
 
     &--heading {
@@ -131,33 +263,344 @@
     &--tag {
       width: 38%;
       height: 11px;
+      margin: 0;
     }
 
     &--name {
       width: 78%;
       height: 15px;
+      margin: 0;
     }
-  }
 
-  &__row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 26px;
-  }
+    &--meta {
+      width: 56%;
+      height: 11px;
+      margin: 0;
+    }
 
-  &__pill {
-    flex: 1;
-    height: 42px;
-    border-radius: var(--seven-radius-lg);
-    background: var(--scl-skeleton);
+    &--price {
+      width: 30%;
+      height: 12px;
+      margin: 2px 0 0;
+    }
+
+    &--row {
+      width: 74%;
+      height: 12px;
+      margin: 0;
+    }
+
+    &--row-short {
+      width: 48%;
+      height: 10px;
+      margin: 0;
+    }
+
+    &--byline {
+      width: 46%;
+      height: 11px;
+      margin-bottom: 22px;
+    }
   }
 
   &__block {
     padding: 22px 0;
     border-top: 1px solid var(--seven-border-soft);
+
+    &:last-child {
+      padding-bottom: 32px;
+    }
   }
 
-  // ─── BARRA FIJA esqueleto (coincide con la CTA sticky del Detail) ────────
+  // ─── TOUR: datos rápidos + itinerario ───────────────────────────────────
+  &__facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  &__fact {
+    height: 72px;
+    border: 1px solid var(--seven-border-soft);
+    border-radius: var(--seven-radius-lg);
+    background: var(--seven-surface-muted);
+    animation: scl-fade 1.8s ease-in-out infinite;
+  }
+
+  &__rowitem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+  }
+
+  &__avatar {
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--seven-radius-md);
+    background: var(--scl-skeleton);
+  }
+
+  &__rowitem-copy,
+  &__dish-copy,
+  &__room-copy {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  // ─── RESTAURANTE: chips + carta ─────────────────────────────────────────
+  &__chips {
+    display: flex;
+    gap: 8px;
+
+    &--body {
+      margin-bottom: 22px;
+    }
+  }
+
+  &__chip {
+    width: 84px;
+    height: 30px;
+    border-radius: var(--seven-radius-pill);
+    background: var(--scl-accent-soft);
+    animation: scl-fade 1.8s ease-in-out infinite;
+  }
+
+  &__dish {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--seven-border-soft);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  &__dish-media {
+    flex: 0 0 auto;
+    width: 64px;
+    height: 64px;
+    border-radius: var(--seven-radius-md);
+    background: var(--scl-skeleton);
+    animation: scl-shimmer 1.6s ease-in-out infinite;
+    background-image: linear-gradient(90deg, transparent, var(--scl-shine), transparent);
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+  }
+
+  &__dish-price {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 16px;
+    border-radius: var(--seven-radius-sm);
+    background: var(--scl-skeleton);
+  }
+
+  // ─── POSADA: habitaciones ───────────────────────────────────────────────
+  &__rooms {
+    display: grid;
+    gap: 12px;
+  }
+
+  &__room {
+    display: flex;
+    gap: 12px;
+    padding: 10px;
+    border: 1px solid var(--seven-border-soft);
+    border-radius: var(--seven-radius-lg);
+    background: var(--seven-surface);
+  }
+
+  &__room-media {
+    flex: 0 0 auto;
+    width: 92px;
+    height: 82px;
+    border-radius: var(--seven-radius-md);
+    background: var(--scl-skeleton);
+    animation: scl-shimmer 1.6s ease-in-out infinite;
+    background-image: linear-gradient(90deg, transparent, var(--scl-shine), transparent);
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+  }
+
+  // ─── NEGOCIO: servicios + horarios ──────────────────────────────────────
+  &__factgrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  &__fact-card {
+    height: 64px;
+    border-radius: var(--seven-radius-lg);
+    background: var(--seven-surface-muted);
+    border: 1px solid var(--seven-border-soft);
+    animation: scl-fade 1.8s ease-in-out infinite;
+  }
+
+  &__hours {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 0;
+  }
+
+  &__hours-dot {
+    flex: 0 0 auto;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--scl-accent);
+    opacity: 0.5;
+  }
+
+  &__hours &__line {
+    margin: 0;
+  }
+
+  // ─── NOTICIA: artículo ──────────────────────────────────────────────────
+  &__article {
+    padding-bottom: 32px;
+  }
+
+  &__article-media {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin: 4px 0 24px;
+    border-radius: var(--seven-radius-lg);
+    background: var(--scl-skeleton);
+    animation: scl-shimmer 1.6s ease-in-out infinite;
+    background-image: linear-gradient(90deg, transparent, var(--scl-shine), transparent);
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+  }
+
+  // ─── PROMOCIÓN: oferta ──────────────────────────────────────────────────
+  &__offer {
+    padding: 20px;
+    margin-bottom: 24px;
+    border: 1px solid var(--seven-border-soft);
+    border-radius: var(--seven-radius-xl);
+    background: var(--seven-surface);
+    box-shadow: var(--seven-shadow-soft);
+  }
+
+  &__offer-badge {
+    display: block;
+    width: 96px;
+    height: 24px;
+    margin-bottom: 16px;
+    border-radius: var(--seven-radius-pill);
+    background: var(--scl-accent-soft);
+  }
+
+  &__offer-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  &__offer-price {
+    width: 92px;
+    height: 34px;
+    border-radius: var(--seven-radius-sm);
+    background: var(--scl-skeleton);
+  }
+
+  &__offer-cta {
+    flex: 1;
+    height: 44px;
+    border-radius: var(--seven-radius-pill);
+    background: var(--scl-accent-soft);
+  }
+
+  // ─── VARIANTE LISTA (catálogos) ─────────────────────────────────────────
+  &--list {
+    background: var(--seven-background);
+    padding: var(--seven-space-4) var(--seven-page-padding) 0;
+    min-height: 100%;
+  }
+
+  &__listhead {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__search {
+    height: 50px;
+    margin: 18px 0 12px;
+    border-radius: var(--seven-radius-lg);
+    background: var(--seven-surface);
+    border: 1px solid var(--seven-border-soft);
+  }
+
+  &--list &__chips {
+    margin-bottom: 18px;
+  }
+
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--seven-card-gap);
+  }
+
+  &__card {
+    display: flex;
+    gap: var(--seven-space-3);
+    padding: var(--seven-space-3);
+    border: 1px solid var(--seven-border-soft);
+    border-radius: var(--seven-radius-lg);
+    background: var(--seven-surface);
+  }
+
+  &__card-media {
+    flex: 0 0 auto;
+    width: 112px;
+    height: 112px;
+    border-radius: var(--seven-radius-md);
+    background: var(--scl-skeleton);
+    animation: scl-shimmer 1.6s ease-in-out infinite;
+    background-image: linear-gradient(90deg, transparent, var(--scl-shine), transparent);
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+  }
+
+  &__card-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  &--list &__line--heading,
+  &--list &__line--sub {
+    margin: 0;
+  }
+
+  &--list &__line--heading {
+    width: 44%;
+    height: 22px;
+  }
+
+  &--list &__line--sub {
+    width: 62%;
+    height: 12px;
+    margin-top: 8px;
+  }
+
+  // ─── BARRA FIJA (coincide con la CTA sticky del Detail) ─────────────────
   &__bar {
     position: fixed;
     left: 0;
@@ -197,103 +640,17 @@
     background-repeat: no-repeat;
   }
 
-  // ─── VARIANTE LISTA (catálogos) ─────────────────────────────────────────
-  &--list {
-    background: var(--seven-background);
-    padding: var(--seven-space-4) var(--seven-page-padding) 0;
-    min-height: 100%;
-  }
-
-  &__listhead {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  &__search {
-    height: 50px;
-    margin: 18px 0 20px;
-    border-radius: var(--seven-radius-lg);
-    background: var(--seven-surface);
-    border: 1px solid var(--seven-border-soft);
-  }
-
-  &__cards {
-    display: flex;
-    flex-direction: column;
-    gap: var(--seven-card-gap);
-  }
-
-  &__card {
-    display: flex;
-    gap: var(--seven-space-3);
-    padding: var(--seven-space-3);
-    border: 1px solid var(--seven-border-soft);
-    border-radius: var(--seven-radius-lg);
-    background: var(--seven-surface);
-  }
-
-  &__card-media {
-    flex: 0 0 auto;
-    width: 112px;
-    height: 112px;
-    border-radius: var(--seven-radius-md);
-    background: var(--scl-skeleton);
-    animation: scl-shimmer 1.6s ease-in-out infinite;
-    background-image: linear-gradient(90deg, transparent, var(--scl-shine), transparent);
-    background-size: 200% 100%;
-    background-repeat: no-repeat;
-  }
-
-  &__card-body {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  &__line--tag {
-    width: 40%;
-    height: 11px;
-    margin: 0;
-  }
-
-  &__line--name {
-    width: 78%;
-    height: 15px;
-    margin: 0;
-  }
-
-  &__line--meta {
-    width: 56%;
-    height: 11px;
-    margin: 0;
-  }
-
-  &--list &__line--heading,
-  &--list &__line--sub {
-    margin: 0;
-  }
-
-  &--list &__line--heading {
-    width: 44%;
-    height: 22px;
-  }
-
-  &--list &__line--sub {
-    width: 62%;
-    height: 12px;
-    margin-top: 8px;
-  }
-
-  // ─── Responsive: 2/3 columnas como los catálogos reales ─────────────────
+  // ─── Responsive ─────────────────────────────────────────────────────────
   @media (min-width: 600px) {
     &__cards {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: var(--seven-card-gap);
+    }
+
+    &__factgrid,
+    &__rooms {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -301,14 +658,39 @@
     &__body,
     &__listhead,
     &__search,
+    &__chips,
     &__status,
     &__cards {
-      max-width: var(--seven-content-max-width);
+      max-width: 960px;
       margin-inline: auto;
     }
 
+    &--list &__body,
+    &--list &__listhead,
+    &--list &__search,
+    &--list &__chips,
+    &--list &__status,
+    &--list &__cards {
+      max-width: var(--seven-content-max-width);
+    }
+
+    &--news &__body {
+      max-width: var(--seven-reading-width);
+    }
+
     &__hero {
-      height: min(46svh, 440px);
+      height: min(46svh, 480px);
+    }
+
+    &__hero-lines {
+      left: 50%;
+      right: auto;
+      width: min(960px, calc(100% - var(--seven-page-padding) * 2));
+      transform: translateX(-50%);
+    }
+
+    &__brand {
+      left: max(var(--seven-page-padding), calc(50% - 480px));
     }
 
     &__cards {
@@ -316,7 +698,7 @@
     }
 
     &__bar {
-      max-width: var(--seven-content-max-width);
+      max-width: 960px;
       margin-inline: auto;
       border-radius: var(--seven-radius-lg) var(--seven-radius-lg) 0 0;
     }
@@ -352,19 +734,45 @@
     transform: scale(1);
   }
   50% {
-    opacity: 0.45;
-    transform: scale(0.82);
+    opacity: 0.6;
+    transform: scale(0.94);
+  }
+}
+
+@keyframes scl-fade {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes scl-rail {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(340%);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .scl {
     &__mark,
-    &__pulse,
+    &__status-icon,
     &__line,
     &__bar-price,
     &__bar-cta,
-    &__card-media {
+    &__card-media,
+    &__fact,
+    &__fact-card,
+    &__chip,
+    &__dish-media,
+    &__room-media,
+    &__article-media,
+    &__rail > span {
       animation: none;
     }
   }

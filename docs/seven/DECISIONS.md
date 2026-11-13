@@ -70,3 +70,9 @@ Formato: fecha, contexto, decisiÃ³n, alternativas, consecuencia.
 - **Contexto**: ya existen `docs/ARCHITECTURE.md`, `docs/API.md` y `README.md`.
 - **DecisiÃ³n**: no reescribirlos; `docs/seven/` los resume y enlaza.
 - **Consecuencia**: se evita duplicaciÃ³n y se conserva el conocimiento previo.
+
+## 2026-10-23 — Preservar identidad visual SEVEN en Fase 1 (tablet/escritorio)
+- **Contexto**: Fase 1 solicita tablet/escritorio premium sin rediseñar móvil desde cero. Existe identidad establecida (Oswald/Poppins, paleta, logotipo, temas).
+- **Decisión**: conservar paleta cromática, familias tipográficas, logotipo y temas visuales. Adaptar solo jerarquía, espaciados, grillas, layouts. UI/UX Pro Max debe ajustarse a identidad existente. Solo añadir colores semánticos con justificación y documentación.
+- **Alternativas**: adoptar paleta de UI/UX Pro Max (rechazado); rediseñar marca (rechazado).
+- **Consecuencia**: evolución coherente entre móvil/tablet/escritorio sin perder reconocimiento de marca.

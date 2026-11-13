@@ -1,15 +1,31 @@
 @if (variant === 'list') {
-  <div class="scl scl--list" role="status" [attr.aria-label]="labelKey | t">
+  <div
+    [class]="'scl scl--list scl--' + type"
+    role="status"
+    aria-live="polite"
+    aria-busy="true"
+    [attr.aria-label]="labelKey | t"
+  >
     <div class="scl__listhead">
       <span class="scl__line scl__line--heading"></span>
       <span class="scl__line scl__line--sub"></span>
     </div>
 
-    <div class="scl__search"></div>
+    <div class="scl__search" aria-hidden="true"></div>
+    <div class="scl__chips" aria-hidden="true">
+      <span class="scl__chip"></span>
+      <span class="scl__chip"></span>
+      <span class="scl__chip"></span>
+    </div>
 
     <p class="scl__status scl__status--list">
-      <span class="scl__pulse" aria-hidden="true"></span>
-      <span class="scl__label">{{ labelKey | t }}</span>
+      <span class="scl__status-icon" aria-hidden="true">
+        <ion-icon [name]="icon"></ion-icon>
+      </span>
+      <span class="scl__copy">
+        <strong class="scl__title">{{ titleKey | t }}</strong>
+        <small class="scl__hint">{{ hintKey | t }}</small>
+      </span>
     </p>
 
     <div class="scl__cards">
@@ -20,48 +36,217 @@
             <span class="scl__line scl__line--tag"></span>
             <span class="scl__line scl__line--name"></span>
             <span class="scl__line scl__line--meta"></span>
+            <span class="scl__line scl__line--price"></span>
           </span>
         </div>
       }
     </div>
   </div>
 } @else {
-  <div class="scl" role="status" [attr.aria-label]="labelKey | t">
+  <div
+    [class]="'scl scl--' + type"
+    role="status"
+    aria-live="polite"
+    aria-busy="true"
+    [attr.aria-label]="labelKey | t"
+  >
     @if (hero !== 'none') {
       <div class="scl__hero" [class.scl__hero--short]="hero === 'short'">
-        <span class="scl__mark" aria-hidden="true">
-          <ion-icon name="sparkles-outline"></ion-icon>
+        <span class="scl__brand" aria-hidden="true">
+          <span class="scl__brand-dot"></span>
+          SEVEN
         </span>
+        <span class="scl__mark" aria-hidden="true">
+          <ion-icon [name]="icon"></ion-icon>
+        </span>
+        <div class="scl__hero-lines" aria-hidden="true">
+          <span class="scl__line scl__line--hero-chip"></span>
+          <span class="scl__line scl__line--hero-title"></span>
+        </div>
+        <span class="scl__rail" aria-hidden="true"><span></span></span>
       </div>
     }
+
     <div class="scl__body">
       <p class="scl__status">
-        <span class="scl__pulse" aria-hidden="true"></span>
-        <span class="scl__label">{{ labelKey | t }}</span>
+        <span class="scl__status-icon" aria-hidden="true">
+          <ion-icon [name]="icon"></ion-icon>
+        </span>
+        <span class="scl__copy">
+          <strong class="scl__title">{{ titleKey | t }}</strong>
+          <small class="scl__hint">{{ hintKey | t }}</small>
+        </span>
       </p>
 
-      <span class="scl__line scl__line--chip"></span>
-      <span class="scl__line scl__line--title"></span>
-      <span class="scl__line scl__line--sub"></span>
+      @switch (type) {
+        @case ('tour') {
+          <div class="scl__facts" aria-hidden="true">
+            <span class="scl__fact"></span>
+            <span class="scl__fact"></span>
+            <span class="scl__fact"></span>
+          </div>
 
-      <div class="scl__row" aria-hidden="true">
-        <span class="scl__pill"></span>
-        <span class="scl__pill"></span>
-        <span class="scl__pill"></span>
-      </div>
+          <div class="scl__block">
+            <span class="scl__line scl__line--heading"></span>
+            <span class="scl__line"></span>
+            <span class="scl__line"></span>
+            <span class="scl__line scl__line--short"></span>
+          </div>
 
-      <div class="scl__block">
-        <span class="scl__line scl__line--heading"></span>
-        <span class="scl__line"></span>
-        <span class="scl__line"></span>
-        <span class="scl__line scl__line--short"></span>
-      </div>
+          <div class="scl__block">
+            <span class="scl__line scl__line--heading"></span>
+            @for (row of ghosts; track row) {
+              <div class="scl__rowitem" aria-hidden="true">
+                <span class="scl__avatar"></span>
+                <span class="scl__rowitem-copy">
+                  <span class="scl__line scl__line--row"></span>
+                  <span class="scl__line scl__line--row-short"></span>
+                </span>
+              </div>
+            }
+          </div>
+        }
 
-      <div class="scl__block">
-        <span class="scl__line scl__line--heading"></span>
-        <span class="scl__line"></span>
-        <span class="scl__line scl__line--short"></span>
-      </div>
+        @case ('restaurant') {
+          <div class="scl__chips scl__chips--body" aria-hidden="true">
+            <span class="scl__chip"></span>
+            <span class="scl__chip"></span>
+            <span class="scl__chip"></span>
+          </div>
+
+          <div class="scl__block">
+            <span class="scl__line scl__line--heading"></span>
+            @for (row of ghosts; track row) {
+              <div class="scl__dish" aria-hidden="true">
+                <span class="scl__dish-media"></span>
+                <span class="scl__dish-copy">
+                  <span class="scl__line scl__line--row"></span>
+                  <span class="scl__line scl__line--row-short"></span>
+                </span>
+                <span class="scl__dish-price"></span>
+              </div>
+            }
+          </div>
+
+          <div class="scl__block">
+            <span class="scl__line scl__line--heading"></span>
+            <span class="scl__line"></span>
+            <span class="scl__line scl__line--short"></span>
+          </div>
+        }
+
+        @case ('inn') {
+          <div class="scl__facts" aria-hidden="true">
+            <span class="scl__fact"></span>
+            <span class="scl__fact"></span>
+            <span class="scl__fact"></span>
+          </div>
+
+          <div class="scl__block">
+            <span class="scl__line scl__line--heading"></span>
+            <span class="scl__line"></span>
+            <span class="scl__line scl__line--short"></span>
+          </div>
+
+          <div class="scl__block">
+            <span class="scl__line scl__line--heading"></span>
+            <div class="scl__rooms" aria-hidden="true">
+              @for (row of [1, 2]; track row) {
+                <div class="scl__room">
+                  <span class="scl__room-media"></span>
+                  <span class="scl__room-copy">
+                    <span class="scl__line scl__line--row"></span>
+                    <span class="scl__line scl__line--row-short"></span>
+                    <span class="scl__line scl__line--price"></span>
+                  </span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        @case ('business') {
+          <div class="scl__factgrid" aria-hidden="true">
+            @for (row of [1, 2, 3, 4]; track row) {
+              <span class="scl__fact-card"></span>
+            }
+          </div>
+
+          <div class="scl__block">
+            <span class="scl__line scl__line--heading"></span>
+            @for (row of [1, 2, 3]; track row) {
+              <div class="scl__hours" aria-hidden="true">
+                <span class="scl__hours-dot"></span>
+                <span class="scl__line scl__line--row"></span>
+              </div>
+            }
+          </div>
+
+          <div class="scl__block">
+            <span class="scl__line scl__line--heading"></span>
+            <span class="scl__line"></span>
+            <span class="scl__line scl__line--short"></span>
+          </div>
+        }
+
+        @case ('news') {
+          <div class="scl__article">
+            <span class="scl__line scl__line--chip"></span>
+            <span class="scl__line scl__line--title"></span>
+            <span class="scl__line scl__line--title scl__line--title-short"></span>
+            <span class="scl__line scl__line--sub"></span>
+            <span class="scl__line scl__line--byline"></span>
+            <div class="scl__article-media" aria-hidden="true"></div>
+            @for (row of [1, 2, 3, 4, 5]; track row) {
+              <span class="scl__line" [class.scl__line--short]="row === 5"></span>
+            }
+            <span class="scl__line scl__line--heading"></span>
+            @for (row of [1, 2, 3]; track row) {
+              <span class="scl__line" [class.scl__line--short]="row === 3"></span>
+            }
+          </div>
+        }
+
+        @case ('promotion') {
+          <div class="scl__offer">
+            <span class="scl__offer-badge" aria-hidden="true"></span>
+            <span class="scl__line scl__line--title"></span>
+            <span class="scl__line scl__line--sub"></span>
+            <div class="scl__offer-row" aria-hidden="true">
+              <span class="scl__offer-price"></span>
+              <span class="scl__offer-cta"></span>
+            </div>
+          </div>
+
+          <div class="scl__block">
+            <span class="scl__line scl__line--heading"></span>
+            <span class="scl__line"></span>
+            <span class="scl__line"></span>
+            <span class="scl__line scl__line--short"></span>
+          </div>
+        }
+
+        @default {
+          <div class="scl__facts" aria-hidden="true">
+            <span class="scl__fact"></span>
+            <span class="scl__fact"></span>
+            <span class="scl__fact"></span>
+          </div>
+
+          <div class="scl__block">
+            <span class="scl__line scl__line--heading"></span>
+            <span class="scl__line"></span>
+            <span class="scl__line"></span>
+            <span class="scl__line scl__line--short"></span>
+          </div>
+
+          <div class="scl__block">
+            <span class="scl__line scl__line--heading"></span>
+            <span class="scl__line"></span>
+            <span class="scl__line scl__line--short"></span>
+          </div>
+        }
+      }
     </div>
 
     @if (stickyBar) {

@@ -122,8 +122,29 @@
   }
 
   @media (min-width: 1024px) {
+    padding-inline: var(--seven-space-6);
+
     &__grid {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--seven-space-4);
+    }
+  }
+
+  @media (min-width: 1366px) {
+    padding-inline: var(--seven-space-6);
+
+    &__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--seven-space-5);
+    }
+  }
+
+  @media (min-width: 1920px) {
+    padding-inline: var(--seven-space-6);
+
+    &__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--seven-space-5);
     }
   }
 

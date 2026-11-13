@@ -3,7 +3,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: var(--go-space-4);
-  padding: var(--go-space-4) var(--go-space-4) var(--go-space-2);
+  padding: var(--go-space-4) var(--seven-page-padding) var(--go-space-2);
 
   &__subtitle {
     font-size: 0.75rem;
@@ -19,6 +19,14 @@
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--go-navy);
+  }
+
+  @media (min-width: 1024px) {
+    padding-top: var(--go-space-6);
+
+    &__title {
+      font-size: 1.7rem;
+    }
   }
 
   &__link {

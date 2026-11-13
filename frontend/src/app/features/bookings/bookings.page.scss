@@ -5,12 +5,15 @@
 
 .bk__header {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
   // El shell ya coloca esta página debajo del nav-header: no hace falta
   // compensar la safe-area aquí.
   padding: var(--seven-space-4) 20px var(--seven-space-2);
+  max-width: var(--seven-reading-width);
+  margin: 0 auto;
 }
 
 .bk__title {
@@ -49,7 +52,7 @@
 }
 
 .bk__page {
-  max-width: 640px;
+  max-width: var(--seven-reading-width);
   margin: 0 auto;
   padding: 8px 20px 40px;
 }
@@ -73,7 +76,7 @@
 
 .bk__segment {
   flex: 1 1 auto;
-  min-height: 40px;
+  min-height: 44px;
   border: 0;
   border-radius: var(--seven-radius-pill);
   background: transparent;
@@ -202,6 +205,76 @@
 .bk-skel__body {
   flex: 1 1 auto;
   min-width: 0;
+}
+
+// ─── Tablet y escritorio: más aire, sin tocar el flujo móvil ──────────────
+@media (min-width: 768px) {
+  .bk__header {
+    padding: var(--seven-space-5) var(--seven-space-6) var(--seven-space-3);
+  }
+
+  .bk__page {
+    padding: var(--seven-space-1) var(--seven-space-6) var(--seven-space-8);
+  }
+
+  .bk__state {
+    padding: var(--seven-space-6) var(--seven-space-4) var(--seven-space-8);
+  }
+}
+
+@media (min-width: 1024px) {
+  .bk__header {
+    max-width: var(--seven-content-max-width);
+    padding: var(--seven-space-6) var(--seven-page-padding) var(--seven-space-3);
+  }
+
+  .bk__title {
+    font-size: 2rem;
+  }
+
+  .bk__page {
+    max-width: var(--seven-content-max-width);
+    padding: 0 var(--seven-page-padding) var(--seven-space-8);
+  }
+
+  .bk__segments {
+    width: max-content;
+    min-width: 22rem;
+  }
+
+  .bk__state {
+    max-width: 36rem;
+    margin: 0 auto;
+  }
+
+  .bk__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: var(--seven-space-5);
+  }
+
+  .bk__list > app-booking-card {
+    min-width: 0;
+    height: 100%;
+  }
+
+  .bk__hero,
+  .bk__section-title {
+    grid-column: 1 / -1;
+  }
+
+  .bk__hero {
+    gap: var(--seven-space-3);
+  }
+
+  .bk__section-title {
+    font-size: 0.82rem;
+  }
+
+  .bk__summary {
+    margin-bottom: var(--seven-space-4);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

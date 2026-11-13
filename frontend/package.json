@@ -11,7 +11,11 @@
     "test": "ng test",
     "lint": "ng lint",
     "mobile:add": "npm run build && npx cap add android && npx cap add ios",
-    "mobile:sync": "npx cap sync"
+    "mobile:sync": "npx cap sync",
+    "e2e": "npx playwright test",
+    "e2e:headed": "npx playwright test --headed",
+    "e2e:report": "npx playwright show-report",
+    "e2e:ci": "SEVEN_PLAYWRIGHT_WEBSERVER=1 npx playwright test"
   },
   "private": true,
   "dependencies": {
@@ -50,6 +54,7 @@
     "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^8.5.1",
     "@ionic/angular-toolkit": "^13.0.0",
+    "@playwright/test": "^1.65.0",
     "angular-eslint": "~21.0.0",
     "eslint": "^9.16.0",
     "jsdom": "^26.0.0",

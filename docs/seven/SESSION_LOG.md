@@ -127,3 +127,123 @@
 - Pendiente:
 - Riesgos:
 ```
+
+## 2026-10-23 � Fase 1: auditor�a visual multiplataforma + preservaci�n identidad
+- **Objetivo**: iniciar Fase 1 (m�vil/refino + tablet + escritorio) preservando identidad visual.
+- **Cambios**:
+  - AGENTS.md: a�adida regla 11 (identidad visual obligatoria).
+  - DESIGN_SYSTEM.md: a�adida secci�n de identidad obligatoria.
+  - .opencode/skills/seven-design-system/SKILL.md: a�adida regla 11.
+  - DECISIONS.md: registrada decisi�n de preservaci�n de identidad.
+- **Verificaci�n ejecutada**:
+  - Lectura de AGENTS, CURRENT_STATE, DESIGN_SYSTEM, DECISIONS, SESSION_LOG.
+  - Lectura de variables.scss/themes.scss/typography.scss.
+  - Inspecci�n de app shell (app.component, routes, tabs-layout, nav-header, bottom-nav).
+- **No ejecutado**:
+  - Cambios visuales a�n no aplicados.
+- **Pendiente**:
+  - Auditor�a visual detallada por �rea (home, explore, detail pages, admin/provider).
+  - Mejoras puntuales m�vil + layouts tablet/escritorio con tokens existentes.
+- **Riesgos**: no romper m�vil; respetar Oswald/Poppins y paleta actual.
+
+## 2026-10-23 � Fase 1: mejoras responsive tablet/escritorio (m�vil preservado)
+- **Objetivo**: aplicar mejoras adaptativas sin redise�ar m�vil desde cero, respetando identidad.
+- **Cambios**:
+  - docs/seven/RESPONSIVE_DESIGN_STRATEGY.md creado.
+  - frontend/src/app/features/home/home.page.scss: rails pasan a grid en tablet/escritorio (2/3/4 columnas), cards adaptadas.
+  - frontend/src/app/features/explore/explore.page.scss: resultados centrados con max-width y grid adaptativo.
+  - Identidad registrada en AGENTS/DESIGN_SYSTEM/skill seven-design-system/DECISIONS.
+- **Verificaci�n ejecutada**:
+  - Inspecci�n de identidad (variables.scss/themes.scss/typography.scss).
+  - Inspecci�n de shell/layouts/nav-header/bottom-nav.
+- **No ejecutado**:
+  - Tests/build tras cambios (pendiente verificaci�n).
+- **Pendiente**:
+  - Ampliar a otras p�ginas (detail pages, bookings) con mismo enfoque.
+  - Validar visual con Playwright si disponible.
+- **Riesgos**: verificar que m�vil no se rompe en 320-430px.
+## 2026-10-24 - FASE 1.2: Welcome + Home (tablet/PC) + centrado
+- Objetivo: transformar Welcome/Home para PC/tablet manteniendo móvil. Preservar colores, Oswald/Poppins, logotipo, temas.
+- Cambios:
+  - frontend/src/app/features/welcome/welcome.page.scss: max-width centrado + márgenes adaptativos tablet/desktop; brand/content con espaciados escalados.
+  - frontend/src/app/features/home/home.page.scss: intro/banners/blocks centrados con --seven-content-max-width; grids tablet/desktop con gaps mayores; padding-bottom ajustado.
+- Verificación: lint OK; tests 21 archivos/206 OK; build iniciado (www existente). Sin cambios a rutas/Laravel/DB.
+- Pendiente: validación visual 390/768/1024/1440/1920; revisar transición Welcome->Home si aplica.
+## 2026-10-24 - FASE 1.2A: Header full-width + nav horizontal PC + footer + hide bottom-nav PC/tablet
+- Objetivo: layout profesional PC/tablet sin afectar móvil/Welcome.
+- Cambios:
+  - nav-header: header full-width con inner max-width 1440px; nav horizontal PC (sin hamburguesa), tablet ajustado.
+  - bottom-nav: oculto en >=1024px.
+  - app-footer: nuevo componente (solo tablet/PC), añadido a Home.
+- Verificación: lint OK; tests 206 OK. Build en ejecución; www existente.
+- Pendiente: verificación visual 390/768/1024/1440/1920.
+## 2026-10-24 - FASE 1.2B: Home banner/hero + centrado
+- Objetivo: mejorar banner hero para PC/tablet sin tocar móvil/welcome.
+- Cambios:
+  - tourist-news-carousel: max-width 1440px, alturas mayores en >=1024px, contenido con max-width y padding ampliado, título escalado.
+- Verificación: lint OK; tests 206 OK.
+- Pendiente: ajustes a sección ofertas si hay agrupación desequilibrada.
+## 2026-10-24 - FASE 1.3: Header centrado grid + sin Inicio + footer premium
+- Objetivo: header logo centrado con nav alrededor, sin Inicio; footer premium PC/tablet.
+- Cambios:
+  - nav-header: grid 5 columnas, enlaces Explorador/Reservas/SEVEN AI/Contacto, sin Inicio; menú solo secundario.
+  - app-footer-premium: nuevo footer en Home (excluye móvil) con Marca/Explorar/Legal/Información.
+- Verificación: lint OK; tests OK. Build en curso.
+- Pendiente: validar superposiciones tablet vertical/horizontal y enlaces legales existentes.
+## 2026-10-24 - FASE 1.4: Header centrado con grid + Welcome premium PC/tablet
+- Objetivo: header logo centrado sin Inicio; Welcome cinematográfico PC/tablet manteniendo móvil.
+- Cambios:
+  - nav-header: grid centrado, enlaces Explorador/Reservas/SEVEN AI/Contacto, sin Inicio.
+  - welcome: grid editorial PC/tablet, logo/CTA escalados, tablet vertical/horizontal adaptado, móvil preservado.
+- Verificación: lint OK. Tests/build en ejecución.
+- Pendiente: validación visual 390/768/1024/1440/1920.
+
+## 2026-10-25 - FASE 2.0: Reservas (bookings) tablet/escritorio
+- **Objetivo**: adaptar "Mis reservas" a tablet/PC con layout profesional,
+  preservando móvil, paleta, Oswald/Poppins, logotipo y temas.
+- **Punto de recuperación**: `git stash create "pre-fase reservas tablet desktop"`
+  → `d39a8be` (dangling, worktree intacto; HEAD `45fda1a`).
+- **Cambios**:
+  - `bookings.page.scss`: header y página centrados con `--seven-reading-width`
+    (móvil) y `--seven-content-max-width` (>=1024px); listas en grid de 2
+    columnas desde 1024px; hero y títulos de sección a ancho completo; filtro
+    Activas/Historial acotado; estados vacío/error centrados; targets de 44px.
+  - `booking-card.component.scss`: la reserva destacada pasa a layout de 2
+    columnas (datos + código/acciones) desde 768px; tarjetas de la lista se
+    igualan en altura desde 1024px. Sin cambios de lógica, datos ni rutas.
+- **Verificación ejecutada**:
+  - `npm run lint` → pasa.
+  - `npm run build` → pasa (warning conocido de presupuesto SCSS de
+    `restaurant-detail` y `localforage` CommonJS).
+  - `npx ng test --watch=false --runner-config=vitest.temp.config.ts` → 21
+    archivos, 206 tests pasan. El pool `forks` por defecto agotó timeout al
+    arrancar workers en esta máquina; con `pool: 'threads'` (config temporal,
+    eliminada) pasa completo.
+- **No verificado**: validación visual en 390/768/1024/1440/1920; tema
+  ocean/sun/coral en navegador real.
+- **Pendiente / siguiente paso**: FASE 2.1 — `booking-form` (nueva reserva)
+  para tablet/escritorio; después `saved` y `news-detail`.
+
+## 2026-11-13 — Auditoría maestro full stack + Playwright (entorno de desarrollo)
+- **Objetivo**: preparar entorno profesional para rediseño UI/UX de escritorio y tableta (móvil preservado), instalar Playwright, verificar skills y ejecutar pruebas visuales de humo. Sin rediseño masivo aún.
+- **Cambios**:
+  - `frontend/package.json`: añadido `@playwright/test` ^1.65.0 (devDependency) y scripts `e2e`, `e2e:headed`, `e2e:report`, `e2e:ci`.
+  - `frontend/playwright.config.ts`: creado (7 viewports 390/430/768/1024/1366/1440/1920, reporter list+html, baseURL localhost:4200, webServer condicionado).
+  - `frontend/e2e/welcome-home.spec.ts`: creado (17 pruebas: Welcome + Home en 7 viewports + header desktop + footer tablet + logo sin rotura).
+  - `frontend/.gitignore`: añadidos `/e2e/results`, `/e2e/report`, `/e2e/screenshots`, `playwright-report`, `test-results`.
+  - `docs/seven/DEVELOPMENT_ENV_AUDIT.md`: creado (informe completo de auditoría).
+  - `docs/seven/CURRENT_STATE.md` y `docs/seven/SESSION_LOG.md`: actualizados (esta sesión).
+- **Verificación ejecutada**:
+  - Node v26.13.0, npm 11.19.1.
+  - `npx playwright --version` → 1.65.0.
+  - Chromium 158.0.8127.18 (v1254) instalado y ejecutable en `LOCALAPPDATA\ms-playwright`.
+  - Servidor Angular verificado en `http://localhost:4200` (HTML "SEVEN · Más que un destino").
+  - `npx playwright test` → **17/17 pasadas** (Welcome y Home en 390/430/768/1024/1366/1440/1920 + header/footer/logo).
+  - 14 capturas generadas en `frontend/e2e/screenshots/`; reporte HTML en `frontend/playwright-report/`.
+  - Skills verificadas: 9 locales (frontmatter válido), 20 externas, 23 globales; `seven-design-research` no existe (registrada como falta).
+- **No ejecutado**:
+  - Backend Laravel / MySQL (API :8000 no disponible; Home muestra skeletons; categorías/banners no validadas con datos reales).
+  - `cap sync`, build Android/iOS, despliegues, commits.
+  - Auditoría SCA / pentest.
+- **Pendiente**: levantar backend para capturas con datos reales; FASE 2.1 `booking-form`; auditoría SCA; host de producción real.
+- **Riesgos**: ver `docs/seven/DEVELOPMENT_ENV_AUDIT.md` (sección riesgos pendientes).

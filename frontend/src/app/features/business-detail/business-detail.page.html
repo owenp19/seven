@@ -110,7 +110,7 @@
               <section class="bd__block">
                 <h2 class="bd__block-title">{{ 'businessDetail.offers' | t }}</h2>
                 <div class="bd__features">
-                  @for (feature of visibleFeatures(business); track feature) {
+                  @for (feature of visibleFeatures(business); track $index) {
                     <span class="bd__feature">
                       <ion-icon [name]="featureIcon(feature)" aria-hidden="true"></ion-icon>
                       {{ feature }}
@@ -131,7 +131,7 @@
               <section class="bd__block">
                 <h2 class="bd__block-title">{{ 'businessDetail.tags' | t }}</h2>
                 <div class="bd__tags">
-                  @for (tag of business.tags; track tag) {
+                  @for (tag of business.tags; track $index) {
                     <span class="bd__tag">{{ tag }}</span>
                   }
                 </div>

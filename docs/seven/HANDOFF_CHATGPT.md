@@ -96,3 +96,29 @@ locales; úsalas según la tarea.
 - `backend/database/migrations/`.
 - `docs/ARCHITECTURE.md`, `docs/API.md`, `README.md`.
 - `opencode.json`, `.opencode/skills/`, `.agents/skills/`, `skills-lock.json`.
+
+## 2026-10-24 - FASE 1.2 (parcial)
+- Welcome/Home: ajustes centrado y grids tablet/desktop. Móvil preservado. Identidad intacta.
+- Validado: lint, tests. Build en progreso o www existente.
+
+
+## 2026-10-24 - FASE 1.2A
+- Header full-width 1440px, nav horizontal PC, footer tablet/PC en Home, bottom-nav oculto >=1024px. Móvil/Welcome preservados.
+
+
+## 2026-10-24 - FASE 1.2B
+- Banner hero centrado y escalado para PC/tablet. Paleta/Oswald/Poppins/logotipo intactos.
+
+
+## 2026-10-24 - FASE 1.3
+- Header centrado con grid, sin Inicio, nav horizontal equilibrado; footer premium PC/tablet en Home. Móvil preservado.
+
+
+## 2026-10-24 - FASE 1.4
+- Header centrado grid sin Inicio; Welcome premium PC/tablet con grid editorial, móvil preservado.
+
+## 2026-10-25 - FASE 2.0
+- Reservas (`bookings`): header/página centrados, grid 2 columnas y hero 2 columnas en tablet/PC; móvil intacto.
+- Validado: lint, build y 206 tests (pool threads; forks agotó timeout en la máquina).
+- Siguiente: FASE 2.1 `booking-form` tablet/escritorio.
+

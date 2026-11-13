@@ -32,6 +32,10 @@
     position: relative;
     flex: none;
     height: 8.75rem; // 140px
+
+    @media (min-width: 1024px) {
+      height: 9.5rem;
+    }
   }
 
   &__img {

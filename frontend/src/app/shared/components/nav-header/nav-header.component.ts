@@ -8,6 +8,7 @@ import { TranslatePipe } from '../../pipes/translate/translate.pipe';
 interface HeaderLink {
   label: string;
   route: string;
+  exact?: boolean;
 }
 
 /**
@@ -32,9 +33,10 @@ export class NavHeaderComponent {
   private readonly menuController = inject(MenuController);
 
   readonly links: HeaderLink[] = [
-    { label: 'Inicio', route: '/home' },
     { label: 'Explorar', route: '/explore' },
     { label: 'Reservas', route: '/bookings' },
+    { label: 'SEVEN AI', route: '/assistant' },
+    { label: 'Contacto', route: '/contact' },
   ];
 
   /** Abre el cajón lateral compartido (ver `SideMenuComponent`). */

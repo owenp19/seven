@@ -152,7 +152,7 @@
                       >
                         {{ 'restaurantDetail.all' | t }}
                       </button>
-                      @for (category of categories(); track category) {
+                      @for (category of categories(); track $index) {
                         <button
                           class="rd__cat"
                           type="button"

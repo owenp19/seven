@@ -179,7 +179,7 @@
               <section class="pd__block">
                 <h2 class="pd__block-title">{{ 'innDetail.services' | t }}</h2>
                 <div class="pd__amenities">
-                  @for (service of visibleServices(inn); track service) {
+                  @for (service of visibleServices(inn); track $index) {
                     <span class="pd__amenity">
                       <ion-icon [name]="serviceIcon(service)" aria-hidden="true"></ion-icon>
                       {{ service }}

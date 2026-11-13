@@ -3,8 +3,10 @@
 // =============================================================================
 
 .tn-carousel {
-  padding: var(--go-space-2) 0 var(--go-space-1);
+  padding: var(--go-space-2) var(--seven-page-padding) var(--go-space-1);
   overflow: visible;
+  max-width: var(--seven-content-max-width);
+  margin: 0 auto;
 
   &__swiper {
     display: block;
@@ -30,6 +32,14 @@
   box-shadow: var(--go-shadow-card);
   cursor: pointer;
 
+  @media (min-width: 1024px) {
+    height: 280px;
+  }
+
+  @media (min-width: 1440px) {
+    height: 320px;
+  }
+
   &__bg {
     position: absolute;
     inset: 0;
@@ -54,6 +64,15 @@
     align-items: flex-start;
     justify-content: flex-end;
     padding: var(--go-space-4);
+
+    @media (min-width: 1024px) {
+      padding: var(--seven-space-8);
+      max-width: 640px;
+    }
+
+    @media (min-width: 1440px) {
+      max-width: 720px;
+    }
   }
 
   &__kicker {
@@ -76,6 +95,14 @@
     font-weight: 700;
     line-height: 1.12;
     color: var(--go-surface);
+
+    @media (min-width: 1024px) {
+      font-size: 2rem;
+    }
+
+    @media (min-width: 1440px) {
+      font-size: 2.4rem;
+    }
   }
 
   &__desc {
@@ -163,6 +190,26 @@
   .tn-slide__desc {
     font-size: 0.88rem;
     -webkit-line-clamp: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tn-carousel {
+    max-width: var(--seven-content-max-width);
+    margin: 0 auto;
+    padding-top: var(--go-space-4);
+  }
+
+  .tn-slide {
+    height: 300px;
+  }
+
+  .tn-slide__content {
+    padding: var(--go-space-6);
+  }
+
+  .tn-slide__title {
+    font-size: 2rem;
   }
 }
 

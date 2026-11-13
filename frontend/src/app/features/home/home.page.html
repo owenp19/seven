@@ -45,7 +45,7 @@
         [linkUrl]="'/explore'"
       ></app-section-header>
 
-      <div class="home__rail">
+      <div class="home__rail home__rail--grid">
         @if (categoriesList(); as list) {
           @for (category of categoryCards(list); track category.id) {
             <button
@@ -81,7 +81,7 @@
 
       <div class="home__rail">
         @if (featured(); as items) {
-          @for (item of items; track item.id) {
+          @for (item of items; track item.type + '-' + item.id) {
             <app-discovery-card
               class="home__rail-card"
               [item]="item"
@@ -135,5 +135,6 @@
         }
       </div>
     </section>
+    <app-footer-premium></app-footer-premium>
   </ion-content>
 </div>

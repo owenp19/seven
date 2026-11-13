@@ -1,7 +1,7 @@
 # SEVEN — Estado actual
 
 Fecha de auditoría: 2026-10-22. Actualizada: 2026-10-23 (Fase 1.0 — control de
-versiones local).
+versiones local) y 2026-11-13 (entorno de desarrollo + Playwright).
 
 ## Resumen
 El repositorio contiene una aplicación funcional en código (API Laravel 11,
@@ -44,7 +44,8 @@ publicó en `https://github.com/owenp19/seven.git` (`origin/main`).
 ## No verificado
 - Conexión real a MySQL/MariaDB y estado de datos.
 - Build Android/iOS; `ANDROID_HOME`/`ANDROID_SDK_ROOT` no detectados.
-- Respuesta real del API en ejecución.
+- Respuesta real del API en ejecución (backend Laravel `:8000` no levantado en esta sesión;
+  Playwright valida el shell de Home sin datos reales de categorías/banners).
 - Escaneo de dependencias/pentest.
 
 ## Riesgos principales
@@ -62,6 +63,11 @@ publicó en `https://github.com/owenp19/seven.git` (`origin/main`).
 - Backend: 276 tests pasan, incluidos auth, reservas, comentarios, assistant,
   aislamiento de tenant, seguridad y regresión.
 - Frontend: 206 tests pasan y el lint pasa.
+- Playwright Test 1.65.0 instalado localmente (`@playwright/test` devDependency);
+  Chromium 158.0.8127.18 ejecutable; `playwright.config.ts` y `e2e/welcome-home.spec.ts`
+  creados; **17/17 pruebas pasadas** (Welcome y Home en 390/430/768/1024/1366/1440/1920
+  + header desktop + footer tablet + logo sin rotura); 14 capturas y reporte HTML
+  generados en `frontend/e2e/`.
 - Catálogo público, reservas anónimas, comentarios, noticias, banners,
   promociones, assistant y health están implementados en rutas/controladores.
 - Backoffice y portal de proveedor tienen autenticación, roles, permisos,
@@ -99,9 +105,26 @@ publicó en `https://github.com/owenp19/seven.git` (`origin/main`).
 - Fase 0: `opencode.json` con Context7, 9 skills locales, 16 documentos,
   `AGENTS.md`, `skills-lock.json` y `.agents/skills/`.
 
+## Rediseño UI/UX (en curso, sin commit aún)
+Trabajo local sobre el baseline `45fda1a` (worktree modificado, no publicado):
+- Hecho: identidad preservada; Welcome, Home (intro, rails, banners, hero),
+  header con nav centrada, footer premium en Home y detalles de tour/posada/
+  restaurante/business con ajustes tablet/escritorio.
+- Fase 2.0 (2026-10-25): Reservas (`bookings`) con header/página centrados,
+  grid de 2 columnas y hero de 2 columnas en tablet/escritorio; móvil intacto.
+- Punto de recuperación Fase 2.0: stash dangling `d39a8be`.
+- Pendiente siguiente: FASE 2.1 `booking-form` (nueva reserva) tablet/escritorio;
+  después `saved` y `news-detail`. Falta validación visual real por breakpoints.
+
 ## Siguiente paso recomendado
 1. ~~Inicializar Git y crear el commit base~~ (hecho en Fase 1.0).
-2. Sincronizar Capacitor y añadir permisos Android cuando se autorice.
-3. Configurar el host real de producción antes de cualquier release.
-4. Ejecutar auditoría SCA antes de publicar.
-5. Mantener `origin/main` actualizado tras cada cambio aprobado.
+2. ~~Configurar entorno de desarrollo + Playwright~~ (hecho 2026-11-13: 17/17 pruebas
+   pasadas en Welcome y Home; 7 viewports; capturas y reporte generados).
+3. FASE 2.1: adaptar `booking-form` a tablet/escritorio (una fase por sesión);
+   validar visualmente con Playwright tras cada cambio.
+4. Después: `saved` y `news-detail`. Pantallas listas para rediseño PC/tablet:
+   **Welcome y Home** (pruebas visuales operativas).
+5. Sincronizar Capacitor y añadir permisos Android cuando se autorice.
+6. Configurar el host real de producción antes de cualquier release.
+7. Ejecutar auditoría SCA antes de publicar.
+8. Mantener `origin/main` actualizado tras cada cambio aprobado.

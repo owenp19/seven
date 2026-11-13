@@ -5,6 +5,7 @@
 - Sensación: Caribe auténtico, océano profundo, naturaleza, servicio premium.
 - Sin gradientes decorativos; superficies sólidas y fotografía protagonista.
 - Voz: cercana, clara, en español; evita tecnicismos.
+- **Identidad visual obligatoria (Fase 1):** conservar paleta cromática existente, tipografías Oswald/Poppins, logotipo y temas visuales. No reemplazar por recomendaciones externas; adaptar solo jerarquía, espaciados, grillas, layouts. Solo añadir colores semánticos si es estrictamente necesario y tras documentarlo. UI/UX Pro Max debe adaptarse a esta identidad.
 
 ## Tipografía
 | Rol | Fuente | Uso |

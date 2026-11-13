@@ -7,7 +7,7 @@
     slides-per-view="1"
     watch-slides-progress="true"
   >
-    @for (src of slides; track src; let i = $index) {
+      @for (src of slides; track $index; let i = $index) {
       <swiper-slide>
         <img
           class="media-carousel__img"
@@ -22,7 +22,7 @@
 
   @if (showDots && hasMultiple) {
     <div class="media-carousel__dots" [attr.aria-label]="'common.carousel' | t">
-      @for (src of slides; track src; let i = $index) {
+    @for (src of slides; track $index; let i = $index) {
         <button
           type="button"
           class="media-carousel__dot"

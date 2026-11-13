@@ -58,6 +58,7 @@
 
             <!-- ─── BODY · DETALLES MÍNIMOS ─────────────────────────────── -->
             <div class="td__body">
+              <div class="td__main">
               <!-- Quick facts -->
               <section class="td__facts">
                 @if (tour.duration) {
@@ -152,7 +153,7 @@
                     <span class="td__block-more">{{ 'tourDetail.seeAll' | t: { count: tour.gallery.length } }}</span>
                   </div>
                   <div class="td__gallery">
-                    @for (img of tour.gallery; track img) {
+                    @for (img of tour.gallery; track $index) {
                       <img class="td__gallery-img" [src]="img" [alt]="tour.name" loading="lazy" />
                     }
                   </div>
@@ -164,7 +165,7 @@
                 <section class="td__block">
                   <h2 class="td__block-title">{{ 'tourDetail.includes' | t }}</h2>
                   <ul class="td__list">
-                    @for (item of tour.includes; track item.name) {
+                    @for (item of tour.includes; track $index) {
                       <li class="td__list-item">
                         <ion-icon name="checkmark-circle-outline" aria-hidden="true"></ion-icon>
                         <span>{{ item.name }}</span>
@@ -179,7 +180,7 @@
                 <section class="td__block">
                   <h2 class="td__block-title">{{ 'tourDetail.bring' | t }}</h2>
                   <ul class="td__list">
-                    @for (item of tour.recommendations; track item.name) {
+                    @for (item of tour.recommendations; track $index) {
                       <li class="td__list-item">
                         <ion-icon [name]="item.icon" aria-hidden="true"></ion-icon>
                         <span>{{ item.name }}</span>
@@ -200,7 +201,7 @@
                   <div class="td__review-summary">
                     <strong class="td__review-big">{{ tour.rating }}</strong>
                     <span class="td__review-stars-small" [attr.aria-label]="'tourDetail.ratingAria' | t: { value: tour.rating }">
-                      @for (s of stars(tour.rating); track s) {
+                      @for (s of stars(tour.rating); track $index) {
                         <ion-icon name="star" aria-hidden="true"></ion-icon>
                       }
                     </span>
@@ -217,7 +218,7 @@
                             <span>{{ review.date }}</span>
                           </div>
                           <span class="td__review-stars-small">
-                            @for (s of stars(review.rating); track s) {
+                            @for (s of stars(review.rating); track $index) {
                               <ion-icon name="star" aria-hidden="true"></ion-icon>
                             }
                           </span>
@@ -281,7 +282,7 @@
 
                 <div class="td__suggestions">
                   @if (suggestions$ | async; as items) {
-                    @for (item of items; track item.link) {
+                    @for (item of items; track $index) {
                       <app-seven-result-card
                         variant="grid"
                         [image]="item.image"
@@ -309,6 +310,7 @@
                   }
                 </div>
               </section>
+              </div>
             </div>
           </div>
         </ion-content>

@@ -31,10 +31,11 @@
     ::ng-deep ion-content {
       --padding-bottom: calc(var(--seven-bottom-nav-height) + env(safe-area-inset-bottom));
 
-      // Desktop turns the nav into a floating dock lifted off the bottom edge,
-      // so the content needs the nav height PLUS that bottom offset.
-      @media (min-width: 1024px) {
-        --padding-bottom: calc(var(--seven-bottom-nav-height) + var(--seven-space-5) + env(safe-area-inset-bottom));
+      // Desde tablet la barra inferior no se pinta: el header superior asume
+      // la navegación. Reservar su altura dejaba una franja vacía después del
+      // footer (o del último bloque) en tablet y escritorio.
+      @media (min-width: 768px) {
+        --padding-bottom: env(safe-area-inset-bottom, 0px);
       }
     }
   }

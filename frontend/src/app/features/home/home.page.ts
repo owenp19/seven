@@ -17,9 +17,11 @@ import { DataCacheService } from '../../core/services/data-cache.service';
 import { FavoritesService } from '../../core/services/favorites.service';
 import { HapticsService } from '../../core/services/haptics.service';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
+
 import { TouristNewsCarouselComponent } from '../../shared/components/tourist-news-carousel/tourist-news-carousel.component';
 import { DiscoveryCardComponent, DiscoveryCardItem } from '../../shared/components/discovery-card/discovery-card.component';
 import { PromoCardComponent } from '../../shared/components/promo-card/promo-card.component';
+import { AppFooterPremiumComponent } from '../../shared/components/app-footer-premium/app-footer-premium.component';
 import { TranslatePipe } from '../../shared/pipes/translate/translate.pipe';
 
 type CategoryColor = 'blue' | 'aqua' | 'sand' | 'green';
@@ -57,6 +59,7 @@ interface CategoryCard {
     DiscoveryCardComponent,
     PromoCardComponent,
     TranslatePipe,
+    AppFooterPremiumComponent,
   ],
 })
 export class HomePage implements OnInit {
@@ -345,5 +348,21 @@ export class HomePage implements OnInit {
   toggleSave(item: DiscoveryCardItem): void {
     void this.haptics.selection();
     void this.favorites.toggle(item.type, item.id, item.slug);
+  }
+
+  protected toursList(items: DiscoveryCardItem[]): DiscoveryCardItem[] {
+    return items.filter((i) => i.type === 'tour');
+  }
+
+  protected restaurantsList(items: DiscoveryCardItem[]): DiscoveryCardItem[] {
+    return items.filter((i) => i.type === 'restaurant');
+  }
+
+  protected innsList(items: DiscoveryCardItem[]): DiscoveryCardItem[] {
+    return items.filter((i) => i.type === 'inn');
+  }
+
+  protected othersList(items: DiscoveryCardItem[]): DiscoveryCardItem[] {
+    return items.filter((i) => i.type !== 'tour' && i.type !== 'restaurant' && i.type !== 'inn');
   }
 }

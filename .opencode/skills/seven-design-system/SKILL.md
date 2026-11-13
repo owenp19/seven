@@ -47,6 +47,7 @@ Neutros: `--seven-gray-50` a `--seven-gray-900`. Fondo `--seven-background`
    es `#8A5E00` precisamente para cumplir AA; no volver al amarillo saturado.
 10. Safe areas: nunca pegar contenido a notch/gesture bar; usar las utilidades
     existentes y `--seven-bottom-nav-height`.
+11. **Identidad inmutable:** conservar paleta, familias tipográficas (Oswald/Poppins), logotipo y temas. Adaptar solo jerarquía/espaciados/grillas/layouts. UI/UX Pro Max debe ajustarse a la identidad existente. Solo añadir colores semánticos con justificación y documentación.
 
 ## Componentes compartidos
 Reutilizar antes de crear: `shared/components/` incluye `nav-header`,
